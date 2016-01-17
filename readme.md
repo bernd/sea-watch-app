@@ -15,7 +15,17 @@ Mehrsprachigkeit
 
 Auftraggeber & Ansprechpartner:
 
+Sea-Watch:
 Harald Höppner
+
+Entwicklung:
+Nic Zemke
+nic@transaperency-everywhere.com
+
+Design und UI
+Joshua Krüger
+joshua@sea-watch.org
+
 
 ## 1. Kurzbeschreibung
 
@@ -40,8 +50,7 @@ Backend wird das PHP Framework Laravel 5 genutzt.
 
 ## 2.2 Organisatorische Randbedingungen 
 ### 2.2.1 Organisation und Struktur 
-Das System wird von Nicolas Zemke und Stefan Pabst im 
- 
+
 ### 2.2.2 Ressourcen (Budget, Materialien, Zeit, Personal) 
 
 Das Produkt wird für den Auftraggeber kostenlos entwickelt. Für technische Ressourcen werden keinerlei Investitionen seitens des Entwicklerteams getätigt. 
