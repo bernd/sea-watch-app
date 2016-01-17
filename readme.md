@@ -1,5 +1,13 @@
 # Sea Watch App
 
+#Wo wir Hilfe brauchen:
+Falsche Anfragen verhindern (Spam & targeted Attacks Erkennung)
+GPS Hardware Zugriff
+Akku verbrauch
+Möglichkeiten wenn das Internet weg ist weiter Signal zu schicken
+Mehrsprachigkeit
+
+
 Auftraggeber & Ansprechpartner:
 
 Harald Höppner
