@@ -4,8 +4,6 @@ Auftraggeber & Ansprechpartner:
 
 Harald Höppner
 
-Sea-Watch e.V.
-
 ## 1. Kurzbeschreibung
 
 Koordination und Verwaltung von Notrufen
