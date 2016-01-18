@@ -2,15 +2,18 @@
 
 #Wo wir Hilfe brauchen:
 
-Falsche Anfragen verhindern (Spam & targeted Attacks Erkennung)
+Falsche Anfragen verhindern (Spam & targeted Attacks)
+GPS Hardware Zugriff (Wir entwickeln die App gerade mit Cordova).
+Neben High-Accuracy trotzdem schnell trackbar sein.
+Signal zum Satelliten nicht unterbrechen um immer aktuelle Positionen zu haben.
+Akku-Verbrauch aufs Minimum reduzieren.
+Möglichkeiten wenn das Internet unterbricht weiter ein Signal zu senden oder auf SMS umzuschalten um die Position sowie die Infos zu senden und zu kommunizieren.
+Weiteres:
+- Marketing in den Zielländern - Wie bekommen wir die App auf die Smartphones der Betroffenen? - bspw. Google AdWords Kampagne in der Türkei, Syrien, Libyen, Tunesien etc.
+- SMS-API (wie bspw. messagebird oder twilio - am besten wäre aber eine kostenlose / kostengünstige Variante damit der Chat auch via SMS funktioniert.) Hat Google so etwas? 
+- Mittelmeer: Möglichkeit ohne Mobilfunknetz trotzdem mit dem Smartphone Signale zu senden oder eigenes GSM-Netz im Mittelmeer rund um das Schiff. – Hier wären kreative und unkonventionelle Ideen gefragt.
 
-GPS Hardware Zugriff
 
-Akku verbrauch
-
-Möglichkeiten wenn das Internet weg ist weiter Signal zu schicken
-
-Mehrsprachigkeit
 
 
 Auftraggeber & Ansprechpartner:
@@ -55,20 +58,14 @@ Backend wird das PHP Framework Laravel 5 genutzt.
 
 Das Produkt wird für den Auftraggeber kostenlos entwickelt. Für technische Ressourcen werden keinerlei Investitionen seitens des Entwicklerteams getätigt. 
 
-### 2.2.3 Organisatorische Standards 
-Für die Entwicklungswerkzeuge gibt es keine Vorgaben vom hochschulexternen Auftraggeber. Für 
-die Benutzeroberfläche des Produkts gibt es keine einzuhaltenden Vorgaben des Kunden. 
-Für die weitere Verarbeitung der erfassten Daten sollen diese dem Auftraggeber in Form einer 
-Excel- oder SPSS-Datei übergeben werden.
-
-### 2.2.4 Vorgehensmodell
+### 2.2.3 Vorgehensmodell
 
 Der Fortschritt und die Probleme des Projektes werden täglich/wöchentlich und für alle sichtbar 
 festgehalten.
 In regelmäßigen Abständen werden Produktfunktionalitäten geliefert und beurteilt. Die 
 Anforderungen an das Produkt wurden durch ein Gespräch mit der Auftraggeberin klar definiert. 
 
-### 2.2.5 Juristische und gesetzliche Faktoren
+### 2.2.4 Juristische und gesetzliche Faktoren
 
 Für die juristischen und gesetzlichen Aspekte des Produkts liegt die Verantwortung beim 
 Auftraggeber. 
