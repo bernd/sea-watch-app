@@ -3,11 +3,17 @@
 #Wo wir Hilfe brauchen:
 
 Falsche Anfragen verhindern (Spam & targeted Attacks)
+
 GPS Hardware Zugriff (Wir entwickeln die App gerade mit Cordova).
+
 Neben High-Accuracy trotzdem schnell trackbar sein.
+
 Signal zum Satelliten nicht unterbrechen um immer aktuelle Positionen zu haben.
+
 Akku-Verbrauch aufs Minimum reduzieren.
+
 Möglichkeiten wenn das Internet unterbricht weiter ein Signal zu senden oder auf SMS umzuschalten um die Position sowie die Infos zu senden und zu kommunizieren.
+
 Weiteres:
 - Marketing in den Zielländern - Wie bekommen wir die App auf die Smartphones der Betroffenen? - bspw. Google AdWords Kampagne in der Türkei, Syrien, Libyen, Tunesien etc.
 - SMS-API (wie bspw. messagebird oder twilio - am besten wäre aber eine kostenlose / kostengünstige Variante damit der Chat auch via SMS funktioniert.) Hat Google so etwas? 
