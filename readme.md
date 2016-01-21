@@ -29,7 +29,7 @@ Harald Höppner
 
 Entwicklung:
 Nic Zemke
-nic@transaperency-everywhere.com
+nic@transparency-everywhere.com
 
 Design und UI
 Joshua Krüger
