@@ -29,9 +29,7 @@ Getting Started
 
 1. Download the Source Code:
 
-    https://github.com/sea-watch/sea-watch-app/archive/master.zip
-
-	and unzip it in your www or htdocs folder.
+    https://github.com/sea-watch/sea-watch-app/archive/master.zip and unzip it in your www or htdocs folder.
 
 2. Create a Database on your Server with uft8_general_c
 
