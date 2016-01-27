@@ -1,112 +1,68 @@
-# Sea Watch App
+SEA WATCH APP
+===================
 
-#Wo wir Hilfe brauchen:
+About this Project
+---------------------
+This Application shall be used to organize emergency calls to a coordination center which can send the emergency calls to a rescue team.
 
-Falsche Anfragen verhindern (Spam & targeted Attacks)
+This repo contains the backend and the app files.
+The backend is build with [Laravel 5](https://github.com/laravel/laravel) and is based on [Laravel Framework 5.1 Bootstrap 3 Starter Site](https://github.com/mrakodol/Laravel-5-Bootstrap-3-Starter-Site).
+It is located in the **admin/** directory
 
-GPS Hardware Zugriff (Wir entwickeln die App gerade mit Cordova).
-
-Neben High-Accuracy trotzdem schnell trackbar sein.
-
-Signal zum Satelliten nicht unterbrechen um immer aktuelle Positionen zu haben.
-
-Akku-Verbrauch aufs Minimum reduzieren.
-
-Möglichkeiten wenn das Internet unterbricht weiter ein Signal zu senden oder auf SMS umzuschalten um die Position sowie die Infos zu senden und zu kommunizieren.
-
-Weiteres:
-- Marketing in den Zielländern - Wie bekommen wir die App auf die Smartphones der Betroffenen? - bspw. Google AdWords Kampagne in der Türkei, Syrien, Libyen, Tunesien etc.
-- SMS-API (wie bspw. messagebird oder twilio - am besten wäre aber eine kostenlose / kostengünstige Variante damit der Chat auch via SMS funktioniert.) Hat Google so etwas? 
-- Mittelmeer: Möglichkeit ohne Mobilfunknetz trotzdem mit dem Smartphone Signale zu senden oder eigenes GSM-Netz im Mittelmeer rund um das Schiff. – Hier wären kreative und unkonventionelle Ideen gefragt.
+There will be two mobile apps, one for refugees and the other one for SAR Teams the app for refugees. Both apps are build with HTML and JS and wrapped with [phonegap](phonegap.com/) to support as many systems as possible. The apps are located in the **app_refugee/** & **app_team/** directories
 
 
+Requirements
+----------------
+(Same as Laravel 5 Bootrap Starter)
 
-
-Auftraggeber & Ansprechpartner:
-
-Sea-Watch:
-Harald Höppner
-
-Entwicklung:
-Nic Zemke
-nic@transaperency-everywhere.com
-
-Design und UI
-Joshua Krüger
-joshua@sea-watch.org
-
-
-## 1. Kurzbeschreibung
-
-Koordination und Verwaltung von Notrufen
-
-## 2.1 Technische Randbedingungen 
-
-### 2.1.1 Schnittstellen 
-Es sind keine Randbedingungen in Bezug auf die Schnittstellen definiert. 
-
-### 2.1.2 Hardware 
-Die Applikation muss auf einem Android- und/oder iOS-Gerät lauffähig sein. Zusätzlich müssen diese ein 
-GMS/GPS-Modul besitzen, damit die benötigten Geokoordinaten erfasst werden können. 
-Für den Zugriff auf das Backend muss der verwendete Computer einen Webbrowser installiert 
-haben. (Chrome Version: XXX, Firefox Version: XXX, o.ä.) 
-
-### 2.1.3 Software/Programmiersprachen 
-Serverseitig werden PHP und MySQL verwendet. Clientseitig werden HTML, CSS und JavaScript 
-verwendet. Für das Frontend kommt das hybride Mobile App Framework IONIC1 (ggf) im Verbund mit AngularJS2 zum Einsatz. Es ermöglicht eine auf HTML basierte Applikation zu konzipieren, welche 
-mit Hilfe von Cordova3 als App für Android und iOS kompiliert wird. Für die Umsetzung des 
-Backend wird das PHP Framework Laravel 5 genutzt. 
-
-## 2.2 Organisatorische Randbedingungen 
-### 2.2.1 Organisation und Struktur 
-
-### 2.2.2 Ressourcen (Budget, Materialien, Zeit, Personal) 
-
-Das Produkt wird für den Auftraggeber kostenlos entwickelt. Für technische Ressourcen werden keinerlei Investitionen seitens des Entwicklerteams getätigt. 
-
-### 2.2.3 Vorgehensmodell
-
-Der Fortschritt und die Probleme des Projektes werden täglich/wöchentlich und für alle sichtbar 
-festgehalten.
-In regelmäßigen Abständen werden Produktfunktionalitäten geliefert und beurteilt. Die 
-Anforderungen an das Produkt wurden durch ein Gespräch mit der Auftraggeberin klar definiert. 
-
-### 2.2.4 Juristische und gesetzliche Faktoren
-
-Für die juristischen und gesetzlichen Aspekte des Produkts liegt die Verantwortung beim 
-Auftraggeber. 
-
-
-## 3 Funktionsumfang 
-
-### 3.1 Musskriterien
-Der Kunde soll durch das Produkt die Möglichkeit haben, die zuvor manuell erfassten Daten nun mit Hilfe einer Android-App speichern zu lassen und anschließend im Backend auszuwerten.
-
-**Aufbau**
-
-## App auf einem Smartphone
-
-### • Initialisierung
-- Überprüfung ob sich Nutzer in Operationsgebiet befindet.
-- Falls nicht -> Fehlermeldung
-
-### • Notruf Senden
-- Auswahl: Selbst an Board / Notfall gesichtet
-- Notruf Formular
-
-### • Notruf Session
-- Übermittlung der Position alle n Sekunden
+- PHP >= 5.5.9
+- OpenSSL PHP Extension
+- Mbstring PHP Extension
+- Tokenizer PHP Extension
+- MySQL
 
 
 
-## Laravel Backend
+Getting Started
+------------------
 
-### • Nutzerverwaltung
-- Admin kann Nutzer anlegen und diesem Organisation und Einsatzgebiet zuweisen
+1. Download the Source Code:
 
-### • Operationsgebiet Verwaltung
-- Admin kann Operationsgebiete anlegen
+    https://github.com/sea-watch/sea-watch-app/archive/master.zip
 
-### • Karte
-- Auswahl von Operationsgebieten
-	- Anzeige von Fällen auf Karte
+	and unzip it in your www or htdocs folder.
+
+2. Create a Database on your Server with uft8_general_c
+
+3. Update the .env file to your local settings
+
+3. Go to the root directory and type 'php artisan migrate'.
+
+
+
+Features
+----------
+User and Organisation Management
+Operation Area & Border Management
+Track cases and case positions
+
+Planed Features:
+SMS Support for the Refugee App to keep connection alive
+
+
+
+
+
+
+
+Contributing
+---------------
+
+You want to contribute to this project? Just write a mail to nic@transparency-everywhere.com. 
+
+
+
+More...
+--------
+... docu can be found in **docu/**
