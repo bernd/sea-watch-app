@@ -1,0 +1,340 @@
+    .navbar{
+        height:63px;
+    }
+    .navbar-nav > li > a{
+    }
+    .navbar-nav > li.alert_dropdown > a{    
+        
+        color: #c3c3c3;
+        padding: 19px 10px;
+    }
+    .nav-sidebar {
+        padding-top: 25px;
+    }
+
+    .nav-sidebar h3{
+        margin-top:15px;
+    }
+
+    .navbar-brand, .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus{
+      height:auto;
+      background-color: rgb(0,150,250);
+    }
+    .navbar-inverse .navbar-nav > li > a,  a.navbar-brand {
+      font-size:19px;
+      font-weight:900;
+      padding-bottom:14px;
+    }
+
+    .navbar-inverse .navbar-nav > li.dropdown > a:after {
+      padding-left:5px;
+      content:'\f2f9';
+      font-family:Material-Design-Iconic-Font;
+    }
+
+    .alert_dropdown a:after {
+      display:none;
+    }
+    .navbar-inverse .navbar-nav > li.alert_dropdown > a {
+      font-size:24px;
+    }
+    .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {text-shadow:none;}
+    .navbar-inverse .navbar-nav li a span, a.navbar-brand span {
+      font-weight:400;
+      color :rgb(114,120,129);
+      letter-spacing: 1px;
+      font-size:14px;
+      text-transform:uppercase;
+    }
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .active > a {
+  background-image:none;
+  box-shadow:none;
+}
+
+.navbar-inverse .navbar-nav > .open > a:after {
+  content:'\f2fc';
+}
+        a.navbar-brand span {color:rgb(55,60,68);}
+
+
+
+
+
+  body {background-color:rgb(231,233,236);}
+    
+    .sidebar{
+        background: rgb(231,233,236);
+    }
+            .sidebar .label-danger {
+              background-color:rgb(114,120,129);
+            }
+
+            .sidebar h3 {
+              font-size:19px;
+              font-weight:700;
+              color: rgb(0,150,250);
+            }
+            .sidebar .divider{
+                height:1px;
+                background: rgba(177,183,193,0.5);
+                margin: 30px -15px;
+            }
+
+            .sidebar li {
+              padding:0px; 
+              background-color:transparent;
+            }
+
+            .sidebar .active, .sidebar .active:focus, .sidebar .active:hover, .sidebar .active a:link, .sidebar .active a:focus, .sidebar a:hover, .sidebar .nav > li > a:hover, .sidebar .nav > li > a:focus 
+            {background-color: transparent;}
+
+
+            .sidebar li a { 
+              font-size:14px;
+              padding:3px 0px;
+              color: rgb(114,120,129);
+            }
+
+            .sidebar li a:hover { color: rgb(55,60,68);  }
+
+            .sidebar li.active a {
+              font-weight:700;
+              color: rgb(55,60,68);
+            }
+
+            .sidebar li.add_op a {
+              color:rgb(177,183,193);
+            }
+
+            .sidebar li.add_op a:before {
+              content: '\f276';
+              padding-right:7px;
+              font-family:Material-Design-Iconic-Font;
+             }
+
+             .sidebar li.add_op a span {
+              opacity:0;
+             -webkit-transition: all 0.15s ease;
+            -moz-transition: all 0.15s ease;
+            -ms-transition: all 0.15s ease;
+            -o-transition: all 0.15s ease;
+            transition: all 0.15s ease;
+             }
+
+             .sidebar li.add_op:hover a span, .sidebar li.add_op:focus a span {
+              opacity:1;
+
+             }
+
+            .sidebar li.filter a:before {
+              content:'\f26c';
+              padding-right:7px;
+              font-family:Material-Design-Iconic-Font;
+            }
+
+            .sidebar li.filter.active a:before {
+              content:'\f26d';
+            }
+
+            .sidebar li.status.distress a:before { color:rgb(255,67,68); }
+            .sidebar li.status.rescue_in_progress a:before { color:rgb(255,137,66); }
+            .sidebar li.status.rescued a:before { color:rgb(63,176,251); }
+            .sidebar li.status.on_land a:before { color:rgb(0,180,147); }
+
+    .main{
+                  padding-top:50px;
+                  -webkit-box-shadow: 0 0 10px 0 rgba(170,183,193,0.25);
+                  box-shadow: 0 0 10px 0 rgba(170,183,193,0.25);
+                  background:#fff;
+              }
+              
+              #caseList{
+                  list-style: none;
+                  background: rgb(240,240,240);
+                  margin: 0;
+                  padding: 0;
+              }
+              
+              .caseBox{
+                  width:300px;
+                  float:left;
+                  margin:15px;
+                  margin-bottom:30px;
+                  background:#FFF;
+                  -webkit-box-shadow: 0 0 15px 0 rgba(170,183,193,0.5);
+                  box-shadow: 0 0 15px 0 rgba(170,183,193,0.5);
+              }
+              .caseBox .map{
+                height: 130px;
+                width: 100%;
+                /*margin-left: 5px;*/
+              }
+              
+              .caseBox header{
+                color: #FFF;
+                position: relative;
+              }
+              
+              .caseBox header .time{
+                  position:absolute;
+                  margin-top:-2em;
+                  color: rgba(114, 120, 129, 0.5);
+                  font-size:12px;
+                  text-transform: uppercase;
+                  letter-spacing:0.05em;
+                  font-weight:500;
+              }
+              
+              .caseBox header .connection_type{
+                  position:absolute;
+                  margin-top:-2em;
+                  color: rgba(114, 120, 129, 0.5);
+                  right:0;
+                  text-transform: uppercase;
+                  letter-spacing:0.05em;
+                  font-weight:500;
+                  font-size:12px;
+              }
+              
+              .caseBox header .status{
+                  float:left;
+                  font-size: 19px;
+                  margin: 8px 15px;
+                  font-weight:700;
+              }
+              .caseBox header .source{
+                  float:right;
+                  font-size: 19px;
+                  margin: 8px 15px;
+              }
+              .caseBox table{
+                 margin-top: 45px;
+              }
+              .caseBox table tr td:first-of-type{
+                  width: 110px;
+                  border-right: 1px solid rgba(177,183,193,0.25);
+                  font-size:12px;
+                      padding: 5px 0px 5px 0px;
+                      font-weight:500;
+              }
+              .caseBox table tr{
+                  height:20px;
+                  border-bottom: 1px solid rgba(177,183,193,0.25);
+                  
+              }
+              .caseBox table tr:last-of-type{
+                  border-bottom: none;
+                  
+              }
+              
+              .caseBox table tr td{
+                  padding:5px;
+                  width:160px;
+                  font-size:14px;
+              }
+              
+              .caseBox .content{
+                  background: #FFF;
+                  color: #777777;
+                  padding:15px;
+                  padding-top:15px;
+                  min-height: 466px;
+                  overflow:auto;
+              }
+              
+              .caseBox .content, .caseBox header{
+                  /*margin:5px;*/
+              }
+              
+              .caseBox .content .involvedList{
+                  padding:0;
+                  list-style:none;
+              }
+              
+              .caseBox header, .caseBox .btn{
+                  color: #FFF;
+              }
+              
+              .caseBox.distress, .caseBox.distress header, .caseBox.distress .btn{
+                  background:rgb(253,41,44);
+              }
+              
+              .caseBox.rescued, .caseBox.rescued header, .caseBox.rescued .btn{
+                  background:rgb(63,176,251);
+              }
+              
+              .caseBox.on_land, .caseBox.on_land header, .caseBox.on_land .btn{
+                  background:rgb(0,180,147);
+              }
+    
+              .caseBox .btn{
+                  border-radius:4px;
+                  font-weight:500;
+              }
+
+
+/* Messenger */
+
+    .messenger__chat {height:412px; overflow-y:scroll;}
+    .message:first-child {margin-top:1em;}
+
+    .caseBox .content.messenger {width:100%; padding:0px;}
+    .message {
+        max-width:80%;
+        margin-top:0.5em;
+        margin-bottom:0.5em;
+        clear:both;
+        margin-left:1em;
+        margin-right:1em;
+        padding:0.5em 1em;
+    }
+
+    .message:after, .message:before {
+        display: table;
+        content: " ";
+    }
+
+    .message p {
+        margin:0px;
+    }
+
+    .message p.lonlat {font-size:1.1em; opacity:0.75;}
+
+    .user_1 {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        background:#e7e9ec;
+        float:left;
+    }
+
+
+    .user_2 {float:right;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+        background:#0097cd;
+        color:#fff;
+    }
+
+    a.close_chat {display:inline-block; max-width:20%; font-size:2em; padding-top:8px; padding-bottom:8px; padding-left:15px; padding-right:15px; border-right:1px solid #b1b7c1; color:#b1b7c1;}
+    .form_inline {display:block; float:right; max-width:100%; padding-left:10px; padding-right:10px;  padding-top:10px; padding-bottom:7px;}
+    .chat_status_notification {
+        clear:both; width:50%; margin:0 auto; padding:0.1em 0em; color:#b1b7c1; text-align: center;
+    } 
+
+    .messenger__form {background-color:#ecedef; border-top:1px solid #b1b7c1; width:100%; float:right; bottom:0px; }
+    .messenger__form input[type="text"] {padding:7px; width:170px; border-radius:8px; border:1px solid #b1b7c1; }
+    .messenger__form button[type="button"] {background:transparent; border:none; font-weight:500; color:#b1b7c1;}
+
+
+@media (min-height:680px) and (min-width:960px) {
+  .nav-sidebar {
+    width:14.1vw;
+    position:fixed;
+  }
+      .navbar-brand {
+      width:16.5vw;
+    }
+}
