@@ -12,9 +12,11 @@ var swApp = new function(){
   this.clientId;
   this.emergency_case_id;
   this.last_signal_send; //last signal send to server timestamp in unixtime
+  this.reloadInterval = 15000; //reload interval
   this.last_message_received = 0;
   this.reloadIntervalObj;
-  this.reloadInterval = 15000;
+  
+  
   this.init = function(){
   
         var self  = this;
@@ -49,10 +51,11 @@ var swApp = new function(){
                         "latitude":position.coords.latitude
                     };
                     
-
-                    $('body').attr('data-geo',JSON.stringify(coords));
+                    if(typeof $('body').attr('data-geo') === 'undefined')
+                        self.showStartScreen();
                     
-                    self.showStartScreen();
+                    
+                    $('body').attr('data-geo',JSON.stringify(coords));
                   },
                   function (error) {
                     var errorTypes = {
@@ -84,6 +87,7 @@ var swApp = new function(){
   
   
   };
+  
   this.getClientId = function(){
       return 'clientId';
   }
@@ -104,13 +108,13 @@ var swApp = new function(){
           }
       });
   };
-  
   this.initReload = function(){
       var self = this;
       this.reloadIntervalObj = setInterval(function() {
                                                     self.reload();
                                                   }, this.reloadInterval);
   }
+  
   this.showStartScreen = function(){
       var self = this;
       
@@ -122,7 +126,6 @@ var swApp = new function(){
       });
       
   };
-  
   this.showMainScreen = function(){
       var self = this;
       $('body').load('views/app.html',function(){
@@ -141,7 +144,6 @@ var swApp = new function(){
           })
       });
   };
-  
   this.showChatScreen = function(){
       var self = this;
       
@@ -187,11 +189,6 @@ var swApp = new function(){
   
   };
   
-  this.updateLanguage = function(language){
-      
-  };
-  
-  
   this.sendEmergencyCall = function(callback){
   	
     var data = {
@@ -225,6 +222,7 @@ var swApp = new function(){
         }
     });
   };
+  
   this.submitChatMessage = function(options){
       
       api.query(this.apiURL+'api/messages/send',{emergency_case_id: this.emergency_case_id ,sender_type:'refugee',sender_id:this.client_id,message:options.message,'geo_data':$('body').attr('data-geo')},function(result){
@@ -252,10 +250,13 @@ var swApp = new function(){
     
     $('.messenger__chat').append(html);
   };
+  
   this.setLastUpdatedNow = function(){
       var now = Math.round(new Date().getTime()/1000);
       $('.updated-text').attr('data-last-updated', now).html('Connected to Sea-Watch.org. Last Checked 0s ago');
       
+  };
+  this.updateLanguage = function(language){
   };
 
 }
