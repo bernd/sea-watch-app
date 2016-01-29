@@ -92,19 +92,18 @@ var swApp = new function(){
       return 'clientId';
   }
   this.reload= function(){
+      var self = this;
       api.query(this.apiURL+'api/reloadApp', {last_message_received: this.last_message_received, emergency_case_id:this.emergency_case_id},function(result){
           if(result.error != null){
               alert(result.error);
           }else{
-              $.each(result.data.messages, function(index,value){
-                  if($('.message[data-id='+value.id+']').length > 0){
-                      
-                      console.log('already there');
-                  }else{
-                      console.log('push message');
-                  }
-                  console.log(value);
-              });
+            $.each(result.data.messages,function(index, value){
+                var type = 'received';
+                if(value.sender_type === 'refugee'){
+                    type = 'sent';
+                }
+                self.pushChatMessage({type:type, message:value.message, message_id:value.id});
+            });
           }
       });
   };
@@ -112,7 +111,7 @@ var swApp = new function(){
       var self = this;
       this.reloadIntervalObj = setInterval(function() {
                                                     self.reload();
-                                                  }, this.reloadInterval);
+      }, this.reloadInterval);
   }
   
   this.showStartScreen = function(){
@@ -178,7 +177,7 @@ var swApp = new function(){
                           
                           
                             self.pushChatMessage({type:'sent', message:$('.form_inline form input[type=text]').val(), message_id:result.data.emergency_case_message_id});
-          
+                            self.last_message_received = result.data.emergency_case_message_id;
                             $('.form_inline form input[type=text]').val('');
                       }
               }});
@@ -232,23 +231,27 @@ var swApp = new function(){
       
   };
   this.pushChatMessage = function(options){
+      console.log(options);
       var divClass, pClass;
       pClass = '';
-    if(options.type === 'sent'){
+    if(options.type == 'sent'){
         divClass = "user_2 message";
     }
-    if(options.type === 'received'){
+    if(options.type == 'received'){
         divClass = "user_1 message";
     }
-    if(options.type === 'notification'){
+    if(options.type == 'notification'){
         divClass = "chat_status_notification";
         pClass = 'meta';
     }
+    
     var html = '<div class="'+divClass+'" data-id="'+options.message_id+'">'
         html += '    <p class="'+pClass+'">'+options.message+'</p>';
         html += '</div>';
-    
-    $('.messenger__chat').append(html);
+        
+      if($('.message[data-id='+options.message_id+']').length === 0){
+        $('.messenger__chat').append(html);
+      }
   };
   
   this.setLastUpdatedNow = function(){
