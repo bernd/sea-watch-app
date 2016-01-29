@@ -1,7 +1,32 @@
 
-$(document).ready(function(){
-    swApp.init()
-});
+
+
+
+
+var app = {
+    // Application Constructor
+    initialize: function() {
+        this.bindEvents();
+    },
+    // Bind Event Listeners
+    //
+    // Bind any events that are required on startup. Common events are:
+    // 'load', 'deviceready', 'offline', and 'online'.
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+    // deviceready Event Handler
+    //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+    // function, we must explicitly call 'app.receivedEvent(...);'
+    onDeviceReady: function() {
+        $(document).ready(function(){
+            swApp.init();
+        });
+        
+    }
+};
+app.initialize();
 
 
 
@@ -28,7 +53,7 @@ var swApp = new function(){
         var timeout = setTimeout( function() {
             
             
-            if (Modernizr.geolocation) {
+            if (true) {
                 navigator.geolocation.watchPosition (
                   function (position) {
                     var newPosition = {
