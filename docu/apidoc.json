@@ -1,0 +1,16 @@
+{
+  "name": "Sea-Watch App",
+  "version": "0.1.0",
+  "description": "Sea-Watch Search And Rescue System",
+  "title": "Sea-Watch App Api",
+  "url" : "https://github.com/sea-watch/sea-watch-app",
+  "order": [
+    "CreateCase",
+    "ReloadApp",
+    "SendMessage"
+  ],
+  "template": {
+    "withCompare": false,
+    "withGenerator": false
+  }
+}
