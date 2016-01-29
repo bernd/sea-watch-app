@@ -2,6 +2,8 @@
 use App\emergencyCase;
 use App\operation_areas;
 
+header('Access-Control-Allow-Origin:*');
+
 class app_config{
     public static $app_name = 'Sea-Watch.APP';
 }
@@ -9,11 +11,16 @@ class app_config{
 /****************   Model binding into route **************************/
 Route::model('language', 'App\Language');
 Route::model('user', 'App\User');
+
 Route::pattern('id', '[0-9]+');
 Route::pattern('slug', '[0-9a-z-_]+');
 
 /***************    Site routes  **********************************/
 Route::get('/', 'HomeController@index');
+Route::get('home', function(){ 
+    return Redirect::to('/', 301); 
+});
+
 
 Route::get('/map', 'HomeController@map');
 
