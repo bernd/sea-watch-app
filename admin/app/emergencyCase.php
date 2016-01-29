@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+
+
 use App\User;
 use App\emergencyCaseLocation;
 use App\emergencyCaseMessage;
+use App\involvedUsers;
 use DB;
 
 
@@ -33,6 +36,20 @@ class emergencyCase extends Model
     public function last_location(){
         return emergencyCaseLocation::where('emergency_case_id', $this->id)->first();
     }
+    
+    public function involved_users(){
+        $result = [];
+                
+        $involved_users = involvedUsers::where('case_id', '=', $this->id)->get();
+        foreach($involved_users AS $involved_user){
+            $user = User::where('id', '=', $involved_user->user_id)->get()[0];
+            $result[] = $user->organisation.' '.$user->name;
+        }
+        
+        return $result;
+    }
+    
+    
     /**
      * Get the administrator flag for the user.
      *

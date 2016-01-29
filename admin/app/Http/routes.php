@@ -7,28 +7,18 @@ class app_config{
 }
 
 /****************   Model binding into route **************************/
-Route::model('article', 'App\Article');
-Route::model('articlecategory', 'App\ArticleCategory');
 Route::model('language', 'App\Language');
-Route::model('photoalbum', 'App\PhotoAlbum');
-Route::model('photo', 'App\Photo');
 Route::model('user', 'App\User');
 Route::pattern('id', '[0-9]+');
 Route::pattern('slug', '[0-9a-z-_]+');
 
 /***************    Site routes  **********************************/
 Route::get('/', 'HomeController@index');
-Route::get('home', 'HomeController@index');
-
 
 Route::get('/map', 'HomeController@map');
 
 Route::get('about', 'PagesController@about');
 Route::get('contact', 'PagesController@contact');
-Route::get('articles', 'ArticlesController@index');
-Route::get('article/{slug}', 'ArticlesController@show');
-Route::get('video/{id}', 'VideoController@show');
-Route::get('photo/{id}', 'PhotoController@show');
 
 
 Route::get('operation_areas/create', 'operation_areas@create');
@@ -43,25 +33,29 @@ Route::get('cases/edit/{id}', array('as' => 'case.edit', function($id)
         ->with('case', emergencyCase::find($id));
 }));
 
-Route::get('cases/get_involved/{id}', 'EmergencyCaseController@get_involved');
-
 Route::post('cases/edit/{id}', 'EmergencyCaseController@update');
 
 Route::post('api/messages/send', 'ApiController@sendMessage');
 
 Route::post('api/cases/create', 'ApiController@add_request');
 
+
+//not supposed for usage with the app!
+Route::post('api/cases/sendMessageCrew', 'ApiController@sendMessageCrew');
+
 Route::get('api/cases/operation_area/{id}', 'ApiController@casesInOperationArea');
 
 Route::post('api/cases/ping', 'ApiController@ping');
 
+Route::post('api/cases/getInvolved', 'ApiController@getInvolved');
 
 Route::post('api/reloadApp', 'ApiController@reloadApp');
 
+Route::post('api/reloadBackend', 'ApiController@reloadBackend');
+
 Route::post('api/checkForUpdates', 'ApiController@checkForUpdates');
 
-//@old
-Route::post('api/checkForUpdates', 'ApiController@checkForUpdates');
+
 
 
 //Route::any('aapi/cases/create', function(){
@@ -89,36 +83,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('language/{language}/edit', 'Admin\LanguageController@edit');
     Route::get('language/{language}/delete', 'Admin\LanguageController@delete');
     Route::resource('language', 'Admin\LanguageController');
-
-    # Article category
-    Route::get('articlecategory/data', 'Admin\ArticleCategoriesController@data');
-    Route::get('articlecategory/{articlecategory}/show', 'Admin\ArticleCategoriesController@show');
-    Route::get('articlecategory/{articlecategory}/edit', 'Admin\ArticleCategoriesController@edit');
-    Route::get('articlecategory/{articlecategory}/delete', 'Admin\ArticleCategoriesController@delete');
-    Route::get('articlecategory/reorder', 'ArticleCategoriesController@getReorder');
-    Route::resource('articlecategory', 'Admin\ArticleCategoriesController');
-
-    # Articles
-    Route::get('article/data', 'Admin\ArticleController@data');
-    Route::get('article/{article}/show', 'Admin\ArticleController@show');
-    Route::get('article/{article}/edit', 'Admin\ArticleController@edit');
-    Route::get('article/{article}/delete', 'Admin\ArticleController@delete');
-    Route::get('article/reorder', 'Admin\ArticleController@getReorder');
-    Route::resource('article', 'Admin\ArticleController');
-
-    # Photo Album
-    Route::get('photoalbum/data', 'Admin\PhotoAlbumController@data');
-    Route::get('photoalbum/{photoalbum}/show', 'Admin\PhotoAlbumController@show');
-    Route::get('photoalbum/{photoalbum}/edit', 'Admin\PhotoAlbumController@edit');
-    Route::get('photoalbum/{photoalbum}/delete', 'Admin\PhotoAlbumController@delete');
-    Route::resource('photoalbum', 'Admin\PhotoAlbumController');
-
-    # Photo
-    Route::get('photo/data', 'Admin\PhotoController@data');
-    Route::get('photo/{photo}/show', 'Admin\PhotoController@show');
-    Route::get('photo/{photo}/edit', 'Admin\PhotoController@edit');
-    Route::get('photo/{photo}/delete', 'Admin\PhotoController@delete');
-    Route::resource('photo', 'Admin\PhotoController');
 
     # Users
     Route::get('user/data', 'Admin\UserController@data');

@@ -62,7 +62,6 @@ class EmergencyCaseMessagesasdasd extends Migration
             $table->foreign('emergency_case_id')->references('id')->on('emergency_cases');
             $table->foreign('emergency_case_location_id')->references('id')->on('emergency_case_locations');
         });
-        
         Schema::create('emergency_case_locations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('emergency_case_id');
@@ -74,17 +73,11 @@ class EmergencyCaseMessagesasdasd extends Migration
             $table->timestamps();
             $table->foreign('emergency_case_id')->references('id')->on('emergency_cases');
         });
-        Schema::create('emergency_case_messages', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('emergency_case_id');
-            $table->integer('emergency_case_location_id');
-            $table->string('receiver_type');
-            $table->string('receiver_id');
-            $table->string('sender_type');
-            $table->string('sender_id');
+        Schema::create('involved_users', function (Blueprint $table) {
+            $table->integer('user_id');
+            $table->integer('case_id');
+            $table->integer('last_message_seen');
             $table->timestamps();
-            $table->foreign('emergency_case_id')->references('id')->on('emergency_cases');
-            $table->foreign('emergency_case_location_id')->references('id')->on('emergency_case_locations');
         });
     }
 
@@ -95,8 +88,12 @@ class EmergencyCaseMessagesasdasd extends Migration
      */
     public function down()
     {
-        Schema::table('emergency_cases', function (Blueprint $table) {
-            //
-        });
+
+        Schema::drop('operation_areas');
+        Schema::drop('emergency_cases');
+        Schema::drop('emergency_case_messages');
+        Schema::drop('emergency_case_locations');
+        Schema::drop('emergency_case_messages');
+        Schema::drop('involved_users');
     }
 }

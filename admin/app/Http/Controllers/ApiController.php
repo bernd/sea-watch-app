@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -10,7 +11,9 @@ use App\Http\Controllers\Controller;
 use App\emergencyCase;
 use App\emergencyCaseLocation;
 use App\emergencyCaseMessage;
+use App\involvedUsers;
 use App\Operation_area;
+
 
 use Carbon\Carbon;
 
@@ -97,6 +100,11 @@ function addLocation($emergency_case_id, $geo_data){
 
 class ApiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['only' => 'getInvolved']);
+    }
+    //returns location_area for lon and lat
     public function getLocationArea($lon, $lat){
         //require('../../pointLocation.php');
         
@@ -125,6 +133,7 @@ class ApiController extends Controller
     
     //checks for updates in the admin panel
     //the app uses reloadApp()
+    //depreciated!
     public function checkForUpdates(Request $request){
         $all = $request->all();
         
@@ -139,14 +148,21 @@ class ApiController extends Controller
         $result['data'] = ['operation_areas'=>$operation_areas, 'emergency_cases'=>$emergency_cases];
         
         return $result;
-        
     }
     
-    //return messages with message_id > last_message_received and case_id
+    /**
+     * used in refugee_app
+     * return messages with message_id > last_message_received and case_id
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function reloadApp(Request $request){
         $all = $request->all();
         $emergency_case_id = $all['emergency_case_id'];
-        $emergencyCaseMessages = emergencyCaseMessage::where('id', '>', (int)$all['last_message_received'])->where('emergency_case_id', '=', (int)$emergency_case_id)->get();
+        
+        
+        $emergencyCaseMessages = $this->getMessagesFromDB($emergency_case_id, $all['last_message_received']);
 
         
         $result = [];
@@ -155,7 +171,16 @@ class ApiController extends Controller
         return $result;
     }
     
+    /**
+     * get cases for operation area
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function casesInOperationArea($id){
+        
+        
+        //@add auth
         
         $operation_area = Operation_area::where('id', $id)->get();
 	$emergency_cases = emergencyCase::where('operation_area', $id)->get();
@@ -169,10 +194,11 @@ class ApiController extends Controller
         return $result;
     }
     
-    public function initSession(){
-        
-    }
-    
+    /**
+     * add location to emergency_case
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
     public function ping(Request $request){
         
         $all = $request->all();
@@ -181,16 +207,17 @@ class ApiController extends Controller
         
         $geo_data['heading'] = 0;
         
-        
         echo addLocation($emergency_case_id, $geo_data);
-        
-        
     }
     
+    
+    /**
+     * inserts message into database
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function sendMessage(Request $request){
-        
-        
-        
         
         $all = $request->all();
         
@@ -213,7 +240,45 @@ class ApiController extends Controller
         return json_encode($result);
     }
     
-    //returns all message for case_id where message_id > last_recieved_message
+    
+    /**
+     * inserts message into database
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sendMessageCrew(Request $request){
+        
+        $all = $request->all();
+        $all['emergency_case_id'] = $all['case_id'];
+        $all['message'] = $all['message'];
+        $all['sender_type'] = 'user';
+        $all['sender_id'] = Auth::User()->id;
+        
+        $emergencyCaseMessage = new emergencyCaseMessage($all);
+        $emergencyCaseMessage->save();
+        
+        $result = [];
+        $result['error'] = null;
+        $result['data']['emergency_case_message_id'] = $emergencyCaseMessage->id;
+        
+        return json_encode($result);
+    }
+    
+    
+    //could be added to model emergency_cases?
+    public function getMessagesFromDB($case_id, $last_message_received){
+        
+        return emergencyCaseMessage::where('id', '>', (int)$last_message_received)->where('emergency_case_id', '=', (int)$case_id)->get();
+        
+    }
+    
+    /**
+     * returns all message for case_id where message_id > last_recieved_message
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function getMessages(Request $request){
         $all = $request->all();
         $case_id = $all['case_id'];
@@ -222,7 +287,7 @@ class ApiController extends Controller
     
     
     /**
-     * Store a newly created resource in storage.
+     * Adds a new emergency_case and the first position into the database
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -233,10 +298,6 @@ class ApiController extends Controller
         $all = $request->all();
         
         $location_information = json_decode($all['location_data']);
-        
-        
-        
-        
         
         $location_information->heading = 0;
         
@@ -279,5 +340,72 @@ class ApiController extends Controller
         return json_encode($result);
         //
     }
+    
+    
+    
+    
+    
+    /**
+     * adds user to involved_users and returns complete dialogue
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getInvolved(Request $request)
+    {
+        $all = $request->all();
+        
+        $case_id = $all['case_id'];
+        
+        //check if there is alrady a table
+        $checkDB = involvedUsers::where('case_id', '=', $case_id)->where('user_id', '=', Auth::id())->count();
+        
+        if($checkDB === 0){
+            $involvedUser = new involvedUsers($all);
+            $involvedUser->user_id = Auth::id();
+            $involvedUser->save();
+        }
+        
+        $result = [];
+        $result['error'] = null;
+        $result['data'] = [];
+        $result['data']['messages'] = $this->getMessagesFromDB($all['case_id'], 0);
+        
+        return $result;
+        
+    }
 
+    
+    /**
+     * adds user to involved_users and returns complete dialogue
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function reloadBackend(Request $request)
+    {
+        
+        
+        $all = $request->all();
+        if(isset($all['request'])){
+            $request  = $all['request'];
+
+            $result = [];
+            $result['data']['messages'] = [];
+            foreach($request['cases'] AS $caseData){
+                
+                $user = involvedUsers::where('case_id', '=', $caseData['id'])->where('user_id', '=', Auth::id());
+                $user->update(array('last_message_seen'=>$caseData['last_message_received']));
+        
+                $result['data']['messages'][$caseData['id']] = $this->getMessagesFromDB($caseData['id'], $caseData['last_message_received']);
+            }
+            return $result;
+        }else{
+            return 'null';
+        }
+        
+    }
+
+    
+    
 }
