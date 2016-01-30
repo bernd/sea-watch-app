@@ -159,7 +159,16 @@ class ApiController extends Controller
      */
     public function reloadApp(Request $request){
         $all = $request->all();
+        
+        $geo_data = json_decode($all['geo_data'], true);
+        
+        $geo_data['heading'] = 0;
+        
+        
         $emergency_case_id = $all['emergency_case_id'];
+        
+        addLocation($emergency_case_id, $geo_data);
+        
         
         
         $emergencyCaseMessages = $this->getMessagesFromDB($emergency_case_id, $all['last_message_received']);
