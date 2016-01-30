@@ -18,7 +18,6 @@ var case_statuses = {
         }
 }
     
-    
 
 $(document).ready(function(){
     
@@ -70,13 +69,14 @@ var helpers = new function(){
     this.generateMarkerClusterFeatures = function(cases){
         
         var features = []
-        
+        var self = this;
         $.each(cases, function(index, value){
             features.push({
                     "type": "Feature",
                     
                     "properties": {
-                      "marker-color": "#63b6e5"
+                      "marker-color": "#"+self.getMarkerColor(value.boat_status),
+                      'case_id':value.id
                     },
                     "geometry": {
                         "coordinates": [parseFloat(value.locations[0].lon),parseFloat(value.locations[0].lat)],
@@ -138,8 +138,7 @@ var swApp = new function(){
                 // one can customize markers by adding simplestyle properties
                 // https://www.mapbox.com/guides/an-open-platform/#simplestyle
                 'marker-size': 'large',
-                'marker-color': '#BE9A6B',
-                'marker-symbol': 'cafe'
+                'marker-color': '#BE9A6B'
             }
         }).addTo(map);
     }
@@ -233,6 +232,30 @@ var swApp = new function(){
         
     };
     
+    this.showCaseDetails = function(case_id){
+        console.log(case_id);
+        this.clearMap;
+        var caseObj = this.getCaseData(case_id);
+        alert('showing now details for location');
+        var self = this
+        
+        console.log(caseObj);
+        $.each(caseObj.locations, function(index,value){
+            console.log([parseFloat(value.lat),parseFloat(value.lon)]);
+            self.addMarkerToMap([parseFloat(value.lat),parseFloat(value.lon)]);
+        });
+        
+        
+    };
+    this.getCaseData = function(id){
+        var ret = null;
+        $.each(emergency_cases_obj,function(index, value){
+            if(parseInt(value.id) == parseInt(id)){
+                ret = value;
+            }
+        });
+        return ret;
+    };
     this.clusterLayer;
     
     
@@ -248,12 +271,16 @@ var swApp = new function(){
     
     this.generateMarkerCluster = function(cases){
         
+        
         this.clearMap();
         
         
         this.clusterLayer = new L.MarkerClusterGroup().on('click', function(e) {
-           
-            console.log(e.layer.feature.properties);
+            console.log('e');
+            console.log(e.layer.feature);
+            swApp.showCaseDetails(e.layer.feature.properties.case_id);
+            
+            
             //this.setGeoJSON(geoJson);?
         });
         var geoJsonLayer = L.geoJson(helpers.generateMarkerClusterFeatures(cases),{
