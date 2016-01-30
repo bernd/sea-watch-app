@@ -33,7 +33,7 @@ app.initialize();
 
 var swApp = new function(){
 
-  this.apiURL = '//safe-passage.transparency-everywhere.com/admin/public/';
+  this.apiURL = 'https://safe-passage.transparency-everywhere.com/admin/public/';
   this.clientId;
   this.emergency_case_id;
   this.last_signal_send; //last signal send to server timestamp in unixtime
@@ -118,7 +118,7 @@ var swApp = new function(){
   }
   this.reload= function(){
       var self = this;
-      api.query(this.apiURL+'api/reloadApp', {last_message_received: this.last_message_received, emergency_case_id:this.emergency_case_id},function(result){
+      api.query(this.apiURL+'api/reloadApp', {last_message_received: this.last_message_received, emergency_case_id:this.emergency_case_id, geo_data:$('body').attr('data-geo')},function(result){
           if(result.error != null){
               alert(result.error);
           }else{
@@ -142,7 +142,7 @@ var swApp = new function(){
   this.showStartScreen = function(){
       var self = this;
       
-      $('body').load('views/index.html',function(){ 
+      $('body').load('views/index.html',function(){
         $('.language_selector__selector li a').click(function(e){
             e.preventDefault();
             self.showMainScreen();
@@ -153,11 +153,15 @@ var swApp = new function(){
   this.showMainScreen = function(){
       var self = this;
       $('body').load('views/app.html',function(){
-          
           //send emergency request
-          $('.sos a').click(function(e){
+          $('.sos a').bind('click',function(e){
               e.preventDefault();
-              
+              $('.sos a').unbind('click');
+              $('.sos a').click(function(e){
+                  e.preventDefault();
+                  alert('your request is pending... please wait');
+                  
+              });
               
               self.sendEmergencyCall(function(){
                 self.showChatScreen();
@@ -231,7 +235,7 @@ var swApp = new function(){
     };
     var self = this;
     //send api call
-    api.query(self.apiURL+'api/cases/create', data, function(result){
+    $.post(self.apiURL+'api/cases/create', data, function(result){
         var result = JSON.parse(result);
         self.setLastUpdatedNow();
         if(result.error == null){
