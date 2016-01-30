@@ -53,7 +53,7 @@ var emergency_case = new function(){
               
           $('.caseBox[data-id='+case_id+'] .messenger__chat').append(html);
         };
-        this.submitMessage = function(case_id, message){
+        this.submitMessage = function(case_id, message,callback){
             var self = this;
             $.post(base_url+'api/cases/sendMessageCrew', {case_id:case_id, message:message},function( result ) {
                 
@@ -66,6 +66,8 @@ var emergency_case = new function(){
                     self.pushChatMessage(case_id, {type:'sent', message:message, message_id:result.data.emergency_case_message_id});
           
                 }
+                callback();
+                
             });
         };
         
@@ -144,9 +146,11 @@ $(document).ready(function(){
         e.preventDefault();
         var case_id = $(this).find('input[type=text]').attr('data-id');
         var message = $(this).find('input[type=text]').val();
+        var $this = $(this).find('input[type=text]');
         
-        
-        emergency_case.submitMessage(case_id, message);
+        emergency_case.submitMessage(case_id, message,function(){
+            $this.val('');
+        });
         
     });
     emergency_case.initReload();
@@ -215,7 +219,7 @@ $(document).ready(function(){
                                 echo $emergency_case->first_location()->connection_type;
                                 ?></span>
 
-                                <span class="status">
+                                <div class="status">
                                     <?php
 
                                         echo ['distress'=>'Distress',
@@ -224,15 +228,20 @@ $(document).ready(function(){
                                          'rescue_in_progress'=>'In Progress'][$emergency_case->boat_status];
 
                                     ?>
-                                </span>
-                                <span class="source">Refugee</span>
+                                    <span class="source">Refugee</span>
+                                </div>
+
+                                <div class="case_settings">
+                                        <a href="#"><i class="zmdi zmdi-settings"></i></a>
+                                </div>
+                                
                             </header>
                             <div class="map" id="map_<?php echo $emergency_case->id;?>"></div>
                             <div class="content">
                                 <!--{{ URL::to('cases/get_involved/'.$emergency_case->id) }}-->
                                 <a href="#" data-id="{{$emergency_case->id}}" class="btn btn-sm pull-left get-involved">Get Involved</a>
                                 <a href="#" class="btn btn-sm pull-right"><?php echo $emergency_case->count_messages() ?></a>
-                                <table>
+                                <table class="table">
 
 
                                     <?php

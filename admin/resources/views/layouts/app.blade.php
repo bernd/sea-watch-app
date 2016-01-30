@@ -29,7 +29,7 @@
 
     <link rel="shortcut icon" href="{!! asset('assets/site/ico/favicon.ico')  !!} ">
 </head>
-<body style="padding-top:40px;">
+<body style="padding-top:64px;">
 @include('partials.nav')
 <div class="container-fluid">
 @yield('content')

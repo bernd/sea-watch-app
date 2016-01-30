@@ -1,4 +1,4 @@
-<div class="col-sm-2 col-md-2 sidebar" {{ (Request::is('/') ? 'style="position:absolute;top:55px;left:0;bottom:0;overflow:auto;"' : '') }}>
+<div class="col-sm-2 col-md-2 sidebar" {{ (Request::is('/') ? '' : '') }}>
                 <ul class="nav nav-sidebar">
                   <li><h3>Area</h3></li>
                   @foreach ($operation_areas as $operation_area)
@@ -25,4 +25,4 @@
                   <li><a href="{{ URL::to('pages/imprint') }}">Imprint</a></li>
                 </ul>
             <div id="olControlDiv"></div>
-        </div>
+        </div> 

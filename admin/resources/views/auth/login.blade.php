@@ -7,13 +7,11 @@
 @section('content')
     
 
-    <div class="container">
         <div class="row">
-        <div class="page-header">
-            <h2>{!! trans('site/user.login_to_account') !!}</h2>
-        </div>
-    </div>
-        <div class="row">
+            <div class="login_window col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <div class="page-header">
+                    <h2 class="entry-title">{!! trans('site/user.login_to_account') !!}</h2>
+                </div>
             {!! Form::open(array('url' => URL::to('auth/login'), 'method' => 'post', 'files'=> true)) !!}
             <div class="form-group  {{ $errors->has('email') ? 'has-error' : '' }}">
                 {!! Form::label('email', "E-Mail Address", array('class' => 'control-label')) !!}
@@ -30,25 +28,25 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-6 col-md-offset-4">
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="remember"> Remember Me
                         </label>
                     </div>
-                </div>
             </div>
-
             <div class="form-group">
-                <div class="col-md-6 col-md-offset-4">
-                    <button type="submit" class="btn btn-primary" style="margin-right: 15px;">
-                        Login
-                    </button>
-
-                    <a href="{{ URL::to('/password/email') }}">Forgot Your Password?</a>
-                </div>
+                <button type="submit" class="btn btn-block btn-primary" style="margin-right: 15px;">
+                    Login
+                </button>
             </div>
             {!! Form::close() !!}
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="lost_password col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <a href="{{ URL::to('/password/email') }}" class="gray">Forgot Your Password?</a> 
+            </div>
+        </div>
+
+       
 @endsection

@@ -27,7 +27,6 @@
                     <ul class="dropdown-menu">
                         <li><a href="{{ URL::to('/') }}" class="{{ (Request::is('/') ? 'active' : '') }}"><i class="zmdi zmdi-view-module"></i> Grid</a></li>
                         <li><a href="{{ URL::to('map') }}" class="{{ (Request::is('map') ? 'active' : '') }}"><i class="zmdi zmdi-map"></i> Map</a></li>
-                      <li role="separator" class="divider"></li>
                     </ul>
                 </li>
                 

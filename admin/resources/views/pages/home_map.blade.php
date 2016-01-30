@@ -7,7 +7,7 @@
         
         
         @include('partials.casenav')
-        <div class="col-sm-10 col-md-10 main" style="position:absolute;top:62px;right:0;bottom:0;" id="maps">
+        <div class="col-sm-10 col-md-10 col-sm-offset-2 col-md-offset-2 main maps_display_mode" id="maps">
           
           
           
