@@ -16,7 +16,7 @@ var case_statuses = {
             title:'On Land',
             color:'40b0fb'
         }
-}
+};
     
 
 $(document).ready(function(){
@@ -142,7 +142,7 @@ var swApp = new function(){
             }
         }).addTo(map);
     }
-    this.addMarkerToMap = function(location){
+    this.addMarkerToMap = function(location, color){
         
         L.mapbox.featureLayer({
             // this feature is in the GeoJSON format: see geojson.org
@@ -163,7 +163,7 @@ var swApp = new function(){
                 // one can customize markers by adding simplestyle properties
                 // https://www.mapbox.com/guides/an-open-platform/#simplestyle
                 'marker-size': 'large',
-                'marker-color': '#BE9A6B',
+                'marker-color': '#'+color,
                 'marker-symbol': 'cafe'
             }
         }).on('click', function(e) {
@@ -242,7 +242,7 @@ var swApp = new function(){
         console.log(caseObj);
         $.each(caseObj.locations, function(index,value){
             console.log([parseFloat(value.lat),parseFloat(value.lon)]);
-            self.addMarkerToMap([parseFloat(value.lat),parseFloat(value.lon)]);
+            self.addMarkerToMap(helpers.getMarkerColor(caseObj.boat_status),[parseFloat(value.lat),parseFloat(value.lon)]);
         });
         
         
@@ -330,4 +330,4 @@ Array.prototype.pushIfNotExist = function(element, comparer) {
     if (!this.inArray(comparer)) {
         this.push(element);
     }
-}; 
+};
