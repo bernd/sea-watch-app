@@ -411,6 +411,7 @@ body.screen_start {
         width:100%;
         border-bottom:2px solid #ecedef;
         top:0px;
+        display:none;
     }
 
     @media (orientation: landscape) { .status_monitor {padding-top:6px; padding-bottom:6px; padding-top:1vw; padding-bottom:1vw; font-size:0.75em;} }
@@ -693,8 +694,8 @@ body.screen_start {
 
     .messenger__form {background-color:#ecedef; border-top:1px solid #b1b7c1; position:fixed; width:100%; bottom:0px; }
     .messenger__form input[type="text"] {padding:7px; border-radius:8px; border:1px solid #b1b7c1; }
-    .messenger__form button[type="button"] {background:transparent; border:none; font-size:1.5em; font-weight:500; color:#b1b7c1;}
+    .messenger__form input[type="submit"] {background:transparent; border:none; font-size:1.5em; font-weight:500; color:#b1b7c1;}
 
-    @media (orientation: portrait) { .message p, .messenger__form input[type="text"], .messenger__form button[type="button"] {font-size:1.5em; } }
-    @media (orientation: landscape) { .message p, .messenger__form input[type="text"], .messenger__form button[type="button"]  {font-size:1em; } }
+    @media (orientation: portrait) { .message p, .messenger__form input[type="text"], .messenger__form input[type="submit"] {font-size:1.5em; } }
+    @media (orientation: landscape) { .message p, .messenger__form input[type="text"], .messenger__form input[type="submit"]  {font-size:1em; } }
 

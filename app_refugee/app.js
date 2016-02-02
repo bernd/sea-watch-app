@@ -1,6 +1,14 @@
 
 
 
+function loadAfter($jqObject, url, cb){
+  $.get(url, function(data){
+    $('body header').nextAll().remove();
+    $jqObject.after(data);
+    cb();
+  });
+}
+
 
 
 var app = {
@@ -26,8 +34,6 @@ var app = {
         
     }
 };
-app.initialize();
-
 
 
 
@@ -54,6 +60,9 @@ var swApp = new function(){
             
             
             if (true) {
+                
+                self.showStartScreen();
+                
                 navigator.geolocation.watchPosition (
                   function (position) {
                     var newPosition = {
@@ -76,8 +85,6 @@ var swApp = new function(){
                         "latitude":position.coords.latitude
                     };
                     
-                    if(typeof $('body').attr('data-geo') === 'undefined')
-                        self.showStartScreen();
                     
                     
                     $('body').attr('data-geo',JSON.stringify(coords));
@@ -122,6 +129,7 @@ var swApp = new function(){
           if(result.error != null){
               alert(result.error);
           }else{
+            self.setStatusMonitorNow();
             $.each(result.data.messages,function(index, value){
                 var type = 'received';
                 if(value.sender_type === 'refugee'){
@@ -142,7 +150,10 @@ var swApp = new function(){
   this.showStartScreen = function(){
       var self = this;
       
-      $('body').load('views/index.html',function(){
+      loadAfter($('body header'),'views/index.html',function(){
+        $('body header').hide();
+        $('body').removeClass('screen_app');
+        $('body').addClass('screen_start');
         $('.language_selector__selector li a').click(function(e){
             e.preventDefault();
             self.showMainScreen();
@@ -152,24 +163,29 @@ var swApp = new function(){
   };
   this.showMainScreen = function(){
       var self = this;
-      $('body').load('views/app.html',function(){
+      
+      loadAfter($('body header'), 'views/app.html', function(){
+          $('body header').show();
+          $('body').removeClass('screen_start');
+          $('body').addClass('screen_app');
           //send emergency request
           $('.sos a').bind('click',function(e){
               e.preventDefault();
-              $('.sos a').unbind('click');
-              $('.sos a').click(function(e){
-                  e.preventDefault();
-                  alert('your request is pending... please wait');
-                  
-              });
               
-              self.sendEmergencyCall(function(){
-                self.showChatScreen();
-              });
-              
-              
-              
-          })
+              if(typeof $('body').attr('data-geo') === 'undefined'){
+                  alert('your connection hasn\'t been tracked yet. please wait');
+              }else{
+                $('.sos a').unbind('click');
+                $('.sos a').click(function(e){
+                    e.preventDefault();
+                    alert('your request is pending... please wait');
+                });
+                self.sendEmergencyCall(function(){
+                  self.showChatScreen();
+                });
+              }
+               
+          });
       });
   };
   this.showChatScreen = function(){
@@ -180,8 +196,7 @@ var swApp = new function(){
       $('body').removeClass('screen_start');
       $('body').addClass('screen_app');
       
-      $('body').load('views/messenger.html',function(){
-          
+      loadAfter($('body header'), 'views/messenger.html', function(){
           
           self.pushChatMessage({type:'notification', message:'The App was initialized. Please wait...'});
           
@@ -189,6 +204,11 @@ var swApp = new function(){
           
           //init click on back button
           $('.info').click(function(e){
+              e.preventDefault();
+              self.showMainScreen();
+          });
+          
+          $('.close_chat').click(function(e){
               e.preventDefault();
               self.showMainScreen();
           });
@@ -214,7 +234,6 @@ var swApp = new function(){
           
           
       });
-  
   };
   
   this.sendEmergencyCall = function(callback){
@@ -237,11 +256,17 @@ var swApp = new function(){
     //send api call
     $.post(self.apiURL+'api/cases/create', data, function(result){
         var result = JSON.parse(result);
-        self.setLastUpdatedNow();
+        self.setStatusMonitorNow();
         if(result.error == null){
             //init chat session
             //self.openEmergencySession(result.data.emergency_case_id);
             self.emergency_case_id = result.data.emergency_case_id;
+            
+            setInterval(function(){
+                self.checkConnection();
+                self.updateStatusMonitor();
+            }, 5000);
+            
             callback();
         }else{
             if(result.error === 'no_operation_area'){
@@ -283,12 +308,32 @@ var swApp = new function(){
       }
   };
   
-  this.setLastUpdatedNow = function(){
-      var now = Math.round(new Date().getTime()/1000);
-      $('.updated-text').attr('data-last-updated', now).html('Connected to Sea-Watch.org. Last Checked 0s ago');
+  this.checkConnection = function(){
+      if(true){
+          $('.status_monitor__connection').html('Stable Connection');
+      }
       
+  };
+  
+  this.setStatusMonitorNow = function(){
+      var now = Math.round(new Date().getTime()/1000);
+      $('.status_monitor__gps').attr('data-last-updated', now).html('Sent Position 1s ago');
+  };
+  this.updateStatusMonitor = function(){
+      var diff = Math.round(new Date().getTime()/1000-parseInt($('.status_monitor__gps').attr('data-last-updated')));
+      
+      $('.status_monitor__gps').html('Send Position '+diff+'s ago');
   };
   this.updateLanguage = function(language){
   };
 
-}
+};
+
+var isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+if ( isApp ) {
+    // PhoneGap application
+    app.initialize();
+} else {
+    // Web page
+    swApp.init();
+}  
