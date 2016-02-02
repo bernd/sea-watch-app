@@ -5,7 +5,7 @@ body {
 }
 
 a {
-  color:rgb(0,150,250);
+  color:rgb(0,152,207);
 }
 
 a:hover, a:focus, a:active {
@@ -26,7 +26,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
 }
 
 .btn-primary, .btn-primary:hover {
-  background-color:rgb(0,150,250);
+  background-color:rgb(0,152,207);
   background-image:none;
   border:0px;
   font-weight:700;
@@ -64,7 +64,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
 
     .navbar-brand, .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus{
       height:auto;
-      background-color: rgb(0,150,250);
+      background-color: rgb(0,152,207);
     }
 
     .navbar-inverse .navbar-nav > li > a,  a.navbar-brand {
@@ -153,7 +153,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
   .sidebar h3 {
       font-size: 19px;
       font-weight: 700;
-      color: #0096fa
+      color: #0098cf
   }
 
   .sidebar .divider {
@@ -484,7 +484,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
     .user_2 {
         float: right;
         border-bottom-left-radius: 8px;
-        background: #0097cd;
+        background: #0098cf;
         color: #fff
     }
 
