@@ -344,6 +344,7 @@ class ApiController extends Controller
         $result = [];
         $result['error'] = null;
         $result['data']['emergency_case_id'] = $emergencyCase->id;
+        $result['data']['operation_area'] = $emergencyCase->operation_area;
         
         
         return json_encode($result);

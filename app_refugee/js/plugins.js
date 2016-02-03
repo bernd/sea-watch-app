@@ -110,3 +110,15 @@ var api = new function(){
     
 };
 
+
+function loadAfter($jqObject, url, cb){
+  $.get(url, function(data){
+    $('body header').nextAll().remove();
+    $jqObject.after(data);
+    cb();
+  });
+}
+
+window.alert = function (txt) {
+   navigator.notification.alert(txt, null, "Alert", "Close");
+};

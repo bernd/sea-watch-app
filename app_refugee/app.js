@@ -1,15 +1,6 @@
 
 
 
-function loadAfter($jqObject, url, cb){
-  $.get(url, function(data){
-    $('body header').nextAll().remove();
-    $jqObject.after(data);
-    cb();
-  });
-}
-
-
 
 var app = {
     // Application Constructor
@@ -42,6 +33,7 @@ var swApp = new function(){
   this.apiURL = 'https://safe-passage.transparency-everywhere.com/admin/public/';
   this.clientId;
   this.emergency_case_id;
+  this.operation_area;
   this.last_signal_send; //last signal send to server timestamp in unixtime
   this.reloadInterval = 15000; //reload interval
   this.last_message_received = 0;
@@ -161,27 +153,39 @@ var swApp = new function(){
       });
       
   };
+  
+  this.confirmCall = function(cb){
+        if (confirm("Are you sure to send an emergency call?")) {
+            cb();
+        }
+  };
+  
   this.showMainScreen = function(){
       var self = this;
       
       loadAfter($('body header'), 'views/app.html', function(){
           $('body header').show();
+          
+          //change classes
           $('body').removeClass('screen_start');
           $('body').addClass('screen_app');
-          //send emergency request
+          //init click handler
           $('.sos a').bind('click',function(e){
               e.preventDefault();
               
               if(typeof $('body').attr('data-geo') === 'undefined'){
                   alert('your connection hasn\'t been tracked yet. please wait');
               }else{
-                $('.sos a').unbind('click');
-                $('.sos a').click(function(e){
-                    e.preventDefault();
-                    alert('your request is pending... please wait');
-                });
-                self.sendEmergencyCall(function(){
-                  self.showChatScreen();
+                self.confirmCall(function(){
+                     //proceed
+                     $('.sos a').unbind('click');
+                     $('.sos a').click(function(e){
+                         e.preventDefault();
+                         alert('your request is pending... please wait');
+                     });
+                     self.sendEmergencyCall(function(){
+                       self.showChatScreen();
+                     });
                 });
               }
                
@@ -198,7 +202,7 @@ var swApp = new function(){
       
       loadAfter($('body header'), 'views/messenger.html', function(){
           
-          self.pushChatMessage({type:'notification', message:'The App was initialized. Please wait...'});
+          self.pushChatMessage({type:'received', message:'Hello, we received your emergency call. Right now you are in are in the operation area '+self.operation_area+'. Please keep you App opened and follow the instructions.'});
           
           self.initReload();
           
@@ -261,6 +265,8 @@ var swApp = new function(){
             //init chat session
             //self.openEmergencySession(result.data.emergency_case_id);
             self.emergency_case_id = result.data.emergency_case_id;
+            
+            self.operation_area = result.data.operation_area;
             
             setInterval(function(){
                 self.checkConnection();
