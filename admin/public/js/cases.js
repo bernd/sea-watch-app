@@ -113,11 +113,12 @@ var swApp = new function(){
             },500);
         });
     };
+    
     //used to init mini map in views/pages/home_cases
     this.addMiniMap = function(location, mapId){
-        var map = L.mapbox.map(mapId, 'mapbox.streets')
-
-            .setView(location, 16);
+        var map = L.mapbox.map(mapId, 'mapbox.streets').setView(location, 16);
+        
+        map.scrollWheelZoom.disable();
 
         L.mapbox.featureLayer({
             // this feature is in the GeoJSON format: see geojson.org
