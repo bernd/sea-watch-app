@@ -12,6 +12,8 @@
         <div id="navbar" class="navbar-collapse collapse">
             
             <ul class="nav navbar-nav navbar-left">
+                
+                @if (Request::is('/')||Request::is('map')||Request::is('home'))
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span>Display Mode</span><br />
@@ -29,6 +31,7 @@
                         <li><a href="{{ URL::to('map') }}" class="{{ (Request::is('map') ? 'active' : '') }}"><i class="zmdi zmdi-map"></i> Map</a></li>
                     </ul>
                 </li>
+                @endif
                 
                 
                 {{--<li class="{{ (Request::is('articles') ? 'active' : '') }}">
@@ -51,7 +54,7 @@
                 @else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-expanded="false"></a>
+                           aria-expanded="false"><span>{{ Auth::user()->organisation }}</span><br />{{ Auth::user()->name }}</a>
                         <ul class="dropdown-menu" role="menu">
                             @if(Auth::check())
                                 @if(Auth::user()->admin==1)
@@ -68,18 +71,18 @@
                     </li>
                 @endif
                 
-                    <li class="dropdown alert_dropdown">
+                    <!--<li class="dropdown alert_dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false">
                             <i class="zmdi zmdi-notifications mdc-text-white"></i>
                             <!--<i class="fa fa-caret-down"></i>-->
-                        </a>
+                        <!--</a>
                         <ul class="dropdown-menu" role="menu">
                                     <li>
                                         <a href="#"><i class="fa fa-tachometer"></i>New Cases</a>
                                     </li>
                         </ul>
-                    </li>
+                    </li>-->
           </ul>
         </div>
       </div>
