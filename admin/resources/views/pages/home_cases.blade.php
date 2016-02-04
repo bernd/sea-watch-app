@@ -50,8 +50,8 @@ var emergency_case = new function(){
               html += '    <p class="'+pClass+'">'+options.message+'</p>';
               html += '</div>';
               
-              
-          $('.caseBox[data-id='+case_id+'] .messenger__chat').append(html);
+          if($('.message[data-id='+options.message_id+']').length === 0)
+            $('.caseBox[data-id='+case_id+'] .messenger__chat').append(html);
         };
         this.submitMessage = function(case_id, message,callback){
             var self = this;
