@@ -166,8 +166,7 @@ $(document).ready(function(){
         <div class="col-sm-10 col-md-10 main">
             <ul id="caseList">
             @foreach ($emergency_cases as $emergency_case)
-                <li class="caseBox <?php echo $emergency_case->boat_status;?> oparea_<?php echo $emergency_case->operation_area;?> caseBox_<?php echo $emergency_case->id;?>" data-id="<?php echo $emergency_case->id;?>">
-                    
+                <li class="caseBox <?php echo $emergency_case->boat_status;?> type_<?php echo $emergency_case->source_type;?> oparea_<?php echo $emergency_case->operation_area;?> caseBox_<?php echo $emergency_case->id;?>" data-id="<?php echo $emergency_case->id;?>">
                     <div class="front">
                             <header>
 

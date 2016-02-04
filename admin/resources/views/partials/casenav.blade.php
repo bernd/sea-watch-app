@@ -13,11 +13,11 @@
                     <li class="filter status <?php echo $index;?>" data-class="<?php echo $index;?>"><a href="#"><?php echo $status;?></a></li>
                   <?php
                   }?>
-                  <!--<li><h3>Sources</h3></li> 
+                  <li><h3>Sources</h3></li> 
                   <?php
-                  foreach(['app'=>'Refugee app', 'land_operator'=>'Land operator', 'rumors'=>'Rumors'] AS $index=>$source){
-                      ?><li class="filter source" data-class="<?php echo $index;?>"><a href="#"><?php echo $source;?></a></li><?php
-                  }?>-->
+                  foreach(['refugee'=>'Refugee app', 'land_operator'=>'Land operator', 'rumors'=>'Rumors'] AS $index=>$source){
+                      ?><li class="filter source" data-class="type_<?php echo $index;?>"><a href="#"><?php echo $source;?></a></li><?php
+                  }?>
                   <div class="divider"></div>
                   <li><a href="{{ URL::to('pages/history') }}">History</a></li>
                   <li><a href="{{ URL::to('pages/faq') }}">FAQ</a></li>

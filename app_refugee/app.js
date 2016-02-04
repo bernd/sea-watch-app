@@ -141,11 +141,24 @@ var swApp = new function(){
       
   };
   
+  
+  this.getGUID = function(){
+        //https://andywalpole.me/#!/blog/140739/using-javascript-create-guid-from-users-browser-information
+        var nav = window.navigator;
+        var screen = window.screen;
+        var guid = nav.mimeTypes.length;
+        guid += nav.userAgent.replace(/\D+/g, '');
+        guid += nav.plugins.length;
+        guid += screen.height || '';
+        guid += screen.width || '';
+        guid += screen.pixelDepth || '';
+        return guid;
+  };
   this.getClientId = function(){
       if(typeof device !=='undefined'){
         return device.uuid;
       }else{
-          return 'ac1234561';
+          return this.getGUID();
       }
   };
   this.reload= function(){

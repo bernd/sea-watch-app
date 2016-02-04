@@ -49,11 +49,12 @@ $(document).ready(function(){
         $('.filter.active').each(function(){
             results.push($(this).attr('data-class'));
             if($(this).attr('data-class')){
+                    console.log($(this).attr('data-class'));
                     $('.'+$(this).attr('data-class')).show();
             }
         });
         if(results.join('') === '')
-                    $('.caseBox').show()
+                    $('.caseBox').show();
             
     });
     
