@@ -39,7 +39,6 @@ var swApp = new function(){
   this.last_message_received = 0;
   this.reloadIntervalObj;
   
-  
   this.init = function(){
   
         var self  = this;
@@ -112,9 +111,43 @@ var swApp = new function(){
   
   };
   
+  
+  //will be called at startup to check if there are any
+  //open cases for the device id
+  this.checkForOpenCase = function(){
+      var self = this;
+      $.post(this.apiURL+'api/cases/checkForOpenCase', {'session_token':this.clientId}, function(result){
+          
+          var result = JSON.parse(result);
+          if(result.data.emergency_case_id != null){
+              
+              self.loadOpenCase(result);
+              
+          }else{
+              
+              self.showMainScreen();
+              
+          }
+      });
+  };
+  
+  this.loadOpenCase = function(caseData){
+      
+      var self = this;
+      this.handleCaseInformation(caseData, function(){
+          self.showChatScreen();
+          self.reload();
+      });
+      
+  };
+  
   this.getClientId = function(){
-      return 'clientId';
-  }
+      if(typeof device !=='undefined'){
+        return device.uuid;
+      }else{
+          return 'ac1234561';
+      }
+  };
   this.reload= function(){
       var self = this;
       api.query(this.apiURL+'api/reloadApp', {last_message_received: this.last_message_received, emergency_case_id:this.emergency_case_id, geo_data:$('body').attr('data-geo')},function(result){
@@ -148,7 +181,12 @@ var swApp = new function(){
         $('body').addClass('screen_start');
         $('.language_selector__selector li a').click(function(e){
             e.preventDefault();
-            self.showMainScreen();
+            
+            //when the language is selected
+            //it will be checked if there are
+            //open cases with the uuid.
+            //if not showMainScreen() is called
+            self.checkForOpenCase();
         });
       });
       
@@ -165,6 +203,8 @@ var swApp = new function(){
       
       loadAfter($('body header'), 'views/app.html', function(){
           $('body header').show();
+          
+          
           
           //change classes
           $('body').removeClass('screen_start');
@@ -240,8 +280,28 @@ var swApp = new function(){
       });
   };
   
+  this.handleCaseInformation = function(result, callback){
+      
+        var self = this;
+        
+        console.log(result);
+       //init chat session
+       //self.openEmergencySession(result.data.emergency_case_id);
+       this.emergency_case_id = parseInt(result.data.emergency_case_id);
+       
+       this.operation_area = parseInt(result.data.operation_area);
+       
+       setInterval(function(){
+           self.checkConnection();
+           self.updateStatusMonitor();
+       }, 5000);
+       
+       callback();
+      
+  };
+  
   this.sendEmergencyCall = function(callback){
-  	
+    var self = this;
     var data = {
             /*'status':$('#boat_status').val(),
             'condition':$('#boat_condition').val(),
@@ -253,7 +313,8 @@ var swApp = new function(){
             'spotting_distance':$('#spotting_distance').val(),
             'spotting_direction':$('#spotting_direction').val(),
             'picture':$('#picture').val(),*/
-            'source':'refugee',
+            'source_type':'refugee',
+            'session_token':self.clientId,
             'location_data':$('body').attr('data-geo')
     };
     var self = this;
@@ -262,18 +323,7 @@ var swApp = new function(){
         var result = JSON.parse(result);
         self.setStatusMonitorNow();
         if(result.error == null){
-            //init chat session
-            //self.openEmergencySession(result.data.emergency_case_id);
-            self.emergency_case_id = result.data.emergency_case_id;
-            
-            self.operation_area = result.data.operation_area;
-            
-            setInterval(function(){
-                self.checkConnection();
-                self.updateStatusMonitor();
-            }, 5000);
-            
-            callback();
+            self.handleCaseInformation(result, callback);
         }else{
             if(result.error === 'no_operation_area'){
                 alert('the location you submitted is not in a operation_area of the sea watch');

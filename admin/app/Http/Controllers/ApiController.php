@@ -130,7 +130,6 @@ class ApiController extends Controller
         
     }
     
-    
     //checks for updates in the admin panel
     //the app uses reloadApp()
     //depreciated!
@@ -219,7 +218,6 @@ class ApiController extends Controller
         echo addLocation($emergency_case_id, $geo_data);
     }
     
-    
     /**
      * inserts message into database
      *
@@ -249,7 +247,6 @@ class ApiController extends Controller
         return json_encode($result);
     }
     
-    
     /**
      * inserts message into database
      *
@@ -274,7 +271,6 @@ class ApiController extends Controller
         return json_encode($result);
     }
     
-    
     //could be added to model emergency_cases?
     public function getMessagesFromDB($case_id, $last_message_received){
         
@@ -294,6 +290,25 @@ class ApiController extends Controller
         $last_recieved_message = $all['last_recieved_message'];
     }
     
+    public function checkForOpenCase(Request $request){
+        $all = $request->all();
+        
+        $caseData =  emergencyCase::where('session_token', $all['session_token'])->first();
+        $case_id = $caseData['id'];
+        $operation_area = $caseData['operation_area'];
+        
+        
+        
+        $result = [];
+        $result['error'] = null;
+        $result['data'] = [];
+        $result['data']['operation_area'] = $operation_area;
+        $result['data']['emergency_case_id'] = $case_id;
+        $result['data']['messages'] = $this->getMessagesFromDB($case_id, 0);
+        
+        echo json_encode($result);
+        
+    }
     
     /**
      * Adds a new emergency_case and the first position into the database
@@ -350,6 +365,8 @@ class ApiController extends Controller
         return json_encode($result);
         //
     }
+    
+    
     
     
     
