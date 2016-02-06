@@ -23,15 +23,20 @@ a.gray:hover, a.gray:focus, a.gray:active {
 
 .btn {
   box-shadow:none !important;
+  text-shadow:none!important;
 }
 
-.btn-primary, .btn-primary:hover {
-  background-color:rgb(0,152,207);
+.btn-primary {
+  background-color:rgba(0,152,207,0.8);
   background-image:none;
   border:0px;
   font-weight:700;
   text-shadow:none;
 }
+
+ .btn-primary:hover,  .btn-primary:focus, .btn-primary:active, .btn-primary:active:focus {
+    background-color:rgba(0,152,207,1);
+ }
 
   /* Navbar */
 
@@ -299,6 +304,10 @@ a.gray:hover, a.gray:focus, a.gray:active {
       box-shadow: 0 0 15px 0 rgba(170, 183, 193, .5)
   }
 
+  .loggedOut .get-involved, .loggedOut .case_settings, .loggedOut .add_op, .loggedOut .sea-messages {
+    display:none;
+  }
+
   @media (max-width:720px) {
     .caseBox {
       width:100%;
@@ -388,7 +397,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
       padding: 5px;
       font-size: 14px
   }
-
+  
   .caseBox .content {
       background: #FFF;
       color: #777;
@@ -408,19 +417,25 @@ a.gray:hover, a.gray:focus, a.gray:active {
   }
 
   .caseBox.distress,
-  .caseBox.distress .btn,
+  .caseBox.distress .btn-sm,
   .caseBox.distress header {
       background: #fd292c
   }
 
+  .caseBox.rescue_in_progress,
+  .caseBox.rescue_in_progress .btn-sm,
+  .caseBox.rescue_in_progress header {
+    background:#ff8942;
+  }
+
   .caseBox.rescued,
-  .caseBox.rescued .btn,
+  .caseBox.rescued .btn-sm,
   .caseBox.rescued header {
       background: #3fb0fb
   }
 
   .caseBox.on_land,
-  .caseBox.on_land .btn,
+  .caseBox.on_land .btn-sm,
   .caseBox.on_land header {
       background: #00b493
   }
@@ -430,6 +445,11 @@ a.gray:hover, a.gray:focus, a.gray:active {
       font-weight: 500
   }
 
+
+    /* Settings */
+
+    form.CaseBox_intern .form-group { margin-bottom:7px;}
+    form.CaseBox_intern .form-horizontal .control-label {padding-top:5px;}
 
     /* Messenger */
 
