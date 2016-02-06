@@ -98,6 +98,7 @@ var swApp = new function(){
     
     this.startLocation = [36.19390,19.49248];
     this.mapContainerId = 'maps';
+    
     this.map;
     //used to init map in views/pages/home_map
     this.initMap = function(){
@@ -135,8 +136,6 @@ var swApp = new function(){
                 ]
             },
             properties: {
-                title: 'Peregrine Espresso',
-                description: '1718 14th St NW, Washington, DC',
                 // one can customize markers by adding simplestyle properties
                 // https://www.mapbox.com/guides/an-open-platform/#simplestyle
                 'marker-size': 'large',
@@ -231,6 +230,12 @@ var swApp = new function(){
                 
             }
         return filtered_cases;
+        
+    };
+    
+    
+    //reloads casebox if casebox exists otherwise creates new casebox
+    this.reloadCase = function(case_id){
         
     };
     

@@ -219,7 +219,7 @@ class ApiController extends Controller
     }
     
     /**
-     * inserts message into database
+     * inserts message and new location into database
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -228,15 +228,17 @@ class ApiController extends Controller
         
         $all = $request->all();
         
-        $geo_data = json_decode($all['geo_data'], true);
-        
-        $geo_data['heading'] = 0;
-        
-        
-        $location_id = addLocation($all['emergency_case_id'], $geo_data);
-        
-        $all['emergency_case_location_id'] = $location_id;
-        
+        if(isset($all['geo_data'])){
+            
+            $geo_data = json_decode($all['geo_data'], true);
+
+            $geo_data['heading'] = 0;
+
+            $location_id = addLocation($all['emergency_case_id'], $geo_data);
+
+            $all['emergency_case_location_id'] = $location_id;
+            
+        }
         $emergencyCaseMessage = new emergencyCaseMessage($all);
         $emergencyCaseMessage->save();
         

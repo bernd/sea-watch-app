@@ -51,9 +51,9 @@ class emergencyCase extends Model
     
     
     /**
-     * Get the administrator flag for the user.
+     * Get the Locations
      *
-     * @return bool
+     * @return obj
      */
     public function getLocationsAttribute()
     {
@@ -61,11 +61,21 @@ class emergencyCase extends Model
     }
     
     /**
+     * Get the Locations
+     *
+     * @return obj
+     */
+    public function getEmergencyCaseTitleAttribute()
+    {
+        return Operation_area::find($this->operation_area)->title;
+    }
+    
+    /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['locations'];
+    protected $appends = ['locations', 'emergency_case_title'];
     
     public function translateColumnName($columnName){
         return ['boat_status'=>'status','boat_condition'=>'condition','boat_type'=>'type','other_involved'=>'other involved','engine_working'=>'engine working','passenger_count'=>'passenger count','additional_informations'=>'additional infos','spotting_distance'=>'spotting distance','spotting_direction'=>'spotting direction','picture'=>'picture','operation_area'=>'operation area'][$columnName];

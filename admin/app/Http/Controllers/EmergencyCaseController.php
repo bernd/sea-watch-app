@@ -28,8 +28,6 @@ class EmergencyCaseController extends Controller
                         ->with('message', 'Something wrong happened while saving your model')
                         ->withInput();
             }
-
-            return redirect('home');
     }
 
     /**

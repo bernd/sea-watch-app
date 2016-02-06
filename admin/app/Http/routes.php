@@ -33,7 +33,7 @@ Route::post('operation_areas/create', 'operation_areas@store');
 
 
 // route to show our edit form
-Route::get('cases/edit/{id}', array('as' => 'case.edit', function($id) 
+Route::get('cases/edit/{id}', array('as' => 'case.edit', function($id)
 {
     return View::make('cases.update')
         ->with('case', emergencyCase::find($id));
@@ -172,6 +172,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('language/{language}/edit', 'Admin\LanguageController@edit');
     Route::get('language/{language}/delete', 'Admin\LanguageController@delete');
     Route::resource('language', 'Admin\LanguageController');
+    
+    # Cases
+    Route::get('case/data', 'Admin\CaseController@data');
+    Route::get('case/{case}/show', 'Admin\CaseController@show');
+    Route::get('case/{case}/edit', 'Admin\CaseController@edit');
+    Route::get('case/{case}/delete', 'Admin\CaseController@delete');
+    Route::resource('case', 'Admin\CaseController');
 
     # Users
     Route::get('user/data', 'Admin\UserController@data');
