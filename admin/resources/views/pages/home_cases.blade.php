@@ -14,7 +14,7 @@
 var involved_cases = []; //is used to save involved chat_sessions to init upload
 var emergency_case = new function(){
             
-        var base_url = '//safe-passage.transparency-everywhere.com/admin/public/';
+        var base_url = '//app.sea-watch.org/admin/public/';
         this.getInvolved = function(case_id, callback){
             if(involved_cases.indexOf(parseInt(case_id)) === -1)
                 involved_cases.push(parseInt(case_id));
@@ -153,13 +153,61 @@ $(document).ready(function(){
         });
         
     });
+    
+    $('.caseBox .case_settings').click(function(e){
+        e.preventDefault();
+        var $this = $(this);
+        
+        var case_id = $(this).parent().parent().parent().attr('data-id');
+        
+        $(this).parent().parent().parent().children('.editCase').load('cases/edit/'+case_id,function(){ 
+            
+            $this.parent().parent().parent().children('.front,.back').hide();
+            $(this).show();
+            
+            var $front = $this.parent().parent().parent().children('.front');
+            var $editCase = $(this);
+            
+            $(this).children('form').submit(function(e){
+                e.preventDefault();
+                
+                var data = $(this).serialize();
+                
+                $.ajax({
+                    type: "POST",
+                    url: "cases/edit/"+case_id,
+                    data: data,
+                    dataType: "json",
+                    statusCode: {
+                        200: function(data) {
+                            if(data === 1){
+                                alert('the case has been updated');
+                                $editCase.hide();
+                                $front.show();
+                            }
+                        }
+                    }
+                });
+                
+            });
+           
+            $('.closeEditCase').click(function(){
+                $(this).parent().parent().parent().parent().children('.editCase').hide();
+                $(this).parent().parent().parent().parent().children('.front').show();
+            });
+        });
+        
+        
+    });
+    
+    
     emergency_case.initReload();
 });
 
 </script>
 
-
-      <div class="row">
+<!--loggedOut-->
+      <div class="row ">
         
         
         @include('partials.casenav')
@@ -276,6 +324,9 @@ $(document).ready(function(){
                                             </div>
                                         </div>
                             </div>
+                        
+                    </div>
+                    <div class="editCase content" style="display:none; padding:0 30px;">
                         
                     </div>
                          
