@@ -168,22 +168,6 @@ textarea {
     clear: both;
 }
 
-/* ==========================================================================
-   EXAMPLE Media Queries for Responsive Design.
-   These examples override the primary ('mobile first') styles.
-   Modify as content requires.
-   ========================================================================== */
-
-@media only screen and (min-width: 35em) {
-    /* Style adjustments for viewports that meet the condition */
-}
-
-@media print 
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 1.25dppx),
-       (min-resolution: 120dpi) {
-    /* Style adjustments for high resolution devices */
-}
 
 /* ==========================================================================
    Print styles.
@@ -430,12 +414,14 @@ body.screen_start {
 
     .status_monitor__gps:before {
         content: '\f29b';
+        margin:right:10px;
         font-family: 'Material-Design-Iconic-Font';
         color:inherit;
     }
 
     .status_monitor__connection:before {
         content: '\f2b0';
+            margin:right:10px;
         font-family: 'Material-Design-Iconic-Font';
         color:inherit;
     }
@@ -646,7 +632,7 @@ body.screen_start {
 
 
 /* Messenger */
-    .messenger {margin-top:60px; margin-top:6vh;}
+    .messenger {margin-top:60px; margin-top:6vh; overflow:auto; margin-bottom:6vh; margin-bottom:60px; }
     .message:first-child {margin-top:1em;}
 
     .message {
@@ -657,6 +643,8 @@ body.screen_start {
         clear:both;
         padding:0.5em 1em;
     }
+
+    .messenger__chat {display:block; overflow:auto;}
 
     .message:after, .message:before {
         display: table;
@@ -677,8 +665,8 @@ body.screen_start {
         float:left;
     }
 
-
-    .user_2 {float:right;
+    .user_2 {
+        float:right;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         border-bottom-left-radius: 8px;
@@ -686,14 +674,14 @@ body.screen_start {
         color:#fff;
     }
 
-    a.close_chat {display:inline-block; max-width:20%; font-size:2em; padding-top:13px; padding-bottom:13px; padding-left:15px; padding-right:15px; border-right:1px solid #b1b7c1; color:#b1b7c1;}
-    .form_inline {display:block; float:right; max-width:100%; padding-left:15px; padding-right:15px;  padding-top:10px; padding-bottom:7px;}
+    a.close_chat {display:inline-block; width:12%; cursor: pointer; font-size:2em; padding-top:13px; padding-bottom:13px; padding-left:15px; padding-right:15px; border-right:1px solid #b1b7c1; color:#b1b7c1;}
+    .form_inline {display:block; float:right; width:88%; padding-left:15px; padding-right:15px;  padding-top:10px; padding-bottom:7px;}
     .chat_status_notification {
         clear:both; width:50%; width:50vw; margin:0 auto; padding:0.1em 0em; color:#b1b7c1; text-align: center;
     } 
 
     .messenger__form {background-color:#ecedef; border-top:1px solid #b1b7c1; position:fixed; width:100%; bottom:0px; }
-    .messenger__form input[type="text"] {padding:7px; border-radius:8px; border:1px solid #b1b7c1; }
+    .messenger__form input[type="text"] {padding:7px; border-radius:8px; width:72%; border:1px solid #b1b7c1; }
     .messenger__form input[type="submit"] {background:transparent; border:none; font-size:1.5em; font-weight:500; color:#b1b7c1;}
 
     @media (orientation: portrait) { .message p, .messenger__form input[type="text"], .messenger__form input[type="submit"] {font-size:1.5em; } }

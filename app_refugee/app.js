@@ -30,7 +30,7 @@ var app = {
 
 var swApp = new function(){
 
-  this.apiURL = 'https://safe-passage.transparency-everywhere.com/admin/public/';
+  this.apiURL = 'https://app.sea-watch.org/admin/public/';
   this.clientId;
   this.emergency_case_id;
   this.operation_area;
@@ -161,6 +161,7 @@ var swApp = new function(){
           return this.getGUID();
       }
   };
+  
   this.reload= function(){
       var self = this;
       api.query(this.apiURL+'api/reloadApp', {last_message_received: this.last_message_received, emergency_case_id:this.emergency_case_id, geo_data:$('body').attr('data-geo')},function(result){
