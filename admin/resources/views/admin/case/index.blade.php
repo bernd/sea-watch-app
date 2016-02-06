@@ -1,17 +1,17 @@
 @extends('admin.layouts.default')
 
 {{-- Web site Title --}}
-@section('title') {!! trans("admin/users.users") !!} :: @parent
-@stop
+@section('title') {!! trans("admin/article.article") !!} :: @parent @stop
 
 {{-- Content --}}
 @section('main')
     <div class="page-header">
         <h3>
-            {!! trans("admin/users.users") !!}
+            Cases
+            
             <div class="pull-right">
                 <div class="pull-right">
-                    <a href="{!! URL::to('admin/user/create') !!}"
+                    <a href="{!! URL::to('admin/article/create') !!}"
                        class="btn btn-sm  btn-primary iframe"><span
                                 class="glyphicon glyphicon-plus-sign"></span> {{
 					trans("admin/modal.new") }}</a>
@@ -23,11 +23,12 @@
     <table id="table" class="table table-striped table-hover">
         <thead>
         <tr>
-            <th>{!! trans("admin/users.name") !!}</th>
-            <th>{!! trans("admin/users.email") !!}</th>
-            <th>{!! trans("admin/users.active_user") !!}</th>
-            <th>{!! trans("admin/admin.created_at") !!}</th>
-            <th>{!! trans("admin/admin.action") !!}</th>
+            <th>Created At</th>
+            <th>Status</th>
+            <th>Condition</th>
+            <th>Type</th>
+            <th>Count</th>
+            <th>Operation Area</th>
         </tr>
         </thead>
         <tbody></tbody>

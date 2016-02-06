@@ -31,12 +31,12 @@
                     </a>
                     <ul class="nav collapse">
                         <li>
-                            <a href="{{url('admin/cases')}}">
+                            <a href="{{url('admin/case')}}">
                                 <i class="glyphicon glyphicon-list"></i> Cases
                             </a>
                         </li>
                         <li>
-                            <a href="{{url('admin/operation_areas')}}">
+                            <a href="{{url('admin/operation_area')}}">
                                 <i class="glyphicon glyphicon-camera"></i> Operation Areas
                             </a>
                         </li>
