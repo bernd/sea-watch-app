@@ -250,7 +250,7 @@ $(document).ready(function(){
 
 
                                     <?php
-                                    $case_vars = array('boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','additional_informations','spotting_distance','spotting_direction','picture','operation_area');
+                                    $case_vars = array('id','boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','additional_informations','spotting_distance','spotting_direction','picture','operation_area');
 
                                     foreach($case_vars AS $case_var){
                                         ?>
