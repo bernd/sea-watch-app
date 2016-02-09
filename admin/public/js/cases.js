@@ -98,6 +98,7 @@ var swApp = new function(){
     
     this.startLocation = [36.19390,19.49248];
     this.mapContainerId = 'maps';
+    this.mapLayers = [];
     
     this.map;
     //used to init map in views/pages/home_map
@@ -117,32 +118,38 @@ var swApp = new function(){
     };
     
     //used to init mini map in views/pages/home_cases
-    this.addMiniMap = function(location, mapId){
-        var map = L.mapbox.map(mapId, 'mapbox.streets').setView(location, 16);
+    this.addMiniMap = function(case_id, mapId){
+        
+        
+        var case_data = this.getCaseData(case_id);
+        
+        var map = L.mapbox.map(mapId, 'mapbox.streets').setView([parseFloat(case_data.locations[0].lat), parseFloat(case_data.locations[0].lon)], 16);
+        
+        this.addCaseToMap(map, case_id);
         
         map.scrollWheelZoom.disable();
 
-        L.mapbox.featureLayer({
-            // this feature is in the GeoJSON format: see geojson.org
-            // for the full specification
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                // coordinates here are in longitude, latitude order because
-                // x, y is the standard for GeoJSON and many formats
-                coordinates: [
-                  location[1],
-                  location[0] 
-                ]
-            },
-            properties: {
-                // one can customize markers by adding simplestyle properties
-                // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-                'marker-size': 'large',
-                'marker-color': '#BE9A6B'
-            }
-        }).addTo(map);
-    }
+//        L.mapbox.featureLayer({
+//            // this feature is in the GeoJSON format: see geojson.org
+//            // for the full specification
+//            type: 'Feature',
+//            geometry: {
+//                type: 'Point',
+//                // coordinates here are in longitude, latitude order because
+//                // x, y is the standard for GeoJSON and many formats
+//                coordinates: [
+//                  location[1],
+//                  location[0] 
+//                ]
+//            },
+//            properties: {
+//                // one can customize markers by adding simplestyle properties
+//                // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+//                'marker-size': 'large',
+//                'marker-color': '#BE9A6B'
+//            }
+//        }).addTo(map);
+    };
     this.addMarkerToMap = function(location, color){
         
         L.mapbox.featureLayer({
@@ -246,9 +253,7 @@ var swApp = new function(){
         alert('showing now details for location');
         var self = this
         
-        console.log(caseObj);
         $.each(caseObj.locations, function(index,value){
-            console.log([parseFloat(value.lat),parseFloat(value.lon)]);
             self.addMarkerToMap(helpers.getMarkerColor(caseObj.boat_status),[parseFloat(value.lat),parseFloat(value.lon)]);
         });
         
@@ -273,7 +278,51 @@ var swApp = new function(){
         console.log('results');
         console.log(this.getFilters());
         console.log(this.filterResults(emergency_cases_obj));
-        this.generateMarkerCluster(this.filterResults(emergency_cases_obj));
+        this.clearMap();
+        $.each(this.filterResults(emergency_cases_obj), function(index,value){
+            swApp.addCaseToMap(swApp.map, value.id);
+        });
+        //this.generateMarkerCluster(this.filterResults(emergency_cases_obj));
+    };
+    
+    this.addCaseToMap = function(map,case_id){
+        
+        var case_data = this.getCaseData(case_id);
+        var featureGroup = L.featureGroup().addTo(map);
+        var line_points = [];
+        $.each(case_data.locations, function(index,value){
+            line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
+        });
+
+        // Define polyline options
+        // http://leafletjs.com/reference.html#polyline
+        var polyline_options = {
+            color: '#000'
+        };
+
+        // Defining a polygon here instead of a polyline will connect the
+        // endpoints and fill the path.
+        // http://leafletjs.com/reference.html#polygon
+        var polyline = L.polyline(line_points, polyline_options).addTo(featureGroup);
+        this.mapLayers.push(polyline);
+        var currentIndex = this.mapLayers.length;
+        this.mapLayers.push(L.mapbox.featureLayer().addTo(map));
+        
+        var geoJson = [{
+                            type: 'Feature',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [line_points[0][1], line_points[0][0]]
+                            },
+                            properties: {
+                                title: 'Marker one',
+                                description: '<em>Wow</em>, this tooltip is breaking all the rules.',
+                                'marker-color': '#548cba'
+                            }
+                        }];
+
+        this.mapLayers[currentIndex].setGeoJSON(geoJson);
+        
     };
     
     this.generateMarkerCluster = function(cases){
@@ -304,8 +353,14 @@ var swApp = new function(){
     this.clearMap = function(){
         if(swApp.clusterLayer)
             swApp.map.removeLayer(swApp.clusterLayer);
-    }
-}
+        
+        
+        $.each(this.mapLayers,function(index,value){
+            
+            swApp.map.removeLayer(value);
+        });
+    };
+};
 
 
 
