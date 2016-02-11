@@ -146,6 +146,12 @@ api/reloadBackend reload backend (auth required)
  */
 Route::post('api/reloadBackend', 'ApiController@reloadBackend');
 
+/**
+load case box
+ * @apiParam {Number} case_id
+ */
+Route::post('api/loadCaseBox', 'ApiController@loadCaseBox');
+
 
 
 //Deprecated

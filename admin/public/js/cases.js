@@ -100,6 +100,9 @@ var swApp = new function(){
     this.mapContainerId = 'maps';
     this.mapLayers = [];
     
+    this.involvedCases = [];
+    this.lastUpdated = Math.round(new Date().getTime()/1000);
+    
     this.map;
     //used to init map in views/pages/home_map
     this.initMap = function(){
@@ -241,9 +244,184 @@ var swApp = new function(){
     };
     
     
+    this.reload = function(){
+            var self = this;
+            var request = {};
+            request.last_updated = this.lastUpdated;
+            
+            request.cases = [];
+            $.each(this.involvedCases, function(index, value){
+                
+                request.cases.push({id:value, last_message_received:parseInt($('.caseBox[data-id='+value+'] .messenger__chat').attr('data-last-message-received'))});
+                
+            });
+            
+            $.post('api/reloadBackend',{request: request} ,function( result ) {
+                self.lastUpdated = Math.round(new Date().getTime()/1000);
+                
+                
+                
+                    if(result == 'null')
+                        return 0;
+                    
+                    if(typeof result.data.cases !== 'undefined'){
+                        $.each(result.data.cases, function(index, value){
+                            emergency_cases_obj.push(value);
+                            self.reloadCase(value.id);
+                        });
+                    }
+                    
+                    if(typeof result.data.messages !== 'undefined')
+                        $.each(result.data.messages, function(index, value){
+                            var case_id = index;
+                            self.handleMessageArray(value);
+                        });
+            });
+    };
+    
+        this.pushChatMessage = function(case_id, options){
+            var divClass, pClass;
+            pClass = '';
+          if(options.type === 'sent'){
+              divClass = "user_2 message";
+          }
+          if(options.type === 'received'){
+              divClass = "user_1 message";
+          }
+          if(options.type === 'notification'){
+              divClass = "chat_status_notification";
+              pClass = 'meta';
+          }
+          
+          if(typeof $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received') == 'undefined'&&
+             typeof options.message_id !== 'undefined'){
+              $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received', options.message_id);
+          }else if(typeof $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received') !== 'undefined'){
+              if(parseInt(options.message_id) > parseInt( $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received'))){
+                $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received', options.message_id);
+              }
+          }
+          
+          var html = '<div class="'+divClass+'" data-id="'+options.message_id+'">'
+              html += '    <p class="'+pClass+'">'+options.message+'</p>';
+              html += '</div>';
+              
+          if($('.message[data-id='+options.message_id+']').length === 0)
+            $('.caseBox[data-id='+case_id+'] .messenger__chat').append(html);
+        };
+        //handles array of messages and pushes them into the chat
+        this.handleMessageArray = function(messageArray){
+            var self = this;
+            $.each(messageArray,function(index, value){
+                var type = 'sent';
+                if(value.sender_type === 'refugee'){
+                    type = 'received';
+                }
+                self.pushChatMessage(value.emergency_case_id, {type:type, message:value.message, message_id:value.id});
+            });
+        };
+        
     //reloads casebox if casebox exists otherwise creates new casebox
     this.reloadCase = function(case_id){
-        
+        console.log('reloadCase');
+        var self = this;
+        if($('.caseBox_'+case_id).length > 0){
+            //update caseBox
+        }else{
+            //load caseBox
+            this.loadCaseBox(case_id,function(result){
+                $('#caseList').prepend(result);
+                self.initClicks();
+            });
+        }
+    };
+    this.initClicks = function(){
+        var self = this;
+        $('.get-involved').click(function(e){
+            e.preventDefault();
+            var case_id = $(this).attr('data-id');
+            emergency_case.getInvolved(case_id,function(result){
+
+                if(result.error != null){
+                    alert(result.error);
+                }else{
+
+                    self.handleMessageArray(result.data.messages);
+
+                    $('.caseBox_'+case_id+' .front').hide();
+                    $('.caseBox_'+case_id+' .back').show();
+
+                    $('.caseBox_'+case_id+' .close_chat').click(function(){
+                        $('.caseBox_'+case_id+' .front').show();
+                        $('.caseBox_'+case_id+' .back').hide();
+                    });
+
+                }
+            });
+        });
+
+        $('.caseBox .form_inline form').submit(function(e){
+            e.preventDefault();
+            var case_id = $(this).find('input[type=text]').attr('data-id');
+            var message = $(this).find('input[type=text]').val();
+            var $this = $(this).find('input[type=text]');
+
+            emergency_case.submitMessage(case_id, message,function(){
+                $this.val('');
+            });
+
+        });
+
+        $('.caseBox .case_settings').click(function(e){
+            e.preventDefault();
+            var $this = $(this);
+
+            var case_id = $(this).parent().parent().parent().attr('data-id');
+
+            $(this).parent().parent().parent().children('.editCase').load('cases/edit/'+case_id,function(){ 
+
+                $this.parent().parent().parent().children('.front,.back').hide();
+                $(this).show();
+
+                var $front = $this.parent().parent().parent().children('.front');
+                var $editCase = $(this);
+
+                $(this).children('form').submit(function(e){
+                    e.preventDefault();
+
+                    var data = $(this).serialize();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "cases/edit/"+case_id,
+                        data: data,
+                        dataType: "json",
+                        statusCode: {
+                            200: function(data) {
+                                if(data === 1){
+                                    alert('the case has been updated');
+                                    $editCase.hide();
+                                    $front.show();
+                                }
+                            }
+                        }
+                    });
+
+                });
+
+                $('.closeEditCase').click(function(){
+                    $(this).parent().parent().parent().parent().children('.editCase').hide();
+                    $(this).parent().parent().parent().parent().children('.front').show();
+                });
+            });
+
+
+        });
+    };
+    this.loadCaseBox = function(case_id, callback){
+        $.post('api/loadCaseBox',{request: {case_id:case_id}} ,function( result ) {
+            callback(result);
+        });
     };
     
     this.showCaseDetails = function(case_id){

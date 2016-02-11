@@ -17,7 +17,7 @@ use App\Operation_area;
 
 use Carbon\Carbon;
 
-include('pointLocation.php');
+include_once('pointLocation.php');
 
 function addLocation($emergency_case_id, $geo_data){
     
@@ -27,6 +27,13 @@ function addLocation($emergency_case_id, $geo_data){
                 'heading'=>$geo_data['heading']]);
         $emergencyCaseLocation->emergency_case_id = $emergency_case_id;
         $emergencyCaseLocation->save();
+        
+        
+        //update emergency_case´s updated_at timestamp 
+        $emergency_case = emergencyCase::find($emergency_case_id);
+        $emergency_case->updated_at = date('Y-m-d H:i:s', time());
+        $emergency_case->save();
+        
         return $emergencyCaseLocation->id;
 }
 
@@ -345,24 +352,47 @@ class ApiController extends Controller
     public function reloadBackend(Request $request)
     {
         
-        
         $all = $request->all();
+        //load all new cases since $timestamp
+        
+        //
         if(isset($all['request'])){
             $request  = $all['request'];
+            
+            
+            
 
             $result = [];
-            $result['data']['messages'] = [];
-            foreach($request['cases'] AS $caseData){
-                
-                $user = involvedUsers::where('case_id', '=', $caseData['id'])->where('user_id', '=', Auth::id());
-                $user->update(array('last_message_seen'=>$caseData['last_message_received']));
-        
-                $result['data']['messages'][$caseData['id']] = $this->getMessagesFromDB($caseData['id'], $caseData['last_message_received']);
+            
+            $date = date('Y-m-d H:i:s', $request['last_updated']);
+            //add new cases to result
+            $result['data']['cases'] = emergencyCase::where('updated_at', '>', $date)->get();
+            
+            if(isset($request['cases'])){
+                //add new messages to result
+                $result['data']['messages'] = [];
+                foreach($request['cases'] AS $caseData){
+
+                    $user = involvedUsers::where('case_id', '=', $caseData['id'])->where('user_id', '=', Auth::id());
+                    $user->update(array('last_message_seen'=>$caseData['last_message_received']));
+
+                    $result['data']['messages'][$caseData['id']] = $this->getMessagesFromDB($caseData['id'], $caseData['last_message_received']);
+                }
             }
             return $result;
         }else{
             return 'null';
         }
+        
+    }
+    
+    public function loadCaseBox(Request $request){
+        
+        $all = $request->all();
+        
+        $emergency_case = emergencyCase::find($all['request']['case_id']);
+        
+	return view('partials.case_box', compact('emergency_case'));
         
     }
 

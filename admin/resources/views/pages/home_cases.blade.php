@@ -21,8 +21,8 @@ var emergency_case = new function(){
             
         var base_url = '//app.sea-watch.org/admin/public/';
         this.getInvolved = function(case_id, callback){
-            if(involved_cases.indexOf(parseInt(case_id)) === -1)
-                involved_cases.push(parseInt(case_id));
+            if(swApp.involvedCases.indexOf(parseInt(case_id)) === -1)
+                swApp.involvedCases.push(parseInt(case_id));
             
             $.post(base_url+'api/cases/getInvolved', {case_id:case_id},function( data ) {
                 callback(data);
@@ -76,18 +76,6 @@ var emergency_case = new function(){
             });
         };
         
-        //handles array of messages and pushes them into the chat
-        this.handleMessageArray = function(messageArray){
-            var self = this;
-            $.each(messageArray,function(index, value){
-                var type = 'sent';
-                if(value.sender_type === 'refugee'){
-                    type = 'received';
-                }
-                self.pushChatMessage(value.emergency_case_id, {type:type, message:value.message, message_id:value.id});
-            });
-        };
-        
         this.initReload = function(){
             var self = this;
             setInterval(function() {
@@ -96,26 +84,29 @@ var emergency_case = new function(){
         }
         
         this.reload = function(){
-            var self = this;
-            var request = {};
-            request.cases = [];
-            $.each(involved_cases, function(index, value){
-                
-                request.cases.push({id:value, last_message_received:parseInt($('.caseBox[data-id='+value+'] .messenger__chat').attr('data-last-message-received'))});
-                
-            });
             
-            $.post(base_url+'api/reloadBackend',{request: request} ,function( result ) {
-                if(result == 'null')
-                    return 0;
-                $.each(result.data.messages, function(index, value){
-                    var case_id = index;
-                    self.handleMessageArray(value);
-                });
-                
-            });
-                
+            swApp.reload();
             
+//            var self = this;
+//            var request = {};
+//            request.cases = [];
+//            $.each(involved_cases, function(index, value){
+//                
+//                request.cases.push({id:value, last_message_received:parseInt($('.caseBox[data-id='+value+'] .messenger__chat').attr('data-last-message-received'))});
+//                
+//            });
+//            
+//            $.post(base_url+'api/reloadBackend',{request: request} ,function( result ) {
+//                if(result == 'null')
+//                    return 0;
+//                $.each(result.data.messages, function(index, value){
+//                    var case_id = index;
+//                    self.handleMessageArray(value);
+//                });
+//                
+//            });
+//                
+//            
         };
         
 };
@@ -124,88 +115,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoibmljemVtIiwiYSI6ImNpam02MzNrNzAwMmt2eG0zdXI0Z
 
               
 $(document).ready(function(){
-    $('.get-involved').click(function(e){
-        e.preventDefault();
-        var case_id = $(this).attr('data-id');
-        emergency_case.getInvolved(case_id,function(result){
-            
-            if(result.error != null){
-                alert(result.error);
-            }else{
-                
-                emergency_case.handleMessageArray(result.data.messages);
-                
-                $('.caseBox_'+case_id+' .front').hide();
-                $('.caseBox_'+case_id+' .back').show();
-
-                $('.caseBox_'+case_id+' .close_chat').click(function(){
-                    $('.caseBox_'+case_id+' .front').show();
-                    $('.caseBox_'+case_id+' .back').hide();
-                });
-                
-            }
-        });
-    });
-    
-    $('.caseBox .form_inline form').submit(function(e){
-        e.preventDefault();
-        var case_id = $(this).find('input[type=text]').attr('data-id');
-        var message = $(this).find('input[type=text]').val();
-        var $this = $(this).find('input[type=text]');
-        
-        emergency_case.submitMessage(case_id, message,function(){
-            $this.val('');
-        });
-        
-    });
-    
-    $('.caseBox .case_settings').click(function(e){
-        e.preventDefault();
-        var $this = $(this);
-        
-        var case_id = $(this).parent().parent().parent().attr('data-id');
-        
-        $(this).parent().parent().parent().children('.editCase').load('cases/edit/'+case_id,function(){ 
-            
-            $this.parent().parent().parent().children('.front,.back').hide();
-            $(this).show();
-            
-            var $front = $this.parent().parent().parent().children('.front');
-            var $editCase = $(this);
-            
-            $(this).children('form').submit(function(e){
-                e.preventDefault();
-                
-                var data = $(this).serialize();
-                
-                $.ajax({
-                    type: "POST",
-                    url: "cases/edit/"+case_id,
-                    data: data,
-                    dataType: "json",
-                    statusCode: {
-                        200: function(data) {
-                            if(data === 1){
-                                alert('the case has been updated');
-                                $editCase.hide();
-                                $front.show();
-                            }
-                        }
-                    }
-                });
-                
-            });
-           
-            $('.closeEditCase').click(function(){
-                $(this).parent().parent().parent().parent().children('.editCase').hide();
-                $(this).parent().parent().parent().parent().children('.front').show();
-            });
-        });
-        
-        
-    });
-    
-    
+    swApp.initClicks();
     emergency_case.initReload();
 });
 
@@ -219,127 +129,9 @@ $(document).ready(function(){
         <div class="col-sm-10 col-md-10 main">
             <ul id="caseList">
             @foreach ($emergency_cases as $emergency_case)
-                <li class="caseBox <?php echo $emergency_case->boat_status;?> type_<?php echo $emergency_case->source_type;?> oparea_<?php echo $emergency_case->operation_area;?> caseBox_<?php echo $emergency_case->id;?>" data-id="<?php echo $emergency_case->id;?>">
-                    <div class="front">
-                            <header>
-
-                                <span class="time"><?php echo \Carbon\Carbon::createFromTimeStamp(strtotime($emergency_case->created_at))->diffForHumans() ?></span>
-                                <span class="connection_type">
-                                <?php 
-                                echo $emergency_case->first_location()->connection_type;
-                                ?></span>
-
-                                <div class="status">
-                                    <?php
-
-                                        echo ['distress'=>'Distress',
-                                         'rescued'=>'Rescued',
-                                         'on_land'=>'On Land',
-                                         'rescue_in_progress'=>'In Progress'][$emergency_case->boat_status];
-
-                                    ?>
-                                    <span class="id" style="font-size:8px">{{$emergency_case->id}}</span>
-                                    <span class="source">Refugee</span>
-                                </div>
-
-                                <div class="case_settings">
-                                        <a href="#"><i class="zmdi zmdi-settings"></i></a>
-                                </div>
-                                
-                            </header>
-                            <div class="map" id="map_<?php echo $emergency_case->id;?>"></div>
-                            <div class="content">
-                                <!--{{ URL::to('cases/get_involved/'.$emergency_case->id) }}-->
-                                <a href="#" data-id="{{$emergency_case->id}}" class="btn btn-sm pull-left get-involved">Get Involved</a>
-                                <a href="#" class="btn btn-sm pull-right"><?php echo $emergency_case->count_messages() ?></a>
-                                <table class="table">
-
-
-                                    <?php
-                                    $case_vars = array('id','boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','additional_informations','spotting_distance','spotting_direction','picture','operation_area');
-
-                                    foreach($case_vars AS $case_var){
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $emergency_case->translateColumnName($case_var);?></td>
-                                            <td><?php echo $emergency_case->$case_var;?></td>
-                                        </tr>
-                                        <?php
-                                    } ?>
-                                    <tr>
-                                        <td>Involved</td>
-                                        <td>
-                                            <ul class="involvedList">
-                                                
-                                                <?php
-                                                foreach ($emergency_case->involved_users() as $user){ ?>
-                                                    <li><?php echo $user ?></li>
-                                                <?php } ?>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                    </div>
-                    <div class="back" style="display:none">
-                        <header>
-
-                                <span class="time"><?php echo \Carbon\Carbon::createFromTimeStamp(strtotime($emergency_case->created_at))->diffForHumans() ?></span>
-                                <span class="connection_type">
-                                <?php 
-                                echo $emergency_case->first_location()->connection_type;
-                                ?></span>
-
-                                <span class="status">
-                                    <?php
-
-                                        echo ['distress'=>'Distress',
-                                         'rescued'=>'Rescued',
-                                         'on_land'=>'On Land',
-                                         'rescue_in_progress'=>'In Progress'][$emergency_case->boat_status];
-
-                                    ?>
-                                </span>
-                                <span class="source">Refugee</span>
-                            </header>
-                            <div class="content messenger">
-                                       <div class="messenger__chat container__large">
-                                            <!--<div class="user_1 message">
-                                                <p>Hi, here is Sea-Watch!
-                                                Wir suchen nun ein Rettungsteam. Bitte bleibe ruhig und schließe diese App nicht. Kannst du uns sagen wie viele Leute ihr auf dem Boot seid und wie eure Lage aktuell ist.</p>
-                                            </div>
-                                             <div class="user_2 message">
-                                                <p>we need help, please rescue, we are 40 people in small boat, children, womans </p>
-                                            </div>
-                                            <div class="chat_status_notification">
-                                                <p class="meta">Your internet is slow. The App now use "SMS-MODE".</p>
-                                            </div>
-
-                                            <div class="user_2 message sms_mode">
-                                               <p class="lonlat">LON: <span class="lon">15.92828</span> · LAT: <span class="lat">17.34454</span></p>
-                                               <p>Hi, please help! we are sinking.</p>
-                                            </div>-->
-                                        </div>
-                                        <div class="messenger__form">
-                                            <a class="close_chat" href="#"><i class="zmdi zmdi-arrow-left"></i></a>
-                                            <div class="form_inline">
-                                                <form>
-                                                    <input type="text" aria-label="Schreibe einen Text…" data-id="<?php echo $emergency_case->id;?>">
-                                                    <button type="button">Senden</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                            </div>
-                        
-                    </div>
-                    <div class="editCase content" style="display:none; padding:0 30px;">
-                        
-                    </div>
-                         
-                </li>
                 
+                @include('partials.case_box')
                 
-                <script>swApp.addMiniMap({{$emergency_case->id}}, 'map_{{$emergency_case->id}}');</script>
             @endforeach
                 
             </ul>
