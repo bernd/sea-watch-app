@@ -100,10 +100,20 @@ var swApp = new function(){
     this.mapContainerId = 'maps';
     this.mapLayers = [];
     
-    this.involvedCases = [];
+    this.involvedCases = []; //list of ids
+    this.cases = {} //case objects which also contain the map objects
     this.lastUpdated = Math.round(new Date().getTime()/1000);
     
     this.map;
+    
+    //general init
+    this.init = function(){
+        this.initReload();
+        
+        //preload audio file
+        $("#bing").trigger('load');
+    };
+    
     //used to init map in views/pages/home_map
     this.initMap = function(){
         this.map = L.mapbox.map(this.mapContainerId, 'mapbox.streets')
@@ -111,6 +121,8 @@ var swApp = new function(){
         
         this.applyFilters();
         var self = this;
+        
+        this.init();
         
         $('.filter').click(function(){
             //500ms delay otherwise class is not added before filters are applied
@@ -123,35 +135,17 @@ var swApp = new function(){
     //used to init mini map in views/pages/home_cases
     this.addMiniMap = function(case_id, mapId){
         
+        if(typeof this.cases[case_id] == 'undefined')
+            this.cases[case_id] = {};
         
         var case_data = this.getCaseData(case_id);
         
-        var map = L.mapbox.map(mapId, 'mapbox.streets').setView([parseFloat(case_data.locations[0].lat), parseFloat(case_data.locations[0].lon)], 16);
+        this.cases[case_id].map = L.mapbox.map(mapId, 'mapbox.streets').setView([parseFloat(case_data.locations[0].lat), parseFloat(case_data.locations[0].lon)], 16);
         
-        this.addCaseToMap(map, case_id);
+        this.addCaseToMap(this.cases[case_id].map, case_id);
         
-        map.scrollWheelZoom.disable();
-
-//        L.mapbox.featureLayer({
-//            // this feature is in the GeoJSON format: see geojson.org
-//            // for the full specification
-//            type: 'Feature',
-//            geometry: {
-//                type: 'Point',
-//                // coordinates here are in longitude, latitude order because
-//                // x, y is the standard for GeoJSON and many formats
-//                coordinates: [
-//                  location[1],
-//                  location[0] 
-//                ]
-//            },
-//            properties: {
-//                // one can customize markers by adding simplestyle properties
-//                // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-//                'marker-size': 'large',
-//                'marker-color': '#BE9A6B'
-//            }
-//        }).addTo(map);
+        this.cases[case_id].map.scrollWheelZoom.disable();
+        
     };
     this.addMarkerToMap = function(location, color){
         
@@ -244,6 +238,55 @@ var swApp = new function(){
     };
     
     
+    
+    this.pushChatMessage = function(case_id, options){
+            var divClass, pClass;
+            pClass = '';
+          if(options.type === 'sent'){
+              divClass = "user_2 message";
+          }
+          if(options.type === 'received'){
+              divClass = "user_1 message";
+          }
+          if(options.type === 'notification'){
+              divClass = "chat_status_notification";
+              pClass = 'meta';
+          }
+          
+          if(typeof $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received') == 'undefined'&&
+             typeof options.message_id !== 'undefined'){
+              $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received', options.message_id);
+          }else if(typeof $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received') !== 'undefined'){
+              if(parseInt(options.message_id) > parseInt( $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received'))){
+                $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received', options.message_id);
+              }
+          }
+          
+          var html = '<div class="'+divClass+'" data-id="'+options.message_id+'">'
+              html += '    <p class="'+pClass+'">'+options.message+'</p>';
+              html += '</div>';
+              
+          if($('.message[data-id='+options.message_id+']').length === 0)
+            $('.caseBox[data-id='+case_id+'] .messenger__chat').append(html);
+        };
+    //handles array of messages and pushes them into the chat
+    this.handleMessageArray = function(messageArray){
+            var self = this;
+            $.each(messageArray,function(index, value){
+                var type = 'sent';
+                if(value.sender_type === 'refugee'){
+                    type = 'received';
+                }
+                self.pushChatMessage(value.emergency_case_id, {type:type, message:value.message, message_id:value.id});
+            });
+        };
+    
+    this.initReload = function(){
+        var self = this;
+        setInterval(function() {
+            self.reload();
+        }, 10000);
+    }
     this.reload = function(){
             var self = this;
             var request = {};
@@ -278,62 +321,41 @@ var swApp = new function(){
                         });
             });
     };
-    
-        this.pushChatMessage = function(case_id, options){
-            var divClass, pClass;
-            pClass = '';
-          if(options.type === 'sent'){
-              divClass = "user_2 message";
-          }
-          if(options.type === 'received'){
-              divClass = "user_1 message";
-          }
-          if(options.type === 'notification'){
-              divClass = "chat_status_notification";
-              pClass = 'meta';
-          }
-          
-          if(typeof $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received') == 'undefined'&&
-             typeof options.message_id !== 'undefined'){
-              $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received', options.message_id);
-          }else if(typeof $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received') !== 'undefined'){
-              if(parseInt(options.message_id) > parseInt( $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received'))){
-                $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received', options.message_id);
-              }
-          }
-          
-          var html = '<div class="'+divClass+'" data-id="'+options.message_id+'">'
-              html += '    <p class="'+pClass+'">'+options.message+'</p>';
-              html += '</div>';
-              
-          if($('.message[data-id='+options.message_id+']').length === 0)
-            $('.caseBox[data-id='+case_id+'] .messenger__chat').append(html);
-        };
-        //handles array of messages and pushes them into the chat
-        this.handleMessageArray = function(messageArray){
-            var self = this;
-            $.each(messageArray,function(index, value){
-                var type = 'sent';
-                if(value.sender_type === 'refugee'){
-                    type = 'received';
-                }
-                self.pushChatMessage(value.emergency_case_id, {type:type, message:value.message, message_id:value.id});
-            });
-        };
         
     //reloads casebox if casebox exists otherwise creates new casebox
     this.reloadCase = function(case_id){
         console.log('reloadCase');
+        
         var self = this;
-        if($('.caseBox_'+case_id).length > 0){
-            //update caseBox
+        if(typeof this.map === 'object'){
+            //map mode
+            //
+            //play sound
+            self.bing();
+            
+            //add caseToMap
+            self.addCaseToMap(self.map, case_id);
+            
         }else{
-            //load caseBox
-            this.loadCaseBox(case_id,function(result){
-                $('#caseList').prepend(result);
-                self.initClicks();
-            });
+            //grid mode
+            if($('.caseBox_'+case_id).length > 0){
+                //update caseBox
+                
+                //update polyline and marker
+                self.addCaseToMap(self.cases[case_id].map, case_id);
+                
+            }else{
+                //load caseBox
+                this.loadCaseBox(case_id,function(result){
+                    
+                    //play sound
+                    self.bing();
+                    $('#caseList').prepend(result);
+                    self.initClicks();
+                });
+            }
         }
+        
     };
     this.initClicks = function(){
         var self = this;
@@ -465,8 +487,25 @@ var swApp = new function(){
     
     this.addCaseToMap = function(map,case_id){
         
+        if(typeof this.cases[case_id] == 'undefined')
+            this.cases[case_id] = {};
+        else{
+            var mapObj;
+            if(typeof this.map === 'object')
+                mapObj = this.map
+            else
+                mapObj = this.cases[case_id].map;
+           
+            if(typeof this.cases[case_id].featureGroup !== 'undefined'&&typeof this.cases[case_id].iconLayer !== 'undefined'){
+                mapObj.removeLayer(this.cases[case_id].featureGroup);
+                mapObj.removeLayer(this.cases[case_id].iconLayer);
+            }
+        }
+        
         var case_data = this.getCaseData(case_id);
-        var featureGroup = L.featureGroup().addTo(map);
+        
+        
+        this.cases[case_id].featureGroup = L.featureGroup().addTo(map);
         var line_points = [];
         $.each(case_data.locations, function(index,value){
             line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
@@ -481,10 +520,12 @@ var swApp = new function(){
         // Defining a polygon here instead of a polyline will connect the
         // endpoints and fill the path.
         // http://leafletjs.com/reference.html#polygon
-        var polyline = L.polyline(line_points, polyline_options).addTo(featureGroup);
-        this.mapLayers.push(polyline);
+        this.cases[case_id].polyline = L.polyline(line_points, polyline_options).addTo(this.cases[case_id].featureGroup);
+        //this.mapLayers.push(polyline);
         var currentIndex = this.mapLayers.length;
-        this.mapLayers.push(L.mapbox.featureLayer().addTo(map));
+        this.cases[case_id].iconLayer = L.mapbox.featureLayer().addTo(map);
+        
+        this.mapLayers.push(this.cases[case_id].iconLayer);
         
         var geoJson = [{
                             type: 'Feature',
@@ -493,13 +534,13 @@ var swApp = new function(){
                                 coordinates: [line_points[0][1], line_points[0][0]]
                             },
                             properties: {
-                                title: 'Marker one',
-                                description: '<em>Wow</em>, this tooltip is breaking all the rules.',
+                                title: 'Case-ID:'+case_id,
+                                description: 'first tracked: '+case_data.created_at+'<br>last tracked: '+case_data.updated_at,
                                 'marker-color': '#548cba'
                             }
                         }];
 
-        this.mapLayers[currentIndex].setGeoJSON(geoJson);
+         this.cases[case_id].iconLayer.setGeoJSON(geoJson);
         
     };
     
@@ -537,6 +578,11 @@ var swApp = new function(){
             
             swApp.map.removeLayer(value);
         });
+    };
+    
+    this.bing = function(){
+        
+           $("#bing").trigger('play');
     };
 };
 

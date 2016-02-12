@@ -13,11 +13,11 @@ use App\emergencyCaseLocation;
 use App\emergencyCaseMessage;
 use App\involvedUsers;
 use App\Operation_area;
+use App\pointLocation;
 
 
 use Carbon\Carbon;
 
-include_once('pointLocation.php');
 
 function addLocation($emergency_case_id, $geo_data){
     

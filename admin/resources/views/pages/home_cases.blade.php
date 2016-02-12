@@ -76,39 +76,6 @@ var emergency_case = new function(){
             });
         };
         
-        this.initReload = function(){
-            var self = this;
-            setInterval(function() {
-                self.reload();
-            }, 10000);
-        }
-        
-        this.reload = function(){
-            
-            swApp.reload();
-            
-//            var self = this;
-//            var request = {};
-//            request.cases = [];
-//            $.each(involved_cases, function(index, value){
-//                
-//                request.cases.push({id:value, last_message_received:parseInt($('.caseBox[data-id='+value+'] .messenger__chat').attr('data-last-message-received'))});
-//                
-//            });
-//            
-//            $.post(base_url+'api/reloadBackend',{request: request} ,function( result ) {
-//                if(result == 'null')
-//                    return 0;
-//                $.each(result.data.messages, function(index, value){
-//                    var case_id = index;
-//                    self.handleMessageArray(value);
-//                });
-//                
-//            });
-//                
-//            
-        };
-        
 };
         
 L.mapbox.accessToken = 'pk.eyJ1IjoibmljemVtIiwiYSI6ImNpam02MzNrNzAwMmt2eG0zdXI0ZHYzajAifQ.yi825X8J7cP1upzA1x6Y-Q';
@@ -116,7 +83,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoibmljemVtIiwiYSI6ImNpam02MzNrNzAwMmt2eG0zdXI0Z
               
 $(document).ready(function(){
     swApp.initClicks();
-    emergency_case.initReload();
+    swApp.init();
 });
 
 </script>

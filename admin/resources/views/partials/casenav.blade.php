@@ -25,4 +25,8 @@
                   <li><a href="{{ URL::to('pages/imprint') }}">Imprint</a></li>
                 </ul>
             <div id="olControlDiv"></div>
-        </div> 
+        </div>
+<audio id="bing" controls preload="none" style="display:none">
+    <source src="{{ URL::to('js/bing.mp3') }}" type="audio/mpeg">
+    <source src="{{ URL::to('js/bing.mp3') }}" type="audio/ogg">
+</audio>
