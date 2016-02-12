@@ -256,7 +256,7 @@ var swApp = new function(){
       
       loadAfter($('body header'), 'views/messenger.html', function(){
           
-          self.pushChatMessage({type:'received', message:'Hello, we received your emergency call. Right now you are in are in the operation area '+self.operation_area+'. Please keep you App opened and follow the instructions.'});
+          self.pushChatMessage({type:'received', message:'Hello, we received your emergency call. Right now you are in are in the operation area '+self.operation_area+'. Your Case-ID is '+self.emergency_case_id+'. Please keep you App opened and follow the instructions.'});
           
           self.initReload();
           
