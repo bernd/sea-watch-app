@@ -20,6 +20,16 @@ var involved_cases = []; //is used to save involved chat_sessions to init upload
 var emergency_case = new function(){
             
         var base_url = '//app.sea-watch.org/admin/public/';
+        
+        this.showChat = function(case_id, callback){
+            if(swApp.involvedCases.indexOf(parseInt(case_id)) === -1)
+                swApp.involvedCases.push(parseInt(case_id));
+            
+            $.post(base_url+'api/cases/getInvolved', {case_id:case_id,no_involvement:true},function( data ) {
+                callback(data);
+            });
+        };
+        
         this.getInvolved = function(case_id, callback){
             if(swApp.involvedCases.indexOf(parseInt(case_id)) === -1)
                 swApp.involvedCases.push(parseInt(case_id));

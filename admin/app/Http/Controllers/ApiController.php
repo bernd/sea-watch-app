@@ -324,13 +324,15 @@ class ApiController extends Controller
         
         $case_id = $all['case_id'];
         
-        //check if there is alrady a table
-        $checkDB = involvedUsers::where('case_id', '=', $case_id)->where('user_id', '=', Auth::id())->count();
-        
-        if($checkDB === 0){
-            $involvedUser = new involvedUsers($all);
-            $involvedUser->user_id = Auth::id();
-            $involvedUser->save();
+        if(!isset($all['no_involvement'])){
+            //check if there is alrady a table
+            $checkDB = involvedUsers::where('case_id', '=', $case_id)->where('user_id', '=', Auth::id())->count();
+
+            if($checkDB === 0){
+                $involvedUser = new involvedUsers($all);
+                $involvedUser->user_id = Auth::id();
+                $involvedUser->save();
+            }
         }
         
         $result = [];

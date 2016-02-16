@@ -16,7 +16,7 @@
                             <div class="content">
                                 <!--{{ URL::to('cases/get_involved/'.$emergency_case->id) }}-->
                                 <a href="#" data-id="{{$emergency_case->id}}" class="btn btn-sm pull-left get-involved">Get Involved</a>
-                                <a href="#" class="btn btn-sm pull-right"><?php echo $emergency_case->count_messages() ?></a>
+                                <a href="#" data-id="{{$emergency_case->id}}" class="btn btn-sm pull-right show-messages"><?php echo $emergency_case->count_messages() ?></a>
                                 <table class="table">
 
 

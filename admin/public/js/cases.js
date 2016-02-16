@@ -381,6 +381,28 @@ var swApp = new function(){
                 }
             });
         });
+        $('.show-messages').click(function(e){
+            e.preventDefault();
+            var case_id = $(this).attr('data-id');
+            emergency_case.showChat(case_id,function(result){
+
+                if(result.error != null){
+                    alert(result.error);
+                }else{
+
+                    self.handleMessageArray(result.data.messages);
+
+                    $('.caseBox_'+case_id+' .front').hide();
+                    $('.caseBox_'+case_id+' .back').show();
+
+                    $('.caseBox_'+case_id+' .close_chat').click(function(){
+                        $('.caseBox_'+case_id+' .front').show();
+                        $('.caseBox_'+case_id+' .back').hide();
+                    });
+
+                }
+            });
+        });
 
         $('.caseBox .form_inline form').submit(function(e){
             e.preventDefault();
