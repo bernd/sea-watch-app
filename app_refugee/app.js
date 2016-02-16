@@ -45,6 +45,8 @@ var swApp = new function(){
   
         this.clientId = this.getClientId();
   
+         //preload audio file
+         $("#bing").trigger('load');
         //initial call on geolocation api
         var options = { timeout: 90000, enableHighAccuracy: true, maximumAge: 10000 };
         var timeout = setTimeout( function() {
@@ -105,7 +107,7 @@ var swApp = new function(){
             
         },2000);
   
-  
+        
   
   
   
@@ -362,6 +364,7 @@ var swApp = new function(){
         divClass = "user_2 message";
     }
     if(options.type == 'received'){
+        this.bing();
         divClass = "user_1 message";
     }
     if(options.type == 'notification'){
@@ -395,6 +398,10 @@ var swApp = new function(){
       $('.status_monitor__gps').html('Send Position '+diff+'s ago');
   };
   this.updateLanguage = function(language){
+  };
+  
+  this.bing = function(){
+    $("#bing").trigger('play');
   };
 
 };
