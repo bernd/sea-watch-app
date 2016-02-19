@@ -304,10 +304,6 @@ a.gray:hover, a.gray:focus, a.gray:active {
       box-shadow: 0 0 15px 0 rgba(170, 183, 193, .5)
   }
 
-  .loggedOut .get-involved, .loggedOut .case_settings, .loggedOut .add_op, .loggedOut .sea-messages {
-    display:none;
-  }
-
   @media (max-width:720px) {
     .caseBox {
       width:100%;
@@ -417,25 +413,19 @@ a.gray:hover, a.gray:focus, a.gray:active {
   }
 
   .caseBox.distress,
-  .caseBox.distress .btn-sm,
+  .caseBox.distress .btn,
   .caseBox.distress header {
       background: #fd292c
   }
 
-  .caseBox.rescue_in_progress,
-  .caseBox.rescue_in_progress .btn-sm,
-  .caseBox.rescue_in_progress header {
-    background:#ff8942;
-  }
-
   .caseBox.rescued,
-  .caseBox.rescued .btn-sm,
+  .caseBox.rescued .btn,
   .caseBox.rescued header {
       background: #3fb0fb
   }
 
   .caseBox.on_land,
-  .caseBox.on_land .btn-sm,
+  .caseBox.on_land .btn,
   .caseBox.on_land header {
       background: #00b493
   }
@@ -493,6 +483,11 @@ a.gray:hover, a.gray:focus, a.gray:active {
     .message p.lonlat {
         font-size: 1.1em;
         opacity: .75
+    }
+    
+    .chatImage{
+        max-width:150px;
+        max-height:150px;
     }
 
     .user_1 {

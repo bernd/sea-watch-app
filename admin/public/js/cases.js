@@ -253,6 +253,17 @@ var swApp = new function(){
               pClass = 'meta';
           }
           
+          
+     
+          //check if message is base64 image
+          //@sec base64 xss possible?: https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+           var matches = options.message.match(/III(.+?)III/g);
+          if(matches != null){
+              options.message = '<img class="chatImage" src="data:image/jpeg;base64,'+matches[0].replace(/III/g,'').replace('"','\"')+'">';
+              console.log(options.message);
+          }
+    
+          
           if(typeof $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received') == 'undefined'&&
              typeof options.message_id !== 'undefined'){
               $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received', options.message_id);

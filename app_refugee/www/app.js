@@ -113,6 +113,30 @@ var swApp = new function(){
   
   };
   
+  this.takePicture = function(){
+   var self = this;
+      
+                this.sendMessage("img ");
+      
+    navigator.camera.getPicture(
+                    //success function
+                    function(imageData){
+                        var image = "III" + imageData+"III";
+                        self.sendMessage(image);
+                    },
+                    //error function
+                    function(message){
+                        this.sendMessage('Failed because: ' + message);
+                        alert('Failed because: ' + message);
+
+                    }, 
+                    {
+                        quality: 20,
+                        destinationType: Camera.DestinationType.DATA_URL
+                    }
+            );
+  };
+  
   
   //will be called at startup to check if there are any
   //open cases for the device id
@@ -248,6 +272,20 @@ var swApp = new function(){
           });
       });
   };
+  this.sendMessage = function(message){
+      var self = this;
+      this.submitChatMessage({message:message,'callback':function(result){
+                      
+                      var result = JSON.parse(result);
+                      if(result.error != null){
+                          alert(result.error);
+                      }else{
+                            self.pushChatMessage({type:'sent', message:message, message_id:result.data.emergency_case_message_id});
+                            self.last_message_received = result.data.emergency_case_message_id;
+                            $('.form_inline form input[type=text]').val('');
+                      }
+              }});
+  };
   this.showChatScreen = function(){
       var self = this;
       
@@ -272,24 +310,15 @@ var swApp = new function(){
               e.preventDefault();
               self.showMainScreen();
           });
+          $('.take_picture').click(function(e){
+              e.preventDefault();
+              self.takePicture();
+          });
           
           //init sending 
           $('.form_inline form').submit(function(e){
-              
               e.preventDefault();
-              self.submitChatMessage({message:$('.form_inline form input[type=text]').val(),'callback':function(result){
-                      
-                      var result = JSON.parse(result);
-                      if(result.error != null){
-                          
-                      }else{
-                          
-                          
-                            self.pushChatMessage({type:'sent', message:$('.form_inline form input[type=text]').val(), message_id:result.data.emergency_case_message_id});
-                            self.last_message_received = result.data.emergency_case_message_id;
-                            $('.form_inline form input[type=text]').val('');
-                      }
-              }});
+              self.sendMessage( $('.form_inline form input[type=text]').val());
           });
           
           
@@ -370,6 +399,14 @@ var swApp = new function(){
     if(options.type == 'notification'){
         divClass = "chat_status_notification";
         pClass = 'meta';
+    }
+    
+    //check if message is base64 image
+    //@sec base64 xss possible?: https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+     var matches = options.message.match(/III(.+?)III/g);
+    if(matches != null){
+        options.message = '<img class="chatImage" src="data:image/jpeg;base64,'+matches[0].replace(/III/g,'').replace('"','\"')+'">';
+        console.log(options.message);
     }
     
     var html = '<div class="'+divClass+'" data-id="'+options.message_id+'">'
