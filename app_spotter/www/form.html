@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Safe-Passage</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="dist/css/ratchet.min.css">
+    <link rel="stylesheet" href="dist/css/ratchet-theme-ios.min.css">
+    <link rel="stylesheet" href="dist/css/app.css">
+    <script src="js/modernizr.js"></script>
+    <script src="js/ratchet.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="app.js"></script>
+  </head>
+  <body>
+
+
+
+
+
+
+
+
+    <header class="bar bar-nav">
+      <h1 class="title">Safe-Passage</h1>
+    </header>
+
+    <div class="bar bar-footer">
+      <a class="icon icon-compose pull-right" href="#composeModal"></a>
+      <a class="icon icon-refresh pull-right"></a>
+      <small class="updated-text">Connected to Sea-Watch.org. Last Checked 4s ago</small>
+    </div>
+
+    <div class="content">
+
+
+
+
+        <input type="text" id="init_geodata"/>
+<div class="container" style="padding:30px 0; background:#FFF;">
+
+
+
+
+  <div class="row">
+    <form class="form-horizontal" id="emergency_form">
+      <fieldset>
+
+      <!-- Form Name -->
+      <legend>Case Information</legend>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="boat_status">Status</label>  
+        <div class="col-md-5">
+        
+          <select name="boat_status" id="boat_status">
+            <option value="distress">distress</option>
+            <option value="rescue_in_progress">rescue in progress</option>
+            <option value="rescued">rescued</option>
+            <option value="on_land">on land</option>
+          </select>
+          
+        </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="boat_condition">Condition</label>  
+        <div class="col-md-5">
+        
+          
+          <select name="boat_condition" id="boat_condition">
+            <option value="good">good</option><option value="bad">bad</option><option value="sinking">sinking</option><option value="people_in_water">people in water</option>
+          </select>
+          
+        </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="boat_type">Boat Type</label>  
+        <div class="col-md-5">
+        
+          
+          <select name="boat_type" id="boat_type">
+            <option value="rubber">rubber</option><option value="wood">wood</option><option value="steel">steel</option><option value="other">other</option>
+          </select>
+          
+        </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+          <div class="col-md-11">
+              <input type="checkbox" name="other_involved" id="other_involved" value="true" />
+              other involved
+          </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group" style="margin-bottom:15px;">
+          <div class="col-md-11">
+              <input type="checkbox" name="engine_working" id="engine_working" value="true" />
+              Engine working
+          </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="passenger_count">How many people ?</label>  
+        <div class="col-md-5">
+
+            <input type="number" name="anzahl" id="passenger_count" value="" />
+          
+        </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="zusatz">Additional informations</label>  
+        <div class="col-md-5">
+
+          <input type="text" name="additional_information" id="additional_information" value="" />
+          
+        </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="distance">Spotting distance in km</label>  
+        <div class="col-md-5">
+          <input type="number" class="wmfg_text" name="distance" id="spotting_distance" value="0" />
+        </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="degree">Spotting direction in degree</label>  
+        <div class="col-md-5" style="height:300px;">
+        
+            <div id="jog_dial_two" style="margin-top: 150px; margin-left: 150px;float: left; clear: left; position: relative;"></div>
+            <p id="jog_dial_two_meter" style="float:left;"></p>
+            <input type="hidden" id="spotting_direction">
+        </div>
+      </div>
+
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="Annual Forklift Purchases">Picture of situation</label>  
+        <div class="col-md-5">
+          <input type="file" class="wmfg_text" name="datei" id="datei"  />
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"></label>  
+        <div class="col-md-5">
+          <input type="submit" class="wmfg_text" name="submit" id="submit" style="display:none;" />
+        </div>
+      </div>
+
+
+
+
+
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div class="content-padded" style="background: #FFF; padding: 5px;">
+      
+      <div class="content-padded">
+      <!-- /.content -->
+
+    <!-- Compose modal -->
+      <div id="composeModal" class="modal">
+        <header class="bar bar-nav">
+          <a class="btn btn-link pull-right" href="#composeModal">
+            <strong>Send</strong>
+          </a>
+          <a class="btn btn-link pull-left" href="#composeModal">
+            Cancel
+          </a>
+          <h1 class="title">New message</h1>
+        </header>
+
+        <div class="content">
+          <form class="input-group">
+            <input type="text" placeholder="To:">
+            <input type="email" placeholder="From:">
+            <input type="text" placeholder="Subject:">
+            <textarea rows="20"></textarea>
+          </form>
+        </div>
+      </div><!-- /.modal -->
+    </div>
+  </body>
+</html>
