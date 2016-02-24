@@ -17,6 +17,81 @@ var case_statuses = {
             color:'40b0fb'
         }
 };
+
+
+
+
+var emergency_case = new function(){
+            
+        var base_url = '//app.sea-watch.org/admin/public/';
+        
+        this.showChat = function(case_id, callback){
+            if(swApp.involvedCases.indexOf(parseInt(case_id)) === -1)
+                swApp.involvedCases.push(parseInt(case_id));
+            
+            $.post(base_url+'api/cases/getInvolved', {case_id:case_id,no_involvement:true},function( data ) {
+                callback(data);
+            });
+        };
+        
+        this.getInvolved = function(case_id, callback){
+            if(swApp.involvedCases.indexOf(parseInt(case_id)) === -1)
+                swApp.involvedCases.push(parseInt(case_id));
+            
+            $.post(base_url+'api/cases/getInvolved', {case_id:case_id},function( data ) {
+                callback(data);
+            });
+        };
+        this.pushChatMessage = function(case_id, options){
+            var divClass, pClass;
+            pClass = '';
+          if(options.type === 'sent'){
+              divClass = "user_2 message";
+          }
+          if(options.type === 'received'){
+              divClass = "user_1 message";
+          }
+          if(options.type === 'notification'){
+              divClass = "chat_status_notification";
+              pClass = 'meta';
+          }
+          
+          if(typeof $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received') == 'undefined'&&
+             typeof options.message_id !== 'undefined'){
+              $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received', options.message_id);
+          }else if(typeof $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received') !== 'undefined'){
+              if(parseInt(options.message_id) > parseInt( $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received'))){
+                $('.caseBox[data-id='+case_id+'] .messenger__chat').attr('data-last-message-received', options.message_id);
+              }
+          }
+          
+          var html = '<div class="'+divClass+'" data-id="'+options.message_id+'">'
+              html += '    <p class="'+pClass+'">'+options.message+'</p>';
+              html += '</div>';
+              
+          if($('.message[data-id='+options.message_id+']').length === 0)
+            $('.caseBox[data-id='+case_id+'] .messenger__chat').append(html);
+        };
+        this.submitMessage = function(case_id, message,callback){
+            var self = this;
+            $.post(base_url+'api/cases/sendMessageCrew', {case_id:case_id, message:message},function( result ) {
+                
+                var result = JSON.parse(result);
+                
+                if(result.error != null){
+                    alert(result.error);
+                }else{
+                    
+                    self.pushChatMessage(case_id, {type:'sent', message:message, message_id:result.data.emergency_case_message_id});
+          
+                }
+                callback();
+                
+            });
+        };
+        
+};
+
     
 
 $(document).ready(function(){
@@ -65,7 +140,7 @@ var helpers = new function(){
     
     this.getMarkerColor = function(boat_status){
         return case_statuses[boat_status].color;
-    }
+    };
     
     this.generateMarkerClusterFeatures = function(cases){
         
@@ -90,7 +165,7 @@ var helpers = new function(){
             "type": "FeatureCollection",
             "features": features,
             "id": "markerCluster"
-        }
+        };
     }
 };
 
@@ -260,7 +335,6 @@ var swApp = new function(){
            var matches = options.message.match(/III(.+?)III/g);
           if(matches != null){
               options.message = '<img class="chatImage" src="data:image/jpeg;base64,'+matches[0].replace(/III/g,'').replace('"','\"')+'">';
-              console.log(options.message);
           }
     
           
@@ -520,6 +594,8 @@ var swApp = new function(){
     
     this.addCaseToMap = function(map,case_id){
         
+        var self = this;
+        
         if(typeof this.cases[case_id] == 'undefined')
             this.cases[case_id] = {};
         else{
@@ -557,6 +633,21 @@ var swApp = new function(){
         //this.mapLayers.push(polyline);
         var currentIndex = this.mapLayers.length;
         this.cases[case_id].iconLayer = L.mapbox.featureLayer().addTo(map);
+        this.cases[case_id].iconLayer.on('click',function(e){
+            
+            
+            
+                //load caseBox
+                self.loadCaseBox(case_id,function(result){
+                    
+                    //play sound
+                    $('#caseDetailContainer').html(result);
+                    self.initClicks();
+                });
+            
+            console.log(e.layer.feature.properties);
+        });
+        console.log(this.cases[case_id].iconLayer);
         
         this.mapLayers.push(this.cases[case_id].iconLayer);
         
@@ -568,6 +659,7 @@ var swApp = new function(){
                             },
                             properties: {
                                 title: 'Case-ID:'+case_id,
+                                'case-id':case_id,
                                 description: 'first tracked: '+case_data.created_at+'<br>last tracked: '+case_data.updated_at,
                                 'marker-color': '#548cba'
                             }

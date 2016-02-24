@@ -13,6 +13,7 @@
           
 
         </div>
+        <div id="caseDetailContainer" style="position:fixed;top: 49px;right:30px;width: 315px;overflow: auto;height: 350px;">asd</div>
       </div>
           
 <script src="./js/jquery.min.js" type="text/javascript"></script>
