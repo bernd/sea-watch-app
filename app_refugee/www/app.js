@@ -28,6 +28,8 @@ var app = {
 
 
 
+
+
 var swApp = new function(){
 
   this.apiURL = 'https://app.sea-watch.org/admin/public/';
@@ -308,7 +310,18 @@ var swApp = new function(){
           
           $('.close_chat').click(function(e){
               e.preventDefault();
-              self.showMainScreen();
+              
+              $('#closeCaseOverlay').show();
+              
+              $('#closeCaseOverlay button').click(function(){
+                  
+                  self.closeCase(self.emergency_case_id,$('#closeCaseOverlay select').val(), function(){
+                    $('.closeCaseOverlay').hide();
+                      
+                    self.showMainScreen();
+                  });
+                  
+              });
           });
           $('.take_picture').click(function(e){
               e.preventDefault();
@@ -435,6 +448,17 @@ var swApp = new function(){
       $('.status_monitor__gps').html('Send Position '+diff+'s ago');
   };
   this.updateLanguage = function(language){
+  };
+  
+  
+  this.closeCase = function(case_id, reason, callback){
+      
+      api.query(this.apiURL+'api/cases/closeCase', {case_id:case_id, reason:reason},function(result){
+          
+          callback(result);
+          
+      });
+      
   };
   
   this.bing = function(){

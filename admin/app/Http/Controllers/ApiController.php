@@ -306,6 +306,14 @@ class ApiController extends Controller
         //
     }
     
+    public function closeCase(Request $request){
+        
+        
+            $all = $request->all();
+            $emergencyCase = emergencyCase::find($all['case_id']);
+            echo $emergencyCase->update(['additional_informations'=>'closed_by_client because of '.$all['reason'],]);
+    }
+    
     
     
     

@@ -129,6 +129,10 @@ Route::get('api/cases/operation_area/{id}', 'ApiController@casesInOperationArea'
 Route::post('api/cases/getInvolved', 'ApiController@getInvolved');
 
 
+
+Route::post('api/cases/closeCase', 'ApiController@closeCase');
+
+
 /**
  * @api {post} api/reloadApp reloadApp
  * @apiDescription updates location and receives new messages
