@@ -235,9 +235,15 @@ var swApp = new function(){
   };
   
   this.confirmCall = function(cb){
+      
+      $('#presend').show();
+      $('#presend form').submit(function(e){
+        e.preventDefault();
         if (confirm("Are you sure to send an emergency call?")) {
             cb();
         }
+      });
+      
   };
   
   this.showMainScreen = function(){

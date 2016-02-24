@@ -30,7 +30,65 @@
                 </ul>
             </div>
         </article>
+        <div class="overlay" id="presend">
+            <form class="container">
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="boat_condition">Condition</label>  
+                  <div class="col-md-5">
+                    <select name="boat_condition" id="boat_condition">
+                      <option value="good">good</option><option value="bad">bad</option><option value="sinking">sinking</option><option value="people_in_water">people in water</option>
+                    </select>
 
+                  </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="boat_type">Boat Type</label>  
+                  <div class="col-md-5">
+
+
+                    <select name="boat_type" id="boat_type">
+                      <option value="rubber">rubber</option><option value="wood">wood</option><option value="steel">steel</option><option value="other">other</option>
+                    </select>
+
+                  </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group" style="margin-bottom:15px;">
+                    <div class="col-md-11">
+                        <input type="checkbox" name="engine_working" id="engine_working" value="true" />
+                        Engine working
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="passenger_count">How many people ?</label>  
+                  <div class="col-md-5">
+
+                      <input type="number" name="anzahl" id="passenger_count" value="" />
+
+                  </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="zusatz">Additional informations</label>  
+                  <div class="col-md-5">
+
+                    <input type="text" name="additional_information" id="additional_information" value="" />
+
+                  </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                  <label class="col-md-4 control-label"></label>  
+                  <div class="col-md-5">
+                    <input type="submit" class="wmfg_text" name="submit" id="submit"/>
+                  </div>
+                </div>
+            </form>
+        </div>
         <footer>
             <nav>
                 <ul class="action_buttons">

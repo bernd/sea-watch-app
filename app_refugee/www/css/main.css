@@ -701,6 +701,10 @@ body.screen_start {
         max-width:150px;
         max-height:150px;
     }
+
+    .overlay{
+        display:none; position: fixed; top:0; right: 0; bottom:0; left: 0; background: rgba(255,255,255,0.9); z-index: 999;
+    }
   
     @media (orientation: portrait) { .message p, .messenger__form input[type="text"], .messenger__form input[type="submit"] {font-size:1.5em; } }
     @media (orientation: landscape) { .message p, .messenger__form input[type="text"], .messenger__form input[type="submit"]  {font-size:1em; } }
