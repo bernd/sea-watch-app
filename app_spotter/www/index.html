@@ -1,48 +1,61 @@
-<!doctype html>
-<html class="no-js" lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
-        <link href='https://fonts.googleapis.com/css?family=Roboto:500,700,400,400italic,700italic' rel='stylesheet' type='text/css'>
-        
-        <script type="text/javascript" src="cordova.js"></script>
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-        
-        
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
-        
-        <script src="js/plugins.js"></script>
-        <script src="app.js"></script>
-        
-    </head>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Safe-Passage</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <body class="screen_start" id="viewport">
-        <audio id="bing" controls preload="none" style="display:none">
-            <source src="bing.mp3" type="audio/mpeg">
-            <source src="bing.ogg" type="audio/ogg">
-        </audio>
-        <header class="status_monitor">
-            <div class="container__large">
-                <div class="status_monitor__connection connecting">
-                </div>
-                <div class="status_monitor__gps connecting">
-                    Track your position
-                </div>
-            </div>
-        </header>
-        
-        
-    </body>
+    <link rel="stylesheet" href="dist/css/ratchet.min.css">
+    <link rel="stylesheet" href="dist/css/ratchet-theme-ios.min.css">
+    <link rel="stylesheet" href="dist/css/app.css">
+    <script src="dist/js/ratchet.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="dist/js/app.js"></script>
+  </head>
+  <body>
+    <header class="bar bar-nav">
+      <h1 class="title">Safe-Passage</h1>
+    </header>
 
+    <div class="bar bar-footer">
+      <a class="icon icon-compose pull-right" href="#composeModal"></a>
+      <a class="icon icon-refresh pull-right"></a>
+      <small class="updated-text">Connected to Sea-Watch.org. Last Checked 4s ago</small>
+    </div>
+
+    <div class="content">
+      <div class="content-padded" style="background: #FFF; padding: 5px;">
+      <h4>Call for Help</h4>
+      <p style="color: #313;">If you are one a vessel which needs to be rescued or if you know of a crisis situation you can send an emergency signal.</p>
+
+      <a href="form.html" class="btn btn-primary btn-block"><i class="glyphicon glyphicon-flag"></i>Send Emergency Signal</a>
+      <div class="content-padded">
+      <!-- /.content -->
+
+    <!-- Compose modal -->
+    <div id="composeModal" class="modal">
+      <header class="bar bar-nav">
+        <a class="btn btn-link pull-right" href="#composeModal">
+          <strong>Send</strong>
+        </a>
+        <a class="btn btn-link pull-left" href="#composeModal">
+          Cancel
+        </a>
+        <h1 class="title">New message</h1>
+      </header>
+
+      <div class="content">
+        <form class="input-group">
+          <input type="text" placeholder="To:">
+          <input type="email" placeholder="From:">
+          <input type="text" placeholder="Subject:">
+          <textarea rows="20"></textarea>
+        </form>
+      </div>
+    </div><!-- /.modal -->
+  </body>
 </html>
