@@ -97,14 +97,15 @@ class ApiController extends Controller
     public function reloadApp(Request $request){
         $all = $request->all();
         
-        $geo_data = json_decode($all['geo_data'], true);
-        
-        $geo_data['heading'] = 0;
-        
-        
         $emergency_case_id = $all['emergency_case_id'];
         
-        addLocation($emergency_case_id, $geo_data);
+        if(isset($all['geo_data'])&&$all['geo_data']!='undefined'){
+            $geo_data = json_decode($all['geo_data'], true);
+
+            $geo_data['heading'] = 0;
+
+            addLocation($emergency_case_id, $geo_data);
+        }
         
         
         
@@ -166,15 +167,13 @@ class ApiController extends Controller
         
         $all = $request->all();
         
-        if(isset($all['geo_data'])){
+        if(isset($all['geo_data'])&&$all['geo_data']!='undefined'){
             
             $geo_data = json_decode($all['geo_data'], true);
 
             $geo_data['heading'] = 0;
-
-            $location_id = addLocation($all['emergency_case_id'], $geo_data);
-
-            $all['emergency_case_location_id'] = $location_id;
+            
+            $all['emergency_case_location_id'] = addLocation($all['emergency_case_id'], $geo_data);
             
         }
         $emergencyCaseMessage = new emergencyCaseMessage($all);

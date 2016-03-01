@@ -430,6 +430,12 @@ a.gray:hover, a.gray:focus, a.gray:active {
       background: #00b493
   }
 
+  .caseBox.rescue_in_progress,
+  .caseBox.rescue_in_progress .btn,
+  .caseBox.rescue_in_progress header {
+      background:#ff8942;
+  }
+
   .caseBox .btn {
       border-radius: 4px;
       font-weight: 500
