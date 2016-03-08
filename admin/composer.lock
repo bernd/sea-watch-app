@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8753b20ec40d801f1bf7f7df82712215",
-    "content-hash": "0e7745d23d0ab2235e506a583cd27142",
+    "hash": "e89400c00e07897e844aa62cdd455127",
+    "content-hash": "cb75077c71cb89f67ec2f3a89e11a286",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -17,7 +17,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/67d5a0f3501d808ee27265c391b532c64e04db1b",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/72acfb159396b03ef5ef7f9e2bdfb8a361076d1e",
                 "reference": "67d5a0f3501d808ee27265c391b532c64e04db1b",
                 "shasum": ""
             },
@@ -1181,6 +1181,50 @@
                 "random"
             ],
             "time": "2015-12-10 14:48:13"
+        },
+        {
+            "name": "php-imap/php-imap",
+            "version": "2.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barbushin/php-imap.git",
+                "reference": "3174b23aaf45cc570972209f366c384f257399a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barbushin/php-imap/zipball/3174b23aaf45cc570972209f366c384f257399a8",
+                "reference": "3174b23aaf45cc570972209f366c384f257399a8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-imap": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpImap\\": "src/PhpImap/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Barbushin",
+                    "email": "barbushin@gmail.com",
+                    "homepage": "http://linkedin.com/in/barbushin"
+                }
+            ],
+            "description": "PHP class to access mailbox by POP3/IMAP/NNTP using IMAP extension",
+            "homepage": "https://github.com/barbushin/php-imap",
+            "keywords": [
+                "imap",
+                "mail",
+                "php"
+            ],
+            "time": "2015-12-14 02:46:12"
         },
         {
             "name": "psr/log",

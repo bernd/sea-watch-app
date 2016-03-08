@@ -17,7 +17,8 @@
         "yajra/laravel-datatables-oracle" : "~5.0",
         "barryvdh/laravel-debugbar": "^2.0@dev",
         "laravelcollective/html": "5.1.*",
-        "cviebrock/eloquent-sluggable": "dev-master"
+        "cviebrock/eloquent-sluggable": "dev-master",
+        "php-imap/php-imap": "~2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

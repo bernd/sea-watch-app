@@ -79,6 +79,32 @@ class EmergencyCaseMessagesasdasd extends Migration
             $table->integer('last_message_seen');
             $table->timestamps();
         });
+        
+        
+        Schema::create('vehicles', function (Blueprint $table) {
+            
+            $table->increments('id');
+            
+            $table->timestamps();
+            
+            $table->string('title');
+            
+            $table->string('type');
+            
+            $table->string('sat_number');
+            
+        });
+        
+        Schema::create('vehicleLocations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('vessel_id');
+            $table->float('lat', 10, 7);
+            $table->float('lon', 10, 7);
+            $table->integer('altitude');
+            $table->integer('heading');
+            $table->string('connection_type'); //internet or sms or sat
+            $table->timestamps(); 
+        });
     }
 
     /**

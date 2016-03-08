@@ -90,6 +90,8 @@ class UserController extends AdminController
 
     public function delete(User $user)
     {
+        
+        echo $user->id;
         return view('admin.user.delete', compact('user'));
     }
 

@@ -19,6 +19,12 @@
                         <i class="fa fa-dashboard fa-fw"></i> Dashboard
                     </a>
                 </li>
+                
+                <li>
+                    <a href="{{url('admin/vehicle')}}">
+                        <i class="fa fa-dashboard fa-fw"></i> Vehicles
+                    </a>
+                </li>
                 <!--<li>
                     <a href="{{url('admin/language')}}">
                         <i class="fa fa-language"></i> Language

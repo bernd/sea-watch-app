@@ -196,4 +196,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('user/{user}/edit', 'Admin\UserController@edit');
     Route::get('user/{user}/delete', 'Admin\UserController@delete');
     Route::resource('user', 'Admin\UserController');
+    
+    # Vehicles
+    Route::get('vehicle/data', 'Admin\VehicleController@data');
+    Route::get('vehicle/{vehicle}/show', 'Admin\VehicleController@show');
+    Route::get('vehicle/{vehicle}/edit', 'Admin\VehicleController@edit');
+    Route::get('vehicle/{vehicle}/delete', 'Admin\VehicleController@delete');
+    Route::resource('vehicle', 'Admin\VehicleController');
 });
