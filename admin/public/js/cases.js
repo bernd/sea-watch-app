@@ -96,7 +96,14 @@ var emergency_case = new function(){
 
 $(document).ready(function(){
     
-    
+    $('.caseBox').show();
+                
+    //init masonry
+    var $grid = $('#caseList').masonry({
+        itemSelector: '.caseBox',
+        columnWidth: 100,
+        gutter: 10
+    });
     //filter for casenav
     $('.filter').click(function(e){
         e.preventDefault();
@@ -130,8 +137,18 @@ $(document).ready(function(){
         });
         if(results.join('') === '')
                     $('.caseBox').show();
+                
+        //reinit masonry
+        var $grid = $('#caseList').masonry({
+            itemSelector: '.caseBox',
+            columnWidth: 100,
+            gutter: 10,
+        });
+        
             
     });
+    
+    
     
 });
 
@@ -634,8 +651,6 @@ var swApp = new function(){
         var currentIndex = this.mapLayers.length;
         this.cases[case_id].iconLayer = L.mapbox.featureLayer().addTo(map);
         this.cases[case_id].iconLayer.on('click',function(e){
-            
-            
             
                 //load caseBox
                 self.loadCaseBox(case_id,function(result){

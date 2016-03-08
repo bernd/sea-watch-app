@@ -39,5 +39,6 @@
 <!-- Scripts -->
 @yield('scripts')
 
+<script src="{{ asset('js/masonry.min.js') }}"></script>
 </body>
 </html>
