@@ -351,9 +351,6 @@ var app = new function(){
     });
     
   };
-  this.bing = function(){
-    $("#bing").trigger('play');
-  };
 };
 
 app.init();

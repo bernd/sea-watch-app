@@ -3,21 +3,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Safe-Passage</title>
+    <title>Sea-Watch.app &middot; Land operator &middot; Safe-Passage</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-    <link rel="stylesheet" href="dist/css/ratchet.min.css">
-    <link rel="stylesheet" href="dist/css/ratchet-theme-ios.min.css">
     <link rel="stylesheet" href="dist/css/app.css">
-    <script src="dist/js/ratchet.min.js"></script>
+    <link rel="stylesheet" href="dist/css/bootstrap.css">
     <script src="js/plugins.js"></script>
     <script src="dist/js/app.js"></script>
   </head>
   <body>
     <header class="bar bar-nav">
-      <h1 class="title">Safe-Passage</h1>
+      <div class="container">
+        <img src="dist/img/app-logo.png" class="logo" alt="">
+        <h1 class="title"><span>Sea-Watch.app</span><br />Safe-Passage</h1>
+      </div>
     </header>
 
     <div class="bar bar-footer">
@@ -27,34 +27,20 @@
     </div>
 
     <div class="content">
-      <div class="content-padded" style="background: #FFF; padding: 5px;">
-      <h4>Call for Help</h4>
-      <p style="color: #313;">If you are one a vessel which needs to be rescued or if you know of a crisis situation you can send an emergency signal.</p>
-
-      <a href="form.html" class="btn btn-primary btn-block"><i class="glyphicon glyphicon-flag"></i>Send Emergency Signal</a>
+      <div class="container">
       <div class="content-padded">
-      <!-- /.content -->
+        <img src="dist/img/watcher-app.png" class="center_small">
+      <h3 class="text-center">Land-Operator Application</h3>
+      <p>Mit dieser App könnt ihr melden das ihr ein Flüchtlings-Boot gesichtet habt und dies an die SAR-Koordination deines Einsatzgebiets weiterleiten.</p>
 
-    <!-- Compose modal -->
-    <div id="composeModal" class="modal">
-      <header class="bar bar-nav">
-        <a class="btn btn-link pull-right" href="#composeModal">
-          <strong>Send</strong>
-        </a>
-        <a class="btn btn-link pull-left" href="#composeModal">
-          Cancel
-        </a>
-        <h1 class="title">New message</h1>
-      </header>
+      <a href="form.html" class="btn btn-primary"><i class="glyphicon glyphicon-flag"></i>Send a case</a>
 
-      <div class="content">
-        <form class="input-group">
-          <input type="text" placeholder="To:">
-          <input type="email" placeholder="From:">
-          <input type="text" placeholder="Subject:">
-          <textarea rows="20"></textarea>
-        </form>
+
+    
+        </div>
       </div>
-    </div><!-- /.modal -->
+    </div>
+    
+<link href='https://fonts.googleapis.com/css?family=Roboto:700,500,400' rel='stylesheet' type='text/css'>
   </body>
 </html>
