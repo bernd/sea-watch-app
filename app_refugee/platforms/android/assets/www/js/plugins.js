@@ -119,6 +119,10 @@ function loadAfter($jqObject, url, cb){
   });
 }
 
-window.alert = function (txt) {
-   navigator.notification.alert(txt, null, "Alert", "Close");
-};
+//
+//if(typeof navigator.notification!='undefined'){
+//    navigator.notification.alert('fuck fuck fuck', null, "Alert", "Close");
+//window.alert = function (txt) {
+//    navigator.notification.alert(txt, null, "Alert", "Close");
+//};
+//}

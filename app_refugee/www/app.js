@@ -27,9 +27,6 @@ var app = {
 };
 
 
-
-
-
 var swApp = new function(){
 
   this.apiURL = 'https://app.sea-watch.org/admin/public/';
@@ -43,21 +40,20 @@ var swApp = new function(){
   
   this.init = function(){
   
+        
+  
         var self  = this;
   
         this.clientId = this.getClientId();
-  
          //preload audio file
          $("#bing").trigger('load');
         //initial call on geolocation api
         var options = { timeout: 90000, enableHighAccuracy: true, maximumAge: 10000 };
         var timeout = setTimeout( function() {
             
-            
             if (true) {
                 
                 self.showStartScreen();
-                
                 navigator.geolocation.watchPosition (
                   function (position) {
                     var newPosition = {
@@ -80,8 +76,6 @@ var swApp = new function(){
                         "latitude":position.coords.latitude
                     };
                     
-                    
-                    
                     $('body').attr('data-geo',JSON.stringify(coords));
                   },
                   function (error) {
@@ -99,7 +93,7 @@ var swApp = new function(){
                     }
 
                     alert(errorMessage);
-                  });
+                  },options);
               }
               else {
                 alert("Geolocation support is not available.");
@@ -144,6 +138,8 @@ var swApp = new function(){
   //open cases for the device id
   this.checkForOpenCase = function(){
       var self = this;
+      //self.showMainScreen();
+
       $.post(this.apiURL+'api/cases/checkForOpenCase', {'session_token':this.clientId}, function(result){
           
           var result = JSON.parse(result);
@@ -223,7 +219,6 @@ var swApp = new function(){
         $('body').addClass('screen_start');
         $('.language_selector__selector li a').click(function(e){
             e.preventDefault();
-            
             //when the language is selected
             //it will be checked if there are
             //open cases with the uuid.
@@ -239,7 +234,7 @@ var swApp = new function(){
       $('#presend').show();
       $('#presend form').submit(function(e){
         e.preventDefault();
-        if (confirm("Are you sure to send an emergency call?")) {
+        if (confirm("Are you sure to send an emergency callll?")) {
             cb();
         }
       });
@@ -322,7 +317,7 @@ var swApp = new function(){
               $('#closeCaseOverlay button').click(function(){
                   
                   self.closeCase(self.emergency_case_id,$('#closeCaseOverlay select').val(), function(){
-                    $('.closeCaseOverlay').hide();
+                    $('#closeCaseOverlay').hide();
                       
                     self.showMainScreen();
                   });
@@ -384,6 +379,7 @@ var swApp = new function(){
     var self = this;
     //send api call
     $.post(self.apiURL+'api/cases/create', data, function(result){
+        
         var result = JSON.parse(result);
         self.setStatusMonitorNow();
         if(result.error == null){
@@ -391,7 +387,7 @@ var swApp = new function(){
         }else{
             if(result.error === 'no_operation_area'){
                 alert('the location you submitted is not in a operation_area of the sea watch');
-            }
+            } 
         }
     });
   };

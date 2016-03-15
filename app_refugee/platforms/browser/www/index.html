@@ -14,8 +14,6 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
-        <link href='https://fonts.googleapis.com/css?family=Roboto:500,700,400,400italic,700italic' rel='stylesheet' type='text/css'>
-        
         <script type="text/javascript" src="cordova.js"></script>
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         
@@ -32,6 +30,20 @@
             <source src="bing.mp3" type="audio/mpeg">
             <source src="bing.ogg" type="audio/ogg">
         </audio>
+        <div id="closeCaseOverlay" class="overlay">
+            
+            <div class="container">
+                <p>why are you closing the case?</p>
+                <select id="close_reason">
+                    <option value="saved">I was safed</option>
+                    <option value="on_land">I am safe on land</option>
+                    <option value="solved_by_client">I solved the problem by my self</option>
+                    <option value="accidentally">I send the sos accidentally</option>
+                </select>
+                <button class="btn btn-primary btn-lg btn-block">Close Case</button>
+            </div>
+            
+        </div>
         <header class="status_monitor">
             <div class="container__large">
                 <div class="status_monitor__connection connecting">

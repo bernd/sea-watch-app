@@ -27,7 +27,6 @@ var app = {
 };
 
 
-
 var swApp = new function(){
 
   this.apiURL = 'https://app.sea-watch.org/admin/public/';
@@ -41,21 +40,20 @@ var swApp = new function(){
   
   this.init = function(){
   
+        
+  
         var self  = this;
   
         this.clientId = this.getClientId();
-  
          //preload audio file
          $("#bing").trigger('load');
         //initial call on geolocation api
         var options = { timeout: 90000, enableHighAccuracy: true, maximumAge: 10000 };
         var timeout = setTimeout( function() {
             
-            
             if (true) {
                 
                 self.showStartScreen();
-                
                 navigator.geolocation.watchPosition (
                   function (position) {
                     var newPosition = {
@@ -78,8 +76,6 @@ var swApp = new function(){
                         "latitude":position.coords.latitude
                     };
                     
-                    
-                    
                     $('body').attr('data-geo',JSON.stringify(coords));
                   },
                   function (error) {
@@ -97,7 +93,7 @@ var swApp = new function(){
                     }
 
                     alert(errorMessage);
-                  });
+                  },options);
               }
               else {
                 alert("Geolocation support is not available.");
@@ -142,6 +138,10 @@ var swApp = new function(){
   //open cases for the device id
   this.checkForOpenCase = function(){
       var self = this;
+      self.showMainScreen();
+
+      return null;
+
       $.post(this.apiURL+'api/cases/checkForOpenCase', {'session_token':this.clientId}, function(result){
           
           var result = JSON.parse(result);
@@ -221,7 +221,6 @@ var swApp = new function(){
         $('body').addClass('screen_start');
         $('.language_selector__selector li a').click(function(e){
             e.preventDefault();
-            
             //when the language is selected
             //it will be checked if there are
             //open cases with the uuid.
@@ -233,9 +232,15 @@ var swApp = new function(){
   };
   
   this.confirmCall = function(cb){
-        if (confirm("Are you sure to send an emergency call?")) {
+      
+      $('#presend').show();
+      $('#presend form').submit(function(e){
+        e.preventDefault();
+        if (confirm("Are you sure to send an emergency callll?")) {
             cb();
         }
+      });
+      
   };
   
   this.showMainScreen = function(){
@@ -308,7 +313,18 @@ var swApp = new function(){
           
           $('.close_chat').click(function(e){
               e.preventDefault();
-              self.showMainScreen();
+              
+              $('#closeCaseOverlay').show();
+              
+              $('#closeCaseOverlay button').click(function(){
+                  
+                  self.closeCase(self.emergency_case_id,$('#closeCaseOverlay select').val(), function(){
+                    $('.closeCaseOverlay').hide();
+                      
+                    self.showMainScreen();
+                  });
+                  
+              });
           });
           $('.take_picture').click(function(e){
               e.preventDefault();
@@ -365,6 +381,7 @@ var swApp = new function(){
     var self = this;
     //send api call
     $.post(self.apiURL+'api/cases/create', data, function(result){
+        
         var result = JSON.parse(result);
         self.setStatusMonitorNow();
         if(result.error == null){
@@ -372,7 +389,7 @@ var swApp = new function(){
         }else{
             if(result.error === 'no_operation_area'){
                 alert('the location you submitted is not in a operation_area of the sea watch');
-            }
+            } 
         }
     });
   };
@@ -401,7 +418,8 @@ var swApp = new function(){
         pClass = 'meta';
     }
     
-    //options.message = options.message.replace( /\[b\](.+?)\[\/b]/gi, "<b>$1</b>" );
+    //check if message is base64 image
+    //@sec base64 xss possible?: https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
      var matches = options.message.match(/III(.+?)III/g);
     if(matches != null){
         options.message = '<img class="chatImage" src="data:image/jpeg;base64,'+matches[0].replace(/III/g,'').replace('"','\"')+'">';
@@ -434,6 +452,17 @@ var swApp = new function(){
       $('.status_monitor__gps').html('Send Position '+diff+'s ago');
   };
   this.updateLanguage = function(language){
+  };
+  
+  
+  this.closeCase = function(case_id, reason, callback){
+      
+      api.query(this.apiURL+'api/cases/closeCase', {case_id:case_id, reason:reason},function(result){
+          
+          callback(result);
+          
+      });
+      
   };
   
   this.bing = function(){

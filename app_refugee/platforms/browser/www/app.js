@@ -27,7 +27,6 @@ var app = {
 };
 
 
-
 var swApp = new function(){
 
   this.apiURL = 'https://app.sea-watch.org/admin/public/';
@@ -41,21 +40,24 @@ var swApp = new function(){
   
   this.init = function(){
   
+        
+  
         var self  = this;
   
         this.clientId = this.getClientId();
-  
          //preload audio file
          $("#bing").trigger('load');
         //initial call on geolocation api
         var options = { timeout: 90000, enableHighAccuracy: true, maximumAge: 10000 };
         var timeout = setTimeout( function() {
             
+            confirm('test');
             
             if (true) {
                 
                 self.showStartScreen();
-                
+
+                alert('wating for position....');
                 navigator.geolocation.watchPosition (
                   function (position) {
                     var newPosition = {
@@ -78,7 +80,7 @@ var swApp = new function(){
                         "latitude":position.coords.latitude
                     };
                     
-                    
+                    alert('got position');
                     
                     $('body').attr('data-geo',JSON.stringify(coords));
                   },
@@ -97,7 +99,7 @@ var swApp = new function(){
                     }
 
                     alert(errorMessage);
-                  });
+                  },options);
               }
               else {
                 alert("Geolocation support is not available.");
@@ -116,34 +118,25 @@ var swApp = new function(){
   this.takePicture = function(){
    var self = this;
       
+                this.sendMessage("img ");
       
     navigator.camera.getPicture(
-            //success function
-            function(imageData){
-                
-                var image = "<img src='"+"data:image/jpeg;base64," + imageData+"'/>";
-                
-                self.pushChatMessage({type:'sent', message:image, message_id:1337});
-            },
-            //error function
-            function(message){
-                alert('Failed because: ' + message);
-                
-            }, 
-            { 
-                quality: 50,
-                destinationType: Camera.DestinationType.DATA_URL
-            }
-                    );
+                    //success function
+                    function(imageData){
+                        var image = "III" + imageData+"III";
+                        self.sendMessage(image);
+                    },
+                    //error function
+                    function(message){
+                        this.sendMessage('Failed because: ' + message);
+                        alert('Failed because: ' + message);
 
-function onSuccess(imageData) {
-    var image = document.getElementById('myImage');
-    image.src = "data:image/jpeg;base64," + imageData;
-}
-
-function onFail(message) {
-    alert('Failed because: ' + message);
-}  
+                    }, 
+                    {
+                        quality: 20,
+                        destinationType: Camera.DestinationType.DATA_URL
+                    }
+            );
   };
   
   
@@ -151,6 +144,10 @@ function onFail(message) {
   //open cases for the device id
   this.checkForOpenCase = function(){
       var self = this;
+      self.showMainScreen();
+
+      return null;
+
       $.post(this.apiURL+'api/cases/checkForOpenCase', {'session_token':this.clientId}, function(result){
           
           var result = JSON.parse(result);
@@ -230,7 +227,6 @@ function onFail(message) {
         $('body').addClass('screen_start');
         $('.language_selector__selector li a').click(function(e){
             e.preventDefault();
-            
             //when the language is selected
             //it will be checked if there are
             //open cases with the uuid.
@@ -242,9 +238,15 @@ function onFail(message) {
   };
   
   this.confirmCall = function(cb){
-        if (confirm("Are you sure to send an emergency call?")) {
+      
+      $('#presend').show();
+      $('#presend form').submit(function(e){
+        e.preventDefault();
+        if (confirm("Are you sure to send an emergency callll?")) {
             cb();
         }
+      });
+      
   };
   
   this.showMainScreen = function(){
@@ -272,6 +274,7 @@ function onFail(message) {
                          e.preventDefault();
                          alert('your request is pending... please wait');
                      });
+                     alert('before send');
                      self.sendEmergencyCall(function(){
                        self.showChatScreen();
                      });
@@ -280,6 +283,20 @@ function onFail(message) {
                
           });
       });
+  };
+  this.sendMessage = function(message){
+      var self = this;
+      this.submitChatMessage({message:message,'callback':function(result){
+                      
+                      var result = JSON.parse(result);
+                      if(result.error != null){
+                          alert(result.error);
+                      }else{
+                            self.pushChatMessage({type:'sent', message:message, message_id:result.data.emergency_case_message_id});
+                            self.last_message_received = result.data.emergency_case_message_id;
+                            $('.form_inline form input[type=text]').val('');
+                      }
+              }});
   };
   this.showChatScreen = function(){
       var self = this;
@@ -303,26 +320,28 @@ function onFail(message) {
           
           $('.close_chat').click(function(e){
               e.preventDefault();
-              self.showMainScreen();
+              
+              $('#closeCaseOverlay').show();
+              
+              $('#closeCaseOverlay button').click(function(){
+                  
+                  self.closeCase(self.emergency_case_id,$('#closeCaseOverlay select').val(), function(){
+                    $('.closeCaseOverlay').hide();
+                      
+                    self.showMainScreen();
+                  });
+                  
+              });
+          });
+          $('.take_picture').click(function(e){
+              e.preventDefault();
+              self.takePicture();
           });
           
           //init sending 
           $('.form_inline form').submit(function(e){
-              
               e.preventDefault();
-              self.submitChatMessage({message:$('.form_inline form input[type=text]').val(),'callback':function(result){
-                      
-                      var result = JSON.parse(result);
-                      if(result.error != null){
-                          
-                      }else{
-                          
-                          
-                            self.pushChatMessage({type:'sent', message:$('.form_inline form input[type=text]').val(), message_id:result.data.emergency_case_message_id});
-                            self.last_message_received = result.data.emergency_case_message_id;
-                            $('.form_inline form input[type=text]').val('');
-                      }
-              }});
+              self.sendMessage( $('.form_inline form input[type=text]').val());
           });
           
           
@@ -369,6 +388,9 @@ function onFail(message) {
     var self = this;
     //send api call
     $.post(self.apiURL+'api/cases/create', data, function(result){
+        
+        alert(result);
+        
         var result = JSON.parse(result);
         self.setStatusMonitorNow();
         if(result.error == null){
@@ -376,7 +398,7 @@ function onFail(message) {
         }else{
             if(result.error === 'no_operation_area'){
                 alert('the location you submitted is not in a operation_area of the sea watch');
-            }
+            } 
         }
     });
   };
@@ -405,6 +427,14 @@ function onFail(message) {
         pClass = 'meta';
     }
     
+    //check if message is base64 image
+    //@sec base64 xss possible?: https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+     var matches = options.message.match(/III(.+?)III/g);
+    if(matches != null){
+        options.message = '<img class="chatImage" src="data:image/jpeg;base64,'+matches[0].replace(/III/g,'').replace('"','\"')+'">';
+        console.log(options.message);
+    }
+    
     var html = '<div class="'+divClass+'" data-id="'+options.message_id+'">'
         html += '    <p class="'+pClass+'">'+options.message+'</p>';
         html += '</div>';
@@ -431,6 +461,17 @@ function onFail(message) {
       $('.status_monitor__gps').html('Send Position '+diff+'s ago');
   };
   this.updateLanguage = function(language){
+  };
+  
+  
+  this.closeCase = function(case_id, reason, callback){
+      
+      api.query(this.apiURL+'api/cases/closeCase', {case_id:case_id, reason:reason},function(result){
+          
+          callback(result);
+          
+      });
+      
   };
   
   this.bing = function(){
