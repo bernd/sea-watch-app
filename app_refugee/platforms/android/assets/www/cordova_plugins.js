@@ -65,6 +65,14 @@ module.exports = [
         "file": "plugins/cordova-plugin-whitelist/whitelist.js",
         "id": "cordova-plugin-whitelist.whitelist",
         "runs": true
+    },
+    {
+        "file": "plugins/cordova-plugin-background-mode/www/background-mode.js",
+        "id": "cordova-plugin-background-mode.BackgroundMode",
+        "clobbers": [
+            "cordova.plugins.backgroundMode",
+            "plugin.backgroundMode"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -74,7 +82,8 @@ module.exports.metadata =
     "cordova-plugin-device": "1.1.1",
     "cordova-plugin-dialogs": "1.2.0",
     "cordova-plugin-geolocation": "2.1.0",
-    "cordova-plugin-whitelist": "1.2.1"
+    "cordova-plugin-whitelist": "1.2.1",
+    "cordova-plugin-background-mode": "0.6.5"
 };
 // BOTTOM OF METADATA
 });

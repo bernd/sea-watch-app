@@ -21,11 +21,15 @@ var app = {
     onDeviceReady: function() {
         $(document).ready(function(){
             swApp.init();
+            
         });
         
     }
 };
-
+document.addEventListener('deviceready', function () {
+        //init background mode
+        cordova.plugins.backgroundMode.enable();
+}, false);
 
 var swApp = new function(){
 
@@ -43,6 +47,8 @@ var swApp = new function(){
         
   
         var self  = this;
+  
+  
   
         this.clientId = this.getClientId();
          //preload audio file
@@ -138,9 +144,7 @@ var swApp = new function(){
   //open cases for the device id
   this.checkForOpenCase = function(){
       var self = this;
-      self.showMainScreen();
-
-      return null;
+      //self.showMainScreen();
 
       $.post(this.apiURL+'api/cases/checkForOpenCase', {'session_token':this.clientId}, function(result){
           
@@ -319,7 +323,7 @@ var swApp = new function(){
               $('#closeCaseOverlay button').click(function(){
                   
                   self.closeCase(self.emergency_case_id,$('#closeCaseOverlay select').val(), function(){
-                    $('.closeCaseOverlay').hide();
+                    $('#closeCaseOverlay').hide();
                       
                     self.showMainScreen();
                   });

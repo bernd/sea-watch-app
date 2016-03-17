@@ -59,6 +59,15 @@ module.exports = [
         "merges": [
             "navigator.notification"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-background-mode/www/background-mode.js",
+        "id": "cordova-plugin-background-mode.BackgroundMode",
+        "pluginId": "cordova-plugin-background-mode",
+        "clobbers": [
+            "cordova.plugins.backgroundMode",
+            "plugin.backgroundMode"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -68,7 +77,8 @@ module.exports.metadata =
     "cordova-plugin-geolocation": "2.1.0",
     "cordova-plugin-device": "1.1.1",
     "cordova-plugin-camera": "2.1.0",
-    "cordova-plugin-dialogs": "1.2.0"
+    "cordova-plugin-dialogs": "1.2.0",
+    "cordova-plugin-background-mode": "0.6.5"
 }
 // BOTTOM OF METADATA
 });

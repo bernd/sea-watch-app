@@ -21,11 +21,15 @@ var app = {
     onDeviceReady: function() {
         $(document).ready(function(){
             swApp.init();
+            
         });
         
     }
 };
-
+document.addEventListener('deviceready', function () {
+        //init background mode
+        cordova.plugins.backgroundMode.enable();
+}, false);
 
 var swApp = new function(){
 
@@ -44,6 +48,8 @@ var swApp = new function(){
   
         var self  = this;
   
+  
+  
         this.clientId = this.getClientId();
          //preload audio file
          $("#bing").trigger('load');
@@ -51,13 +57,9 @@ var swApp = new function(){
         var options = { timeout: 90000, enableHighAccuracy: true, maximumAge: 10000 };
         var timeout = setTimeout( function() {
             
-            confirm('test');
-            
             if (true) {
                 
                 self.showStartScreen();
-
-                alert('wating for position....');
                 navigator.geolocation.watchPosition (
                   function (position) {
                     var newPosition = {
@@ -79,8 +81,6 @@ var swApp = new function(){
                         "longitude":position.coords.longitude,
                         "latitude":position.coords.latitude
                     };
-                    
-                    alert('got position');
                     
                     $('body').attr('data-geo',JSON.stringify(coords));
                   },
@@ -144,9 +144,7 @@ var swApp = new function(){
   //open cases for the device id
   this.checkForOpenCase = function(){
       var self = this;
-      self.showMainScreen();
-
-      return null;
+      //self.showMainScreen();
 
       $.post(this.apiURL+'api/cases/checkForOpenCase', {'session_token':this.clientId}, function(result){
           
@@ -274,7 +272,6 @@ var swApp = new function(){
                          e.preventDefault();
                          alert('your request is pending... please wait');
                      });
-                     alert('before send');
                      self.sendEmergencyCall(function(){
                        self.showChatScreen();
                      });
@@ -326,7 +323,7 @@ var swApp = new function(){
               $('#closeCaseOverlay button').click(function(){
                   
                   self.closeCase(self.emergency_case_id,$('#closeCaseOverlay select').val(), function(){
-                    $('.closeCaseOverlay').hide();
+                    $('#closeCaseOverlay').hide();
                       
                     self.showMainScreen();
                   });
@@ -388,8 +385,6 @@ var swApp = new function(){
     var self = this;
     //send api call
     $.post(self.apiURL+'api/cases/create', data, function(result){
-        
-        alert(result);
         
         var result = JSON.parse(result);
         self.setStatusMonitorNow();

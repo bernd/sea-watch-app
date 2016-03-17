@@ -21,11 +21,15 @@ var app = {
     onDeviceReady: function() {
         $(document).ready(function(){
             swApp.init();
+            
         });
         
     }
 };
-
+document.addEventListener('deviceready', function () {
+        //init background mode
+        cordova.plugins.backgroundMode.enable();
+}, false);
 
 var swApp = new function(){
 
@@ -43,6 +47,8 @@ var swApp = new function(){
         
   
         var self  = this;
+  
+  
   
         this.clientId = this.getClientId();
          //preload audio file

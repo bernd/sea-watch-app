@@ -27,6 +27,14 @@
                         {
                             "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"BackgroundMode\"><param name=\"android-package\" value=\"de.appplant.cordova.plugin.background.BackgroundMode\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"KeepRunning\" value=\"true\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -44,6 +52,12 @@
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
+                            "count": 1
+                        }
+                    ],
+                    "/manifest/application": [
+                        {
+                            "xml": "<service android:name=\"de.appplant.cordova.plugin.background.ForegroundService\" />",
                             "count": 1
                         }
                     ]
@@ -65,6 +79,9 @@
             "PACKAGE_NAME": "io.cordova.hellocordova"
         },
         "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "io.cordova.hellocordova"
+        },
+        "cordova-plugin-background-mode": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
         }
     },
@@ -135,6 +152,14 @@
             "file": "plugins/cordova-plugin-whitelist/whitelist.js",
             "id": "cordova-plugin-whitelist.whitelist",
             "runs": true
+        },
+        {
+            "file": "plugins/cordova-plugin-background-mode/www/background-mode.js",
+            "id": "cordova-plugin-background-mode.BackgroundMode",
+            "clobbers": [
+                "cordova.plugins.backgroundMode",
+                "plugin.backgroundMode"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -142,6 +167,7 @@
         "cordova-plugin-device": "1.1.1",
         "cordova-plugin-dialogs": "1.2.0",
         "cordova-plugin-geolocation": "2.1.0",
-        "cordova-plugin-whitelist": "1.2.1"
+        "cordova-plugin-whitelist": "1.2.1",
+        "cordova-plugin-background-mode": "0.6.5"
     }
 }
