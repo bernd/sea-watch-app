@@ -95,7 +95,6 @@ var emergency_case = new function(){
     
 
 $(document).ready(function(){
-    
     $('.caseBox').show();
                 
     //init masonry
@@ -239,6 +238,47 @@ var swApp = new function(){
         this.cases[case_id].map.scrollWheelZoom.disable();
         
     };
+    
+    this.addVesselsToMap = function(){
+            var self = this;
+            $.get('api/getVehicles',{request: 'request'} ,function( result ) {
+                
+                $.each(result.vessels, function(index,value){
+                    
+                        L.mapbox.featureLayer({
+                            // this feature is in the GeoJSON format: see geojson.org
+                            // for the full specification
+                            type: 'Feature',
+                            geometry: {
+                                type: 'Point',
+                                // coordinates here are in longitude, latitude order because
+                                // x, y is the standard for GeoJSON and many formats
+                                coordinates: [
+                                  
+                                  value.locations[0].lon,
+                                  value.locations[0].lat
+                                ]
+                            },
+                            properties: {
+                                title: 'Peregrine Espresso',
+                                description: '1718 14th St NW, Washington, DC',
+                                // one can customize markers by adding simplestyle properties
+                                // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+                                'marker-size': 'large',
+                                'marker-color': '#121212',
+                                'marker-symbol': 'cafe'
+                            }
+                        }).on('click', function(e) {
+                            console.log(e.layer.feature.properties);
+                            //this.setGeoJSON(geoJson);?
+                        }).addTo(self.map);
+                    
+                    
+                });
+                
+            });
+    };
+    
     this.addMarkerToMap = function(location, color){
         
         L.mapbox.featureLayer({
@@ -714,6 +754,10 @@ var swApp = new function(){
             swApp.map.removeLayer(swApp.clusterLayer);
         
         
+        $.each(this.cases,function(i,v){
+            swApp.map.removeLayer(v.polyline);
+        });
+        
         $.each(this.mapLayers,function(index,value){
             
             swApp.map.removeLayer(value);
@@ -738,7 +782,6 @@ Array.prototype.contains = function(obj) {
     }
     return false;
 }
-
 
 //thx to Darin Dimitrov @ http://stackoverflow.com/questions/1988349/array-push-if-does-not-exist
 // check if an element exists in array using a comparer function

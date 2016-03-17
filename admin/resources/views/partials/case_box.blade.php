@@ -4,7 +4,7 @@
                                 <span class="time">{{\Carbon\Carbon::createFromTimeStamp(strtotime($emergency_case->created_at))->diffForHumans()}}</span>
                                 <span class="connection_type">{{$emergency_case->first_location()->connection_type}}</span>
                                 <div class="status">
-                                    {{['distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
+                                    {{['saved'=>'saved','distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
                                     <span class="id" style="font-size:8px">{{$emergency_case->id}}</span>
                                     <span class="source">Refugee</span>
                                 </div>
@@ -56,7 +56,7 @@
                                 ?></span>
 
                                 <span class="status">
-                                    {{['distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
+                                    {{['saved'=>'Saved','distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
                                 </span>
                                 <span class="source">Refugee</span>
                             </header>

@@ -1,5 +1,9 @@
 <div class="col-sm-2 col-md-2 sidebar" {{ (Request::is('/') ? '' : '') }}>
                 <ul class="nav nav-sidebar">
+                  <li><h3>Vessels</h3></li>
+                  @foreach ($vehicles as $vehicle)
+                      <li class="vehicle filter" data-id="<?php echo $vehicle->id;?>"><a href="#vehicle"><?php echo $vehicle->title;?> <span class="label label-danger pull-right"><?php //echo $operation_area->count_open_cases();?></span></a></li>
+                  @endforeach
                   <li><h3>Area</h3></li>
                   @foreach ($operation_areas as $operation_area)
                       <li class="op_area filter" data-class="oparea_<?php echo $operation_area->id;?>" data-id="<?php echo $operation_area->id;?>"><a href="#op_area"><?php echo $operation_area->title;?> <span class="label label-danger pull-right"><?php echo $operation_area->count_open_cases();?></span></a></li>

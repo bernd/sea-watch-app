@@ -157,6 +157,7 @@ load case box
 Route::post('api/loadCaseBox', 'ApiController@loadCaseBox');
 
 
+Route::get('api/getVehicles', 'ApiController@getVehicles');
 
 //Deprecated
 Route::post('api/checkForUpdates', 'ApiController@checkForUpdates');

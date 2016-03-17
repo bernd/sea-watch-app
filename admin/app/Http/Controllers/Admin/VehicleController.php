@@ -60,7 +60,7 @@ class VehicleController extends AdminController
         //echo strpos($header->fromaddress, '@msg.iridium.com');
         
         if(strpos($header->fromaddress, '@msg.iridium.com') !== FALSE ){
-            $sat_number = str_replace('@msg.iridium.com', '', $header->fromaddress);
+            $sat_number = (int)str_replace('@msg.iridium.com', '', $header->fromaddress);
             
             $vehicle = Vehicle::where('sat_number', '=',$sat_number)->get();
             echo $vehicle[0]->id;

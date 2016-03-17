@@ -36,6 +36,11 @@ $(document).ready(function(){
         @include('partials.casenav')
         <div class="col-sm-10 col-md-10 main">
             <ul id="caseList">
+            @foreach ($vehicles as $vehicle)
+                
+                @include('partials.vehicle_box')
+                
+            @endforeach
             @foreach ($emergency_cases as $emergency_case)
                 
                 @include('partials.case_box')

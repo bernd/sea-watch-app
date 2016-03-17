@@ -435,7 +435,12 @@ a.gray:hover, a.gray:focus, a.gray:active {
   .caseBox.rescue_in_progress header {
       background:#ff8942;
   }
-
+  
+  .caseBox.vehicleBox, .caseBox.vehicleBox.btn, .caseBox.vehicleBox header{
+      background:#000;
+      color:#FFF;
+  }
+  
   .caseBox .btn {
       border-radius: 4px;
       font-weight: 500

@@ -14,6 +14,7 @@ use App\emergencyCaseMessage;
 use App\involvedUsers;
 use App\Operation_area;
 use App\pointLocation;
+use App\Vehicle;
 
 
 use Carbon\Carbon;
@@ -232,7 +233,9 @@ class ApiController extends Controller
     public function checkForOpenCase(Request $request){
         $all = $request->all();
         
-        $caseData =  emergencyCase::where('session_token', $all['session_token'])->first();
+        $caseData =  emergencyCase::where('session_token', '=', $all['session_token'])
+                ->where('boat_status', '=', 'distress')
+                ->first();
         $case_id = $caseData['id'];
         $operation_area = $caseData['operation_area'];
         
@@ -307,10 +310,14 @@ class ApiController extends Controller
     
     public function closeCase(Request $request){
         
+        $all = $request->all();
+        $emergencyCase = emergencyCase::find($all['case_id']);
+        if($all['reason'] === 'accidentally'||$all['reason'] === 'solved_by_client'){
+            $emergencyCase->delete();
+        }else{
+            echo $emergencyCase->update(['boat_status'=>'closed_by_client because of '.$all['reason'],'boat_status'=>$all['reason']]);
+        }
         
-            $all = $request->all();
-            $emergencyCase = emergencyCase::find($all['case_id']);
-            echo $emergencyCase->update(['additional_informations'=>'closed_by_client because of '.$all['reason'],]);
     }
     
     
@@ -403,6 +410,17 @@ class ApiController extends Controller
         
 	return view('partials.case_box', compact('emergency_case'));
         
+    }
+    
+    public function getVehicles(Request $request){
+        
+	$vehicles = Vehicle::where('public', '=', 'true')->get();
+        
+        
+        
+        
+        $result['vessels'] = $vehicles->toArray();
+        return $result;
     }
 
     

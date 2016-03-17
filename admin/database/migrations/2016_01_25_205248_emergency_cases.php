@@ -97,7 +97,7 @@ class EmergencyCaseMessagesasdasd extends Migration
         
         Schema::create('vehicleLocations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('vessel_id');
+            $table->integer('vehicle_id');
             $table->float('lat', 10, 7);
             $table->float('lon', 10, 7);
             $table->integer('altitude');

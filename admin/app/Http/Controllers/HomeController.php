@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Operation_area;
 use App\emergencyCase;
 use App\User;
+use App\Vehicle;
 use DB;
 
 class HomeController extends Controller {
@@ -30,9 +31,10 @@ class HomeController extends Controller {
                     $user_operation_areas = explode(',',$current_user[0]->operation_areas);
                 
                 $operation_areas = Operation_area::select()->whereIn('id',$user_operation_areas)->get();
+                $vehicles = Vehicle::select()->where('public', '=', true)->get();
                 $emergency_cases = emergencyCase::select()->whereIn('operation_area',$user_operation_areas)->orderBy('created_at', 'desc')->get();
                 
-		return view('pages.home_cases', compact('operation_areas','emergency_cases'));
+		return view('pages.home_cases', compact('operation_areas','emergency_cases','vehicles'));
 	}
 	/**
 	 * Show the application dashboard to the user.
@@ -53,8 +55,8 @@ class HomeController extends Controller {
                 
                 $operation_areas = Operation_area::select()->whereIn('id',$user_operation_areas)->get();
                 $emergency_cases = emergencyCase::select()->whereIn('operation_area',$user_operation_areas)->orderBy('created_at', 'desc')->get();
-                
-		return view('pages.home_map', compact('operation_areas','emergency_cases'));
+                $vehicles = Vehicle::select()->where('public', '=', true)->get();
+		return view('pages.home_map', compact('operation_areas','emergency_cases','vehicles'));
 	}
 
 }
