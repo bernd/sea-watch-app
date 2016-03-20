@@ -11,6 +11,7 @@ class app_config{
 /****************   Model binding into route **************************/
 Route::model('language', 'App\Language');
 Route::model('user', 'App\User');
+Route::model('vehicle', 'App\Vehicle');
 
 Route::pattern('id', '[0-9]+');
 Route::pattern('slug', '[0-9a-z-_]+');

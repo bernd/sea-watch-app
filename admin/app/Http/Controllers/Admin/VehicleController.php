@@ -109,7 +109,7 @@ class VehicleController extends AdminController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param $user
+     * @param $vehicle
      * @return Response
      */
     public function edit(Vehicle $vehicle)
@@ -177,7 +177,12 @@ class VehicleController extends AdminController
             ->remove_column('created_at')
             ->remove_column('updated_at')
             ->remove_column('deleted_at')
-            ->add_column('actions', '@if ($id!="1337")<a href="{{{ URL::to(\'admin/vehicle/\' . $id . \'/edit\' ) }}}" class="btn btn-success btn-sm iframe" ><span class="glyphicon glyphicon-pencil"></span>  {{ trans("admin/modal.edit") }}</a>
+            ->remove_column('locations')
+            ->remove_column('last_tracked')
+            ->remove_column('type')
+            ->remove_column('key')
+            ->remove_column('marker_color')
+            ->add_column('actions', '@if ($id!="1337123123")<a href="{{{ URL::to(\'admin/vehicle/\' . $id . \'/edit\' ) }}}" class="btn btn-success btn-sm iframe" ><span class="glyphicon glyphicon-pencil"></span>  {{ trans("admin/modal.edit") }}</a>
                     <a href="{{{ URL::to(\'admin/vehicle/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger iframe"><span class="glyphicon glyphicon-trash"></span> {{ trans("admin/modal.delete") }}</a>
                 @endif')
             ->make();

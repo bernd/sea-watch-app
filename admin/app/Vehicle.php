@@ -11,7 +11,7 @@ class Vehicle extends Model
      *
      * @var array
      */
-    protected $fillable = ['title','type','sat_number'];
+    protected $fillable = ['title','type','sat_number','key','marker_color'];
     
     //returns last tracked location of vessel
     public function last_location(){
@@ -37,18 +37,6 @@ class Vehicle extends Model
     {
         return VehicleLocation::where('vehicle_id', $this->id)->orderBy('timestamp', 'desc')->first()->timestamp;
     }
-    
-    /**
-     * Get last_tracked attribute
-     *
-     * @return obj
-     */
-    public function count_messages()
-    {
-        return 0;
-    }
-    
-    
     
     /**
      * The accessors to append to the model's array form.

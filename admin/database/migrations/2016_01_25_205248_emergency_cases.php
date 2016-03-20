@@ -93,6 +93,10 @@ class EmergencyCaseMessagesasdasd extends Migration
             
             $table->string('sat_number');
             
+            $table->string('key');
+            
+            $table->string('marker_color');
+            
         });
         
         Schema::create('vehicleLocations', function (Blueprint $table) {
