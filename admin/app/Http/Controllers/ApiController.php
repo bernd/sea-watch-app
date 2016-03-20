@@ -252,6 +252,27 @@ class ApiController extends Controller
         
     }
     
+    public function getSpotterCases(Request $request){
+        $all = $request->all();
+        
+        $caseData =  emergencyCase::where('session_token', '=', $all['session_token'])
+                ->where('boat_status', '=', 'distress');
+        
+        $caseData =  emergencyCase::get();
+        
+        
+        
+        $result = [];
+        $result['error'] = null;
+        $result['data'] = [];
+        $result['data']['operation_area'] = 1;
+        $result['data']['emergency_cases'] = $caseData;
+        //$result['data']['messages'] = $this->getMessagesFromDB($case_id, 0);
+        
+        echo json_encode($result);
+        
+    }
+    
     /**
      * Adds a new emergency_case and the first position into the database
      *
@@ -302,7 +323,6 @@ class ApiController extends Controller
         $result['error'] = null;
         $result['data']['emergency_case_id'] = $emergencyCase->id;
         $result['data']['operation_area'] = $emergencyCase->operation_area;
-        
         
         return json_encode($result);
         //
@@ -384,6 +404,8 @@ class ApiController extends Controller
             //add new cases to result
             $result['data']['cases'] = emergencyCase::where('updated_at', '>', $date)->get();
             
+            
+            
             if(isset($request['cases'])){
                 //add new messages to result
                 $result['data']['messages'] = [];
@@ -424,5 +446,16 @@ class ApiController extends Controller
     }
 
     
+    public function updateVehiclePosition(Request $request){
+        
+	$vehicles = Vehicle::where('public', '=', 'true')->get();
+        
+        
+        
+        
+        $result['vessels'] = $vehicles->toArray();
+        return $result;
+    }
+
     
 }

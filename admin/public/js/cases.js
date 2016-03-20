@@ -193,6 +193,7 @@ var swApp = new function(){
     
     this.involvedCases = []; //list of ids
     this.cases = {} //case objects which also contain the map objects
+    this.vehicles = {} //case objects which also contain the map objects
     this.lastUpdated = Math.round(new Date().getTime()/1000);
     
     this.map;
@@ -226,19 +227,24 @@ var swApp = new function(){
     //used to init mini map in views/pages/home_cases
     this.addMiniMap = function(case_id, mapId){
         
-        if(typeof this.cases[case_id] == 'undefined')
-            this.cases[case_id] = {};
+        //enable two markers in one view(casebox + large map)
+        var pseudo_id = 'map_'+case_id;
+        
+        if(typeof this.cases[pseudo_id] == 'undefined')
+            this.cases[pseudo_id] = {};
         
         var case_data = this.getCaseData(case_id);
         
-        this.cases[case_id].map = L.mapbox.map(mapId, 'mapbox.streets').setView([parseFloat(case_data.locations[0].lat), parseFloat(case_data.locations[0].lon)], 16);
+        this.cases[pseudo_id].map = L.mapbox.map(mapId, 'mapbox.streets').setView([parseFloat(case_data.locations[0].lat), parseFloat(case_data.locations[0].lon)], 16);
         
-        this.addCaseToMap(this.cases[case_id].map, case_id);
+        this.addCaseToMap(this.cases[pseudo_id].map, case_id);
         
-        this.cases[case_id].map.scrollWheelZoom.disable();
+        this.cases[pseudo_id].map.scrollWheelZoom.disable();
         
     };
     
+    
+    //old - not used?
     this.addVesselsToMap = function(){
             var self = this;
             $.get('api/getVehicles',{request: 'request'} ,function( result ) {
@@ -330,7 +336,7 @@ var swApp = new function(){
         });
         return filters;
     };
-    this.filterResults = function(cases){
+    this.filterCases = function(cases){
         var filters = this.getFilters();
         
             
@@ -463,6 +469,9 @@ var swApp = new function(){
                         });
             });
     };
+        
+        
+        
         
     //reloads casebox if casebox exists otherwise creates new casebox
     this.reloadCase = function(case_id){
@@ -632,20 +641,38 @@ var swApp = new function(){
         });
         return ret;
     };
+    this.getVehicleData = function(id){
+        var ret = null;
+        $.each(vehicles_obj,function(index, value){
+            if(parseInt(value.id) == parseInt(id)){
+                ret = value;
+            }
+        });
+        return ret;
+    };
     this.clusterLayer;
     
     
+    
+    
     this.applyFilters = function(){
-        console.log('----------------');
-        console.log('active filters:');
-        console.log(this.getFilters());
-        console.log('results');
-        console.log(this.getFilters());
-        console.log(this.filterResults(emergency_cases_obj));
+        
+        //clear map
         this.clearMap();
-        $.each(this.filterResults(emergency_cases_obj), function(index,value){
+        
+        //add cases from object in home_map.blade.php
+        $.each(this.filterCases(emergency_cases_obj), function(index,value){
             swApp.addCaseToMap(swApp.map, value.id);
         });
+        
+        //add vehicles from object in home_map.blade.php
+        
+        
+        $.each(vehicles_obj, function(index,value){
+            swApp.addVehicleToMap(swApp.map,  value.id);
+        })
+        
+        
         //this.generateMarkerCluster(this.filterResults(emergency_cases_obj));
     };
     
@@ -721,6 +748,86 @@ var swApp = new function(){
                         }];
 
          this.cases[case_id].iconLayer.setGeoJSON(geoJson);
+        
+    };
+    
+    this.addVehicleToMap = function(map,vehicle_id){
+        
+        var self = this;
+        
+        var vehicle_data = this.getVehicleData(vehicle_id);
+        
+        if(typeof this.vehicles[vehicle_id] == 'undefined')
+            this.vehicles[vehicle_id] = {};
+        else{
+            var mapObj;
+            if(typeof this.map === 'object')
+                mapObj = this.map
+            else
+                mapObj = this.vehicles[vehicle_id].map;
+           
+            if(typeof this.vehicles[vehicle_id].featureGroup !== 'undefined'&&typeof this.vehicles[vehicle_id].iconLayer !== 'undefined'){
+                mapObj.removeLayer(this.vehicles[vehicle_id].featureGroup);
+                mapObj.removeLayer(this.vehicles[vehicle_id].iconLayer);
+            }
+        }
+        
+        
+        this.vehicles[vehicle_id].featureGroup = L.featureGroup().addTo(map);
+        var line_points = [];
+        $.each(vehicle_data.locations, function(index,value){
+            line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
+        });
+
+        console.log('lp');
+        console.log('lp');
+        console.log('lp');
+        console.log(line_points);
+
+        // Define polyline options
+        // http://leafletjs.com/reference.html#polyline
+        var polyline_options = {
+            color: '#'+vehicle_data.marker_color
+        };
+
+        // Defining a polygon here instead of a polyline will connect the
+        // endpoints and fill the path.
+        // http://leafletjs.com/reference.html#polygon
+        this.vehicles[vehicle_id].polyline = L.polyline(line_points, polyline_options).addTo(this.vehicles[vehicle_id].featureGroup);
+        //this.mapLayers.push(polyline);
+        var currentIndex = this.mapLayers.length;
+        this.vehicles[vehicle_id].iconLayer = L.mapbox.featureLayer().addTo(map);
+        this.vehicles[vehicle_id].iconLayer.on('click',function(e){
+            
+                //load vehicleBox
+                self.loadCaseBox(vehicle_id,function(result){
+                    
+                    //play sound
+                    $('#caseDetailContainer').html(result);
+                    self.initClicks();
+                });
+            
+            console.log(e.layer.feature.properties);
+        });
+        console.log(this.vehicles[vehicle_id].iconLayer);
+        
+        this.mapLayers.push(this.vehicles[vehicle_id].iconLayer);
+        
+        var geoJson = [{
+                            type: 'Feature',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [line_points[0][1], line_points[0][0]]
+                            },
+                            properties: {
+                                title: 'Vehicle-ID:'+vehicle_id,
+                                'vehicle-id':vehicle_id,
+                                description: 'first tracked: '+vehicle_data.created_at+'<br>last tracked: '+vehicle_data.updated_at,
+                                'marker-color': '#'+vehicle_data.marker_color
+                            }
+                        }];
+
+         this.vehicles[vehicle_id].iconLayer.setGeoJSON(geoJson);
         
     };
     
