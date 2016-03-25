@@ -9,7 +9,9 @@ This repo contains the backend and the app files.
 The backend is build with [Laravel 5](https://github.com/laravel/laravel) and is based on [Laravel Framework 5.1 Bootstrap 3 Starter Site](https://github.com/mrakodol/Laravel-5-Bootstrap-3-Starter-Site).
 It is located in the **admin/** directory
 
-There will be two mobile apps, one for refugees and the other one for SAR Teams the app for refugees. Both apps are build with HTML and JS and wrapped with [phonegap](phonegap.com/) to support as many systems as possible. The apps are located in the **app_refugee/** & **app_team/** directories
+There will be two mobile apps, one for refugees and the other one for SAR Teams the app for distress calls. Both apps are build with Angular and wrapped with [ionic](ionicframework.com/) to support as many systems as possible. The apps are located in the **app_refugee/** & **app_spotter/** directories.
+
+The curent apps in app_spotter and app_refugee will be reimplmented with angular and ionic and will be found seperate repos soon.
 
 
 Requirements

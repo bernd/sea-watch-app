@@ -1,13 +1,22 @@
 {
   "name": "Sea-Watch App",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sea-Watch Search And Rescue System",
   "title": "Sea-Watch App Api",
-  "url" : "https://github.com/sea-watch/sea-watch-app",
+  "url" : "https://APIURL",
+  "header": {
+    "title": "Sea-Watch-App",
+    "filename": "header.md"
+  },
+  "footer": {
+    "title": "Api Documentation",
+    "filename": "footer.md"
+  },
   "order": [
-    "CreateCase",
-    "ReloadApp",
-    "SendMessage"
+    "cases",
+    "message",
+    "vehicles",
+    "app"
   ],
   "template": {
     "withCompare": false,

@@ -91,7 +91,7 @@ Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
  * @api {get} /api/cases/create CreateCase
  * @apiDescription creates new case if submitted geolocation is in any operation area
  * @apiName CreateCase
- * @apiGroup case
+ * @apiGroup cases
  * 
  * @apiParam {String} [status] 
  * @apiParam {String} [condition] 
@@ -145,6 +145,14 @@ Route::post('api/cases/getInvolved', 'ApiController@getInvolved');
 
 
 
+/**
+ * @api {post} api/cases/closeCase closeCase
+ * @apiDescription Updates boat_status or deletes case if reason=accidentally||solved_by_client.
+ * @apiName CloseCase
+ * @apiGroup cases
+ * @sec validation required!
+ * @apiParam {String} reason
+ */
 Route::post('api/cases/closeCase', 'ApiController@closeCase');
 
 
@@ -155,6 +163,7 @@ Route::post('api/cases/closeCase', 'ApiController@closeCase');
  * @apiParam {Number} emergency_case_id
  * @apiParam {Number} last_message_received
  * @apiParam {String} geo_data geo JSON string
+ * @apiGroup App
  *
  * @apiSuccess {String} JSON messages
  */
@@ -166,15 +175,34 @@ api/reloadBackend reload backend (auth required)
 Route::post('api/reloadBackend', 'ApiController@reloadBackend');
 
 /**
-load case box
+ * @api {post} api/loadCaseBox loadCaseBox
+ * @apiDescription Loads Casebox (e.g. for views home_map and home_cases)
+ * @apiName LoadCaseBox
  * @apiParam {Number} case_id
+ * @apiGroup cases
+ *
+ * @apiSuccess {String} HTML casebox
  */
 Route::post('api/loadCaseBox', 'ApiController@loadCaseBox');
 
 
+/**
+ * @api {post} api/getVehicles getVehicles
+ * @apiDescription Returns all vehicles (e.g. for view home_map)
+ * @apiName GetVehicles
+ * @apiGroup vehicles
+ *
+ * @apiSuccess {String} HTML casebox
+ */
 Route::get('api/getVehicles', 'ApiController@getVehicles');
 
 
+/**
+ * @api {post} api/getVehicles getVehicles
+ * @apiDescription Updates Position for vehicle (e.g. for view home_map)
+ * @apiName UpdatePosition
+ * @apiGroup vehicles
+ */
 Route::post('api/vehicle/updatePosition', 'ApiController@updateVehiclePosition');
 
 //Deprecated
