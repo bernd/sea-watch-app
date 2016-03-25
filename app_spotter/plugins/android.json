@@ -7,17 +7,29 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.ionicframework.appspotter310221"
         },
-        "cordova-plugin-geolocation": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.ionicframework.appspotter310221"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+            "PACKAGE_NAME": "com.ionicframework.appspotter310221"
         },
-        "cordova-plugin-camera": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.ionicframework.appspotter310221"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.ionicframework.appspotter310221"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.ionicframework.appspotter310221"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ionicframework.appspotter310221"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.ionicframework.appspotter310221"
         }
     },
     "dependent_plugins": {}
