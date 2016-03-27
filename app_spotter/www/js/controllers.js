@@ -1,29 +1,35 @@
 angular.module('sw_spotter.controllers', [])
 
-.controller('AppCtrl', function($scope, $controller, $ionicModal, $cordovaGeolocation, $timeout) {
-   var watchOptions = {
-    timeout : 10000,
-    enableHighAccuracy: true // may cause errors if true
+.controller('AppCtrl', function($scope, $controller, $ionicModal, $interval, $cordovaGeolocation, $timeout) {
+
+  var stopUpdateLocation;
+  $scope.startLocationUpdater = function() {
+    // Don't start a new fight if we are already fighting
+    if ( angular.isDefined(stopUpdateLocation) ) return;
+
+          stopUpdateLocation = $interval(function() {
+            console.log('intervall');
+    }, 5000);
   };
 
-  var watch = $cordovaGeolocation.watchPosition(watchOptions);
-  watch.then(
-    null,
-    function(err) {
-      // error
-    },
-    function(position) {
-      var lat  = position.coords.latitude
-      var long = position.coords.longitude
-      console.log('position tracked:');
-      console.log(position.coords);
-      $scope.position = position;
+  $scope.stopLocationUpdater = function() {
+          if (angular.isDefined(stop)) {
+            $interval.cancel(stop);
+            stop = undefined;
+          }
+  };
+
+  //wait for position to be tracked
+  var stopWatching = $scope.$watch('position',function(position) {
+      if(position) {
+        console.log('got first position!');
+        $scope.startLocationUpdater();
+        stopWatching();
+      }
   });
 
+
   $controller('VehicleCtrl', {$scope: $scope}); //This works
-  
-  $scope.updateVehiclePosition(function(){
-  });
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -39,9 +45,6 @@ angular.module('sw_spotter.controllers', [])
 
   $scope.apiURL = 'https://app.sea-watch.org/admin/public/';
 
-  $scope.updatePosition = function(){
-
-  }
 
   $scope.initModal = function(cb){
 
@@ -71,13 +74,37 @@ angular.module('sw_spotter.controllers', [])
 
 
   $scope.init = function(){
-    if($scope.loginData === {}){
+
+
+    //init positionwatch
+    var watch = $cordovaGeolocation.watchPosition({
+      timeout : 10000,
+      enableHighAccuracy: true // may cause errors if true
+    });
+
+    watch.then(
+      null,
+      function(err) {
+        // error
+      },
+      function(position) {
+        var lat  = position.coords.latitude
+        var long = position.coords.longitude
+        console.log('position tracked:');
+        console.log(position.coords);
+        $scope.position = position;
+    });
+
+
+    console.log($scope.loginData);
+    if(typeof $scope.loginData.key === 'undefined'){
       console.log('not logged in');
       $scope.login();
     }else{
       console.log('logged in');
     }
   };
+
 
 
   // Perform the login action when the user submits the login form
@@ -112,8 +139,6 @@ angular.module('sw_spotter.controllers', [])
   //so that the request isnt sent several times
   if(typeof $scope.loadCases == 'undefined')
     $scope.loadCases = true;
-
-  console.log('type '+typeof $scope.loadCases);
 
   $scope.getCases = function(cb) {
 
@@ -184,22 +209,33 @@ controller('CreateCaseCtr',function($scope, $controller, Camera, dataService){
   };
 
 
+  var case_id = 4;
 
   //there must be a better way...
   if(typeof $stateParams.caseId !== 'undefined')
     var case_id = $stateParams.caseId;
-  else
-    var case_id = 4;
 
 
-      //$scope.cases[case_id].lastLocation = $scope.getlastLocation(case_id);
-      angular.forEach($scope.cases, function(case_values, key) {
-        if(case_values.id == case_id){
-           $scope.case = case_values;
-        }
-      });
-      $scope.case.lastLocation = $scope.getlastLocation(case_id+1);
+    //wait for cases to be loaded
+    var stopWatching = $scope.$watch('cases',function(cases) {
+      if(cases) {
+          console.log('GOT CASES GOT CASES!');
 
+
+          //$scope.cases[case_id].lastLocation = $scope.getlastLocation(case_id);
+          angular.forEach($scope.cases, function(case_values, key) {
+            if(case_values.id == case_id){
+               $scope.case = case_values;
+            }
+          });
+          $scope.case.lastLocation = $scope.getlastLocation(case_id+1);
+
+
+
+
+         stopWatching();
+      }
+    });
 
 
 

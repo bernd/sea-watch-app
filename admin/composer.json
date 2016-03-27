@@ -18,7 +18,8 @@
         "barryvdh/laravel-debugbar": "^2.0@dev",
         "laravelcollective/html": "5.1.*",
         "cviebrock/eloquent-sluggable": "dev-master",
-        "php-imap/php-imap": "~2.0"
+        "php-imap/php-imap": "~2.0",
+	"tymon/jwt-auth": "0.5.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
