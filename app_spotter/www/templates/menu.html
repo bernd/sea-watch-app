@@ -36,6 +36,12 @@
        </div>
      </label>
   </li>
+  
+   <ToggleButton 
+      IsChecked="{Binding IsButtonChecked, Mode=TwoWay}"
+      Command="{Binding DoNothing}"
+      CommandParameter="{Binding ServerViewModel}"
+      Content="Click Me!"></ToggleButton>
 
        
         <ion-item menu-close href="#/app/case/create">

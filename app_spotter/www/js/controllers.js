@@ -22,6 +22,8 @@ angular.module('sw_spotter.controllers', [])
 
   $controller('VehicleCtrl', {$scope: $scope}); //This works
   
+  
+  
   $scope.updateVehiclePosition(function(){
   });
 
@@ -239,5 +241,24 @@ controller('CreateCaseCtr',function($scope, $controller, Camera, dataService){
 
     console.log($scope.case);
   }
-
 });
+//if I do this code the app is not working anymore...
+
+/*.controller('TrackLoc', function($scope, $stateParams,$controller) {
+
+  $controller('TrackLoc', {$scope: $scope});
+
+
+  $scope.bound = function(track_id){
+
+    //I know that track_id === IsChecked is wrong, but I dont know what else I can equal it to
+      if(track_id === IsChecked) {
+        return true; 
+      }
+      else {
+          return false; 
+      }
+    });*/
+   
+
+
