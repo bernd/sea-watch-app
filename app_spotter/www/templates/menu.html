@@ -27,6 +27,7 @@
         <ion-item menu-close href="#/app/browse">
           Browse
         </ion-item>-->
+       <ion-toggle ng-change="alertTrackingStatus()" ng-model="menuObj.trackPosition" toggle-class="toggle-calm">Airplane Mode {{trackPosition}}</ion-toggle>
         <ion-item menu-close href="#/app/case/create">
           Create Case
         </ion-item>

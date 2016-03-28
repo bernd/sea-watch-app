@@ -90,7 +90,6 @@ var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.control
 .controller('VehicleCtrl',['$scope', 'dataService', function ($scope, dataFactory) {
 
   //$scope.cases;
-
   $scope.updateVehiclePosition = function(cb) {
         dataFactory.updateVehiclePosition({})
             .success(function (result) {
@@ -127,7 +126,7 @@ var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.control
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
-    controller: 'CasesCtrl'
+    controller: 'MenuCtrl'
   })
 
   .state('app.search', {

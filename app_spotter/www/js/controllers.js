@@ -1,15 +1,33 @@
 angular.module('sw_spotter.controllers', [])
 
+
+.controller('MenuCtrl', function($scope, $controller, $interval) {
+    
+    
+  $controller('AppCtrl', {$scope: $scope}); //This works
+  $scope.menuObj = {};
+  $scope.menuObj.trackPosition = false;
+  
+  $scope.alertTrackingStatus = function(){
+      console.log($scope.menuObj);
+      alert($scope.menuObj);
+  };
+    
+})
+     
 .controller('AppCtrl', function($scope, $controller, $ionicModal, $interval, $cordovaGeolocation, $timeout) {
 
+  $controller('VehicleCtrl', {$scope: $scope}); //This works
+  $controller('CasesCtrl', {$scope: $scope}); //This works
   var stopUpdateLocation;
   $scope.startLocationUpdater = function() {
     // Don't start a new fight if we are already fighting
     if ( angular.isDefined(stopUpdateLocation) ) return;
 
           stopUpdateLocation = $interval(function() {
+              console.log($scope.trackPosition);
             console.log('intervall');
-    }, 5000);
+          }, 5000);
   };
 
   $scope.stopLocationUpdater = function() {
@@ -29,7 +47,9 @@ angular.module('sw_spotter.controllers', [])
   });
 
 
-  $controller('VehicleCtrl', {$scope: $scope}); //This works
+  
+  $scope.updateVehiclePosition(function(){
+  });
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -131,7 +151,7 @@ angular.module('sw_spotter.controllers', [])
 })*/
 
 
-.controller('CasesCtrl',['$scope', 'dataService', function ($scope, dataFactory) {
+.controller('CasesCtrl',['$scope', 'dataService', '$controller', function ($scope, dataFactory, $controller) {
 
   $scope.cases;
 
@@ -275,5 +295,24 @@ controller('CreateCaseCtr',function($scope, $controller, Camera, dataService){
 
     console.log($scope.case);
   }
-
 });
+//if I do this code the app is not working anymore...
+
+/*.controller('TrackLoc', function($scope, $stateParams,$controller) {
+
+  $controller('TrackLoc', {$scope: $scope});
+
+
+  $scope.bound = function(track_id){
+
+    //I know that track_id === IsChecked is wrong, but I dont know what else I can equal it to
+      if(track_id === IsChecked) {
+        return true; 
+      }
+      else {
+          return false; 
+      }
+    });*/
+   
+
+
