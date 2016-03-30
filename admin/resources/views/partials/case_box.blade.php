@@ -2,9 +2,13 @@
                     <div class="front">
                             <header>
                                 <span class="time">{{\Carbon\Carbon::createFromTimeStamp(strtotime($emergency_case->created_at))->diffForHumans()}}</span>
-                                <span class="connection_type">{{$emergency_case->first_location()->connection_type}}</span>
+                                 <span class="connection_type">
+                                <?php 
+                                if($emergency_case->first_location())
+                                    echo $emergency_case->first_location()->connection_type;
+                                ?></span>
                                 <div class="status">
-                                    {{['saved'=>'saved','distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
+                                    {{['distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
                                     <span class="id" style="font-size:8px">{{$emergency_case->id}}</span>
                                     <span class="source">Refugee</span>
                                 </div>
@@ -52,11 +56,12 @@
                                 <span class="time">{{\Carbon\Carbon::createFromTimeStamp(strtotime($emergency_case->created_at))->diffForHumans()}}</span>
                                 <span class="connection_type">
                                 <?php 
-                                echo $emergency_case->first_location()->connection_type;
+                                if($emergency_case->first_location())
+                                    echo $emergency_case->first_location()->connection_type;
                                 ?></span>
 
                                 <span class="status">
-                                    {{['saved'=>'Saved','distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
+                                    {{['distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
                                 </span>
                                 <span class="source">Refugee</span>
                             </header>
