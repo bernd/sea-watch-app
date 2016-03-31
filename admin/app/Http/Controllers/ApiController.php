@@ -15,6 +15,9 @@ use App\involvedUsers;
 use App\Operation_area;
 use App\pointLocation;
 use App\Vehicle;
+use App\User;
+
+use JWTAuth;
 
 
 use Carbon\Carbon;
@@ -69,6 +72,23 @@ class ApiController extends Controller
         
     }
     
+    public function auth(Request $request){
+        if (Auth::attempt(array('username' => $request->username, 'password' => $request->password)))
+        {
+            
+            $user = User::where('username',$request->username)->first();
+            $token = JWTAuth::fromUser($user);
+        
+            $response = array();
+            $response["userid"] = $user->id;
+            $response["token"] = $token;
+            
+        }else{
+            $response["error"] = 'auth failed';
+        }
+        
+        return $response;
+    }
     //checks for updates in the admin panel
     //the app uses reloadApp()
     //depreciated!
@@ -230,6 +250,13 @@ class ApiController extends Controller
         $last_recieved_message = $all['last_recieved_message'];
     }
     
+    
+    /**
+     * inserts message into database
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function checkForOpenCase(Request $request){
         $all = $request->all();
         
@@ -335,7 +362,7 @@ class ApiController extends Controller
         if($all['reason'] === 'accidentally'||$all['reason'] === 'solved_by_client'){
             $emergencyCase->delete();
         }else{
-            echo $emergencyCase->update(['boat_status'=>'closed_by_client because of '.$all['reason'],'boat_status'=>$all['reason']]);
+            echo $emergencyCase->update(['additional_information'=>'closed_by_client because of '.$all['reason'],'boat_status'=>$all['reason']]);
         }
         
     }
@@ -445,16 +472,31 @@ class ApiController extends Controller
         return $result;
     }
 
+    //AuthController
+    public function token(){
+        $token = JWTAuth::getToken();
+        if(!$token){
+            throw new BadRequestHtttpException('Token not provided');
+        }
+        try{
+            $token = JWTAuth::refresh($token);
+        }catch(TokenInvalidException $e){
+            throw new AccessDeniedHttpException('The token is invalid');
+        }
+        $response = array('token'=>$token);
+        return $response;
+    }
     
     public function updateVehiclePosition(Request $request){
         
-	$vehicles = Vehicle::where('public', '=', 'true')->get();
+	//$vehicles = Vehicle::where('public', '=', 'true')->get();
         
         
+        echo JWTAuth::parseToken()->toUser();
         
         
-        $result['vessels'] = $vehicles->toArray();
-        return $result;
+        //$result['vessels'] = $vehicles->toArray();
+        //return $result;
     }
 
     

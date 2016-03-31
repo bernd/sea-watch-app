@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
+use App\User;
 use App\Vehicle;
 use Illuminate\Http\Request;
 use Datatables;
@@ -95,13 +96,15 @@ class VehicleController extends AdminController
     public function store(Request $request)
     {
 
-//        $user = new User ($request->except('password','password_confirmation'));
-//        $user->password = bcrypt($request->password);
-//        $user->confirmation_code = str_random(32);
-//        $user->save();
+        $user = new User ($request->only(['name', 'username', 'email', 'mobile_number', 'organisation', 'operation_areas', 'confirmed']));
+        $user->password = bcrypt($request->password);
+        $user->confirmation_code = str_random(32);
+        $user->save();
         
         
-        $vehicle = new Vehicle($request->all());
+        
+        $vehicle = new Vehicle($request->only(['title', 'type', 'sat_number', 'name']));
+        $vehicle->user_id = $user->id;
         $vehicle->save();
         
     }
@@ -114,6 +117,12 @@ class VehicleController extends AdminController
      */
     public function edit(Vehicle $vehicle)
     {
+         
+        $user = User::where('id', $vehicle->user_id)->first();
+        $vehicle->name = $user->name;
+        $vehicle->username = $user->username;
+        
+        //$vehicle = array_merge($vehicleObj, $user->toArray());
         return view('admin.vehicle.create_edit', compact('vehicle'));
     }
 
@@ -125,8 +134,11 @@ class VehicleController extends AdminController
      */
     public function update(Request $request, Vehicle $vehicle)
     {
-      
-        $vehicle->update($request->all());
+        
+        
+        $user = User::find($request->user_id);
+        $user->update($request->only(['name', 'username', 'email', 'mobile_number', 'organisation', 'operation_areas', 'confirmed']));
+        $vehicle->update($request->only(['title', 'type', 'sat_number', 'name']));
     }
 
     /**
@@ -140,7 +152,6 @@ class VehicleController extends AdminController
     {
         echo $request;
         echo $vehicle;
-        echo 'asd';
         
         return view('admin.vehicle.delete', compact('vehicle'));
     }
@@ -154,7 +165,6 @@ class VehicleController extends AdminController
     public function destroy(Vehicle $vehicle)
     {
         
-        echo 'asdasd';
         $vehicle->delete();
     }
 
@@ -181,6 +191,7 @@ class VehicleController extends AdminController
             ->remove_column('last_tracked')
             ->remove_column('type')
             ->remove_column('key')
+            ->remove_column('user_id')
             ->remove_column('marker_color')
             ->add_column('actions', '@if ($id!="1337123123")<a href="{{{ URL::to(\'admin/vehicle/\' . $id . \'/edit\' ) }}}" class="btn btn-success btn-sm iframe" ><span class="glyphicon glyphicon-pencil"></span>  {{ trans("admin/modal.edit") }}</a>
                     <a href="{{{ URL::to(\'admin/vehicle/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger iframe"><span class="glyphicon glyphicon-trash"></span> {{ trans("admin/modal.delete") }}</a>

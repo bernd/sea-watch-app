@@ -2,7 +2,9 @@
 use App\emergencyCase;
 use App\operation_areas;
 
+//@sec
 header('Access-Control-Allow-Origin:*');
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
 
 class app_config{
     public static $app_name = 'Sea-Watch.APP';
@@ -41,6 +43,27 @@ Route::get('cases/edit/{id}', array('as' => 'case.edit', function($id)
 }));
 
 Route::post('cases/edit/{id}', 'EmergencyCaseController@update');
+
+/**
+ * @api {post} /api/user/auth userauth
+ * @apiDescription auhtorize user and send token
+ * @apiName UserAuth
+ * @apiGroup auth
+ *
+ *
+ * @apiSuccess {String} token authtoken.
+ */
+Route::post('api/user/auth', 'ApiController@auth');
+
+/**
+ * @api {post} /api/user/token tokenCheck
+ * @apiDescription check token for validity and expiration
+ * @apiName 
+ * @apiGroup auth
+ *
+ *
+ */
+Route::post('api/user/token', 'ApiController@token');
 
 /**
  * @api {post} /api/messages/send SendMessage
@@ -124,7 +147,7 @@ Route::post('api/cases/sendMessageCrew', 'ApiController@sendMessageCrew');
 
 /**
  * @api {get} api/cases/operation_area/:id CasesInOperationArea
- * @apiDescription sends get cases in operation area (for backend)
+ * @apiDescription Get cases in operation area (for backend)
  * @apiName CasesInOperationArea
  * @apiGroup cases
  *
