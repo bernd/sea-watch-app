@@ -11,7 +11,7 @@ class Vehicle extends Model
      *
      * @var array
      */
-    protected $fillable = ['title','type','sat_number','key','marker_color'];
+    protected $fillable = ['title','type','sat_number','key','marker_color','user_id'];
     
     //returns last tracked location of vessel
     public function last_location(){
@@ -35,7 +35,16 @@ class Vehicle extends Model
      */
     public function getLastTrackedAttribute()
     {
-        return VehicleLocation::where('vehicle_id', $this->id)->orderBy('timestamp', 'desc')->first()->timestamp;
+        $firstObj = VehicleLocation::where('vehicle_id', $this->id)->orderBy('timestamp', 'desc');
+       
+        
+        try {
+                $firstObj->first();
+            //Do stuff when user exists.
+        } catch (ErrorException $e) {
+            //Do stuff if it doesn't exist.
+            return array();
+        }
     }
     
     /**
