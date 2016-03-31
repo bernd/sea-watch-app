@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.controllers'])
+var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.controllers','angular-jwt'])
 
 
 
@@ -29,16 +29,28 @@ var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.control
 
         this.updateVehiclePosition = function (options) {
           return $http({
-              url: urlBase+'vehicle/updatePosition', 
-              method: "POST",
-              params: {session_token: 1337, position:options.position}
-           });
+            method: 'POST',
+            url: urlBase+'vehicle/updatePosition',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer '+window.localStorage['jwt']
+            },
+            data: {session_token: 1337, position:options.position}
+          });
         };
 
         this.createCase = function (options){
         console.log(options.params.location_data);
           return $http({
               url: urlBase+'cases/create', 
+              method: "POST",
+              params: options.params
+           });
+        };
+
+        this.auth = function (options){
+          return $http({
+              url: urlBase+'user/auth', 
               method: "POST",
               params: options.params
            });

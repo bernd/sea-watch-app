@@ -15,19 +15,23 @@ angular.module('sw_spotter.controllers', [])
     
 })
      
-.controller('AppCtrl', function($scope, $controller, $ionicModal, $interval, $cordovaGeolocation, $timeout) {
+.controller('AppCtrl', function($scope, $controller, $ionicModal, $interval, $cordovaGeolocation, $timeout, $http, $state) {
 
   $controller('VehicleCtrl', {$scope: $scope}); //This works
   $controller('CasesCtrl', {$scope: $scope}); //This works
   var stopUpdateLocation;
   $scope.startLocationUpdater = function() {
+      
+      
     // Don't start a new fight if we are already fighting
     if ( angular.isDefined(stopUpdateLocation) ) return;
 
           stopUpdateLocation = $interval(function() {
-              console.log($scope.trackPosition);
-            console.log('intervall');
-          }, 5000);
+              
+              console.log(window.localStorage['jwt']);
+              $scope.updateVehiclePosition();
+              
+          }, 10000);
   };
 
   $scope.stopLocationUpdater = function() {
@@ -36,38 +40,33 @@ angular.module('sw_spotter.controllers', [])
             stop = undefined;
           }
   };
-
+  
+  
   //wait for position to be tracked
-  var stopWatching = $scope.$watch('position',function(position) {
+  //when tracked->initLocationUpdater
+  if(typeof $scope.updatePositionInited == 'undefined')
+    $scope.updatePositionInited = false;
+  var stopWatchPosition = $scope.$watch('position',function(position) {
+      
+      if ($scope.updatePositionInited )return;
       if(position) {
-        console.log('got first position!');
+        $scope.updatePositionInited = true;
+        console.log('initLocationUpdater');
         $scope.startLocationUpdater();
-        stopWatching();
+        stopWatchPosition();
       }
   });
-
-
   
-  $scope.updateVehiclePosition(function(){
-  });
-
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  // Form data for the login modal
-  $scope.loginData = {};
+  //userdata
+  $scope.loginData = {
+      token:window.localStorage['jwt']
+  };
 
   $scope.position = {};
 
   $scope.apiURL = 'https://app.sea-watch.org/admin/public/';
 
-
   $scope.initModal = function(cb){
-
     // Create the login modal that we will use later
     $ionicModal.fromTemplateUrl('templates/login.html', {
       scope: $scope
@@ -93,7 +92,10 @@ angular.module('sw_spotter.controllers', [])
   };
 
 
+  var urlBase = 'http://app.sea-watch.org/admin/public/api/';
   $scope.init = function(){
+      
+      console.log('INIT INIT INIT');
 
 
     //init positionwatch
@@ -108,20 +110,39 @@ angular.module('sw_spotter.controllers', [])
         // error
       },
       function(position) {
-        var lat  = position.coords.latitude
-        var long = position.coords.longitude
         console.log('position tracked:');
         console.log(position.coords);
         $scope.position = position;
     });
 
-
-    console.log($scope.loginData);
-    if(typeof $scope.loginData.key === 'undefined'){
+    if(typeof $scope.loginData.token === 'undefined'){
       console.log('not logged in');
       $scope.login();
     }else{
       console.log('logged in');
+        //check if token needs to be refreshed
+                $http({
+                method: 'POST',
+                url: urlBase+'user/token',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: 'Bearer '+window.localStorage['jwt']
+                },
+                data: {session_token: 1337, position:'fuck you'}
+            }).then(function(response) {
+                if(!response.data.error){
+                  console.log(response);
+                  window.localStorage['jwt'] = response.data.token;
+                  console.log('token updated');
+                }else{
+                    console.log(response.error);
+                }
+            }, function(error) {
+                console.log('Some error occured during the authentification with stored token:');
+                console.log(error);
+              
+                $scope.login();
+            });
     }
   };
 
@@ -129,26 +150,32 @@ angular.module('sw_spotter.controllers', [])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
+      
+    
     console.log('Doing login', $scope.loginData);
+    $http({
+      url: urlBase+'user/auth',
+      method: 'POST',
+      data: $scope.loginData
+    }).then(function(response) {
+        if(!response.data.error){
+          console.log(response);
+          window.localStorage['jwt'] = response.data.token;
+          window.localStorage['user'] = response.data.user_id;
+          $scope.closeLogin();
+          $state.go('app.overview');
+        }else{
+            alert(response.error);
+        }
+    }, function(error) {
+      alert(error.data);
+    });
+           
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
+    
   };
 })
 
-/*.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})*/
 
 
 .controller('CasesCtrl',['$scope', 'dataService', '$controller', function ($scope, dataFactory, $controller) {
@@ -162,7 +189,7 @@ angular.module('sw_spotter.controllers', [])
 
   $scope.getCases = function(cb) {
 
-        $scope.loadCases = false; 
+        $scope.loadCases = false;
         dataFactory.getCases()
             .success(function (result) {
                 $scope.cases = result.data.emergency_cases;
@@ -177,7 +204,7 @@ angular.module('sw_spotter.controllers', [])
             });
   };
   if($scope.loadCases){
-    console.log('init Loading')
+    console.log('init Loading');
     $scope.getCases();
   }
 }]).
@@ -189,7 +216,6 @@ controller('CreateCaseCtr',function($scope, $controller, Camera, dataService){
 
 
         $controller('AppCtrl', {$scope: $scope});
-        console.log('');
         $scope.case = {};
         //add source type to scope
         $scope.case.source_type = 'spotter_app';
@@ -239,7 +265,7 @@ controller('CreateCaseCtr',function($scope, $controller, Camera, dataService){
     //wait for cases to be loaded
     var stopWatching = $scope.$watch('cases',function(cases) {
       if(cases) {
-          console.log('GOT CASES GOT CASES!');
+          console.log('cases loaded!');
 
 
           //$scope.cases[case_id].lastLocation = $scope.getlastLocation(case_id);
@@ -264,9 +290,7 @@ controller('CreateCaseCtr',function($scope, $controller, Camera, dataService){
 
 
   $scope.takePicture = function() {
-
-    console.log('asdasdasd');
-
+    console.log('$scope.takePicture() initted, if app crashes => no browser support html5 cam');
     Camera.getPicture().then(function(imageURI) {
       console.log(imageURI);
     }, function(err) {
@@ -296,23 +320,3 @@ controller('CreateCaseCtr',function($scope, $controller, Camera, dataService){
     console.log($scope.case);
   }
 });
-//if I do this code the app is not working anymore...
-
-/*.controller('TrackLoc', function($scope, $stateParams,$controller) {
-
-  $controller('TrackLoc', {$scope: $scope});
-
-
-  $scope.bound = function(track_id){
-
-    //I know that track_id === IsChecked is wrong, but I dont know what else I can equal it to
-      if(track_id === IsChecked) {
-        return true; 
-      }
-      else {
-          return false; 
-      }
-    });*/
-   
-
-
