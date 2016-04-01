@@ -193,6 +193,7 @@ class VehicleController extends AdminController
             ->remove_column('key')
             ->remove_column('user_id')
             ->remove_column('marker_color')
+                
             ->add_column('actions', '@if ($id!="1337123123")<a href="{{{ URL::to(\'admin/vehicle/\' . $id . \'/edit\' ) }}}" class="btn btn-success btn-sm iframe" ><span class="glyphicon glyphicon-pencil"></span>  {{ trans("admin/modal.edit") }}</a>
                     <a href="{{{ URL::to(\'admin/vehicle/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger iframe"><span class="glyphicon glyphicon-trash"></span> {{ trans("admin/modal.delete") }}</a>
                 @endif')

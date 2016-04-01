@@ -24,7 +24,9 @@ use Carbon\Carbon;
 
 
 function addLocation($emergency_case_id, $geo_data){
-    
+        if(!$geo_data['heading']){
+            $geo_data['heading'] = 1337;
+        }
         $emergencyCaseLocation = new emergencyCaseLocation(['lon'=>(float)$geo_data['longitude'],
                 'lat'=>(float)$geo_data['latitude'],
                 'accuracy'=>$geo_data['accuracy'],
@@ -140,6 +142,46 @@ class ApiController extends Controller
     }
     
     /**
+     * used in refugee_app
+     * return messages with message_id > last_message_received and case_id
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function reloadSpotter(Request $request){
+        $all = $request->all();
+        
+        $responseData = null;
+        foreach($all['cases'] AS $case_id=>$case_data){
+            $caseMessages = $this->getMessagesFromDB($case_id, $case_data['last_message_received']);
+            if(count($caseMessages)>0)
+                $responseData[$case_id]['messages'] = $caseMessages;
+        }
+        
+        return $responseData;
+        
+        $emergency_case_id = $all['emergency_case_id'];
+        
+        if(isset($all['geo_data'])&&$all['geo_data']!='undefined'){
+            $geo_data = json_decode($all['geo_data'], true);
+
+            $geo_data['heading'] = 0;
+
+            addLocation($emergency_case_id, $geo_data);
+        }
+        
+        
+        
+        $emergencyCaseMessages = $this->getMessagesFromDB($emergency_case_id, $all['last_message_received']);
+
+        
+        $result = [];
+        $result['error'] = null;
+        $result['data']['messages'] = $emergencyCaseMessages;
+        return $result;
+    }
+    
+    /**
      * get cases for operation area
      *
      * @param  \Illuminate\Http\Request  $request
@@ -215,11 +257,19 @@ class ApiController extends Controller
      */
     public function sendMessageCrew(Request $request){
         
+        
         $all = $request->all();
         $all['emergency_case_id'] = $all['case_id'];
         $all['message'] = $all['message'];
-        $all['sender_type'] = 'user';
-        $all['sender_id'] = Auth::User()->id;
+        
+        //(app_spotter use jwtauth)
+        if(isset($all['sender_type']) && $all['sender_type'] == 'spotter'){
+            $user = $this->checkApiAuth(); //throws 500 if token is invalid
+            $all['sender_id'] = $user->id;
+        }else{
+            $all['sender_type'] = 'user';
+            $all['sender_id'] = Auth::User()->id;
+        }
         
         $emergencyCaseMessage = new emergencyCaseMessage($all);
         $emergencyCaseMessage->save();
@@ -227,6 +277,7 @@ class ApiController extends Controller
         $result = [];
         $result['error'] = null;
         $result['data']['emergency_case_message_id'] = $emergencyCaseMessage->id;
+        $result['data']['message_data'] = $emergencyCaseMessage;
         
         return json_encode($result);
     }
@@ -355,6 +406,51 @@ class ApiController extends Controller
         //
     }
     
+    public function updateCase($case_id,Request $request){
+        
+        //check auth
+        if($this->checkApiAuth()){
+            $emergencyCase = emergencyCase::find($case_id);
+            $emergencyCase->update($request->all());
+        }
+        
+        
+    }
+    //creates new emergencyCaseLocation for case
+    public function updateCaseLocation($case_id,Request $request){
+        
+        //check auth
+        if($this->checkApiAuth()){
+            
+            $all = $request->all();
+
+
+            //trigonomentry function needs to be added here and overwrite $all['position']['latitude'] and ['longitude']
+            $all['spotting_distance'];
+            $all['spotting_direction'];
+
+
+            if(isset($all['position'])&&$all['position']!='undefined'){
+                $emergencyCase = emergencyCase::find($case_id);
+                $emergencyCase->update($request->all());
+                
+                
+                //addMessage or addMesage in addLocation?
+                addLocation($case_id, $all['position']);
+                
+                $response['data'] = 'Location updated: lat:'.$all['position']['latitude'].' lon: '.$all['position']['longitude'];
+                $response['error'] = null;
+                return $response;
+            }else{
+                $response['error'] = 'no valid position data';
+            }
+
+            
+        }
+        
+        
+    }
+    
     public function closeCase(Request $request){
         
         $all = $request->all();
@@ -471,6 +567,16 @@ class ApiController extends Controller
         $result['vessels'] = $vehicles->toArray();
         return $result;
     }
+    
+    //returns fakse or User obj
+    private function checkApiAuth($type=null){
+        switch($type){
+            default: 
+                return JWTAuth::parseToken()->toUser();
+                break;
+        }
+        return false;
+    }
 
     //AuthController
     public function token(){
@@ -489,14 +595,15 @@ class ApiController extends Controller
     
     public function updateVehiclePosition(Request $request){
         
-	//$vehicles = Vehicle::where('public', '=', 'true')->get();
-        
-        
-        echo JWTAuth::parseToken()->toUser();
-        
-        
+	
+        $all = $request->all();
+        $Vehicle = Vehicle::where('user_id', '=', JWTAuth::parseToken()->toUser()->id)->first();
+        $vehicleLocation = new \App\VehicleLocation(array('lat'=>$all['position']["latitude"], 'lon'=>$all['position']['longitude'], 'vehicle_id'=>$Vehicle->id, 'timestamp'=>time(),'connection_type'=>'spotter_app'));
+            $vehicleLocation->save();
+            echo $vehicleLocation->id;
         //$result['vessels'] = $vehicles->toArray();
         //return $result;
+        return $Vehicle;
     }
 
     

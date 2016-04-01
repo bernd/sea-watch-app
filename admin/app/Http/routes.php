@@ -131,6 +131,33 @@ Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
  *
  * @apiSuccess {Number} case_id
  */
+
+
+Route::put('api/case/{id}', 'ApiController@updateCase');
+Route::put('api/caseLocation/{id}', 'ApiController@updateCaseLocation');
+
+Route::post('api/cases/reloadSpotter/',  'ApiController@reloadSpotter');
+/**
+ * @api {get} /api/cases/create CreateCase
+ * @apiDescription creates new case if submitted geolocation is in any operation area
+ * @apiName CreateCase
+ * @apiGroup cases
+ * 
+ * @apiParam {String} [status] 
+ * @apiParam {String} [condition] 
+ * @apiParam {String} [boat_type] 
+ * @apiParam {bool} [other_involved] 
+ * @apiParam {bool} [engine_working] 
+ * @apiParam {Number} [passenger_count] 
+ * @apiParam {String} [additional_informations] 
+ * @apiParam {Number} [spotting_distance] 
+ * @apiParam {Number} [spotting_direction] in degrees
+ * @apiParam {String} [picture] base64 encoded picture
+ * @apiParam {String} source source
+ * @apiParam {String} location_data  geo JSON string
+ *
+ * @apiSuccess {Number} case_id
+ */
 Route::post('api/cases/create', 'ApiController@add_request');
 
 /**

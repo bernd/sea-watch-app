@@ -78,13 +78,22 @@ class emergencyCase extends Model
     {
         return $this->count_messages();
     }
+    /**
+     * Getmessages
+     *
+     * @return int
+     */
+    public function getMessagesAttribute()
+    {
+        return emergencyCaseMessage::where('emergency_case_id', $this->id)->get();
+    }
     
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['locations', 'emergency_case_title', 'count_messages'];
+    protected $appends = ['locations', 'emergency_case_title', 'count_messages', 'messages'];
     
     public function translateColumnName($columnName){
         return ['id'=>'ID','boat_status'=>'status','boat_condition'=>'condition','boat_type'=>'type','other_involved'=>'other involved','engine_working'=>'engine working','passenger_count'=>'passenger count','additional_informations'=>'additional infos','spotting_distance'=>'spotting distance','spotting_direction'=>'spotting direction','picture'=>'picture','operation_area'=>'operation area'][$columnName];
