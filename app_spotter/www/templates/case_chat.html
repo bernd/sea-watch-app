@@ -1,0 +1,87 @@
+<ion-view view-title="Case Chat for #{{case.id}}">
+  <ion-content class="content-stable" delegate-handle="chat">
+   
+    <div class="chatMain">
+         
+        
+        
+   
+        <style>
+        .chatMain {margin-bottom:60px;}
+        .message_container {
+            display:block;
+            clear:both;
+        }
+        li.refugee:before, .li.spotter:before, li.refugee:after, li.spotter:after {
+            display:table-cell;
+            content:' ';
+            clear:both;
+        }
+        li.refugee .message_container {
+            float:left;
+        }
+
+        li.spotter .message_container {
+            float:right;
+        }
+
+        li.spotter, li.refugee {
+           padding:8px;
+            display:block;
+            overflow:auto;
+        }
+
+        li .messages {display:block; max-width:100%;}
+
+        li .message_container span.message {
+            max-width:60%;
+            padding:7px;
+            border-radius:8px;
+            display:block;
+        }
+
+        li.refugee .message_container span.message {
+            background-color:#e1e1e1;
+            border-bottom-left-radius: 0px;
+
+        }
+        li.spotter .message_container span.message {
+            background-color:#11c1f3;
+            color:#fff;
+            border-bottom-right-radius: 0px;
+            text-align:left;
+        } 
+
+         li .message_container .meta { font-size:0.8em; color:#ccc;}
+
+        </style>
+        
+        <ul>
+            <li class="{{message.sender_type}}" ng-repeat="message in case.messages" >
+                <div class="message_container">
+                    <div class="messages">
+                    <span style="display:none;" class="message_id">{{message.id}}</span>
+                    <span style="display:none;" class="emergency_case_id">{{message.emergency_case_id}}</span>
+                    <span style="display:none;" class="emergency_case_location_id">{{message.emergency_case_location_id}}</span>
+                    <span class="message">{{parseMessage(message.message)}}</span>
+                    <span style="display:none;" class="sender_id">{{message.sender_id}}</span>
+                    <span style="display:none;" class="sender_type"></span>
+                    <div class="meta"><span class="updated_at">{{message.updated_at}}</span></div>
+                </div>
+            </li>
+        </ul>
+       
+    </div>
+    
+  </ion-content>
+         <form ng-submit="sendMessage()" class="my-form">
+            <div class="bar bar-footer item-input-inset bar-stable">
+                <label class="item-input-wrapper">
+                    <input type="text" ame="messageInput" id="message" placeholder="...type a message" ng-model="chatInput">
+                </label>
+                <button type="submit" class="button button-clear">
+                    Send
+                </button>
+            </div>
+        </form>
+</ion-view>

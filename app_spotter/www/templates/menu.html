@@ -5,7 +5,7 @@
       </ion-nav-back-button>
 
       <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+          <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
@@ -27,12 +27,15 @@
         <ion-item menu-close href="#/app/browse">
           Browse
         </ion-item>-->
-       <ion-toggle ng-change="alertTrackingStatus()" ng-model="menuObj.trackPosition" toggle-class="toggle-calm">Airplane Mode {{trackPosition}}</ion-toggle>
+       <ion-toggle ng-change="getTrackingStatus()" ng-model="menuObj.trackPosition" toggle-class="toggle-calm">Track Position {{menuObj.trackPosition}}</ion-toggle>
         <ion-item menu-close href="#/app/case/create">
           Create Case
         </ion-item>
         <ion-item menu-close href="#/app/Cases">
           Cases
+        </ion-item>
+        <ion-item menu-close ng-click="logout()">
+          Logout
         </ion-item>
         <ion-item ng-repeat="case in cases" href="#/app/cases/{{case.id}}">
           {{case.id}} - 

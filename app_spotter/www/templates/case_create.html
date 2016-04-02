@@ -31,7 +31,7 @@
           </label>
           <label class="item item-input item-select">
             <div class="input-label">
-              Boat Condition
+             Condition
             </div>
             <select name="boat_condition" id="boat_condition" ng-model="case.boat_condition">
                         <option value="unknown">unknown</option>
@@ -57,7 +57,7 @@
 
           <div class="item item-toggle">
              Other Organisations Involved?
-             <label class="toggle toggle-assertive">
+             <label class="toggle toggle-balanced">
                <input type="checkbox" ng-model="case.case.other_involved">
                <div class="track">
                  <div class="handle"></div>
@@ -66,35 +66,40 @@
           </div>
           <div class="item item-toggle">
              Engine Working?
-             <label class="toggle toggle-assertive">
+             <label class="toggle toggle-balanced">
                <input type="checkbox" ng-model="case.case.engine_working">
                <div class="track">
                  <div class="handle"></div>
                </div>
              </label>
           </div>
-          <label class="item item-input">
+          <label class="item item-input item-floating-label">
+            <span class="input-label">How many people?</span>
             <input type="text" placeholder="How many people?" id="passenger_count" ng-model="case.passenger_count">
           </label>
-          <label class="item item-input">
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Additional Information</span>
             <input type="text" placeholder="Additional informations" id="additional_informations" ng-model="case.additional_informations">
           </label>
-          <label class="item item-input">
-            <input type="text" placeholder="Spotting distance in km" name="distance" id="spotting_distance" ng-model="case.spotting_distance">
+          <label class="item  item-input item-floating-label">
+            <span class="input-label"><i class="icon ion-code-working"></i> Spotting distance &middot; km</span>
+            <input type="text" placeholder="Spotting distance &middot; km" name="distance" id="spotting_distance" ng-model="case.spotting_distance">
           </label>
-          <label class="item item-input">
-            <input type="text" placeholder="Spotting direction in degree" id="spotting_direction" >
+          <label class="item  item-input item-floating-label">
+            <span class="input-label"><i class="icon ion-compass"></i> Spotting direction &middot; degree</span>
+            <input type="text" placeholder="Spotting direction &middot; degree" id="spotting_direction" >
           </label>
 
           <div class="item item-input-inset">
             <label class="item-input-wrapper">
               Picture of situation:
             </label>
-            <button class="button button-small" ng-click="takePicture()"/>Take Picture</button>
+            <button class="button icon ion-image" ng-click="takePicture()"/></button>
+            <button class="button icon ion-camera" ng-click="takePicture()"/></button>
           </div>
 
         </div>
-        <input type="submit" class="button button-block button-positive" value="Create Case">
+        <button type="submit" class="button button-full button-positive" value="Create Case">Create Case</button>
     </form>
 
 

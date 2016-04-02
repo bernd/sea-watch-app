@@ -1,91 +1,111 @@
-<ion-view view-title="Case">
-  <ion-content ng-controller="CaseCtrl">
-    <h1>Case</h1>
-    {{case.id}}
-    {{case.boat_status}}
+<ion-view view-title="Case Informations" ng-controller="CaseCtrl">
+<div class="bar bar-subheader bar-assertive">
+  <h2 class="title" style="text-align:left; margin-left:16px;">Case &middot; {{case.id}} &middot; {{case.boat_status}}</h2>   <a href="#/app/cases/chat/{{case.id}}" class="button button-clear">{{case.count_messages}} Messages <i style="margin-left:7px;" class="icon ion-chatbubble"></i></a> 
+</div>
 
 
+  <ion-content class="has-subheader"> 
+  <h2>Position</h2>
+  <p>You can appreciate these values. Improve and keep up to date. </p>
+      <form name="updateCasePosition" ng-submit="updateCaseLocation()" class="my-form">
+            <div class="list">
+             <div class="item item-divider">
+               Update min. every 5 minutes
+              </div>
+                
+              <label class="item item-input item-floating-label">
+                <span class="input-label">Latitude</span>
+                <input type="text" placeholder="Latitude" name="lat" ng-model="case.lastLocation.lat">
+              </label>
 
-      <form name="myForm" ng-controller="CaseCtrl" ng-submit="updateCase()" class="my-form">
-          <fieldset>
-      <input name="input" ng-model="case.lastLocation.lat">
+              <label class="item item-input item-floating-label">
+                <span class="input-label">Longitude</span>
+                <input type="text" name="lon" placeholder="Longitude" ng-model="case.lastLocation.lon">
+              </label>
 
-          <!-- Form Name -->
-          <legend class="text-center">Case Information</legend>
+              <label class="item item-input item-floating-label">
+                  <span class="input-label"><i class="icon ion-code-working"></i> Spotting distance &middot; km</span>
+                  <input type="text" placeholder="Spotting distance &middot; km" name="spotting_distance" id="spotting_distance" ng-model="case.spotting_distance">
+              </label>
 
-          <!-- Text input class="form-control"-->
-          <div class="row">
-            <div class="form-group col-2">
-              <label class="control-label" for="boat_status">Status</label>  
-              <select class="form-control" name="boat_status" id="boat_status" ng-model="case.boat_status">
-                  <option value="distress">distress</option>
-                  <option value="rescue_in_progress">rescue in progress</option>
-                  <option value="rescued">rescued</option>
-                  <option value="on_land">on land</option>
-                </select class="form-control">
+              <label class="item  item-input item-floating-label">
+                  <span class="input-label"><i class="icon ion-compass"></i> Spotting direction &middot; degree</span>
+                  <input type="text" placeholder="potting direction &middot; degree" name="spotting_direction" id="spotting_direction" ng-model="case.spotting_direction">
+              </label>
             </div>
+            <button class="button button-full button-positive" type="submit">
+              Update Case Position
+            </button>
+      </form>
+      
+      <h2>Details</h2>
+      <p>Please be careful, only change this if anything happen.</p>
+      <form ng-submit="updateCaseDetail()" class="my-form">
 
-            <div class="form-group col-2">
-              <label class="control-label" for="boat_condition">Condition</label>    
-                <select class="form-control" name="boat_condition" id="boat_condition" ng-model="case.boat_condition">
+          <div class="list">
+             
+
+              <label class="item item-input item-select">
+                <div class="input-label">Status</div>
+                <select name="boat_status" id="boat_status" ng-model="case.boat_status">
+                  <option value="distress">Distress</option>
+                  <option value="rescue_in_progress">Rescue in Progress</option>
+                  <option value="rescued">Rescued</option>
+                  <option value="on_land">On Land</option>
+                </select>
+              </label>
+
+              <label class="item item-input item-select">
+                <div class="input-label">Condition</div>
+                <select name="boat_condition" id="boat_condition" ng-model="case.boat_condition">
                   <option value="unknown">unknown</option>
                   <option value="good">good</option>
                   <option value="bad">bad</option>
                   <option value="sinking">sinking</option>
                   <option value="people_in_water">people in water</option>
-                </select class="form-control"> 
-            </div>
+                </select> 
+              </label>
+
+              <label class="item item-input item-select">
+                  <div class="input-label">Boat type</div>
+                  <select name="boat_type" id="boat_type" ng-model="case.boat_type">
+                    <option value="rubber">rubber</option>
+                    <option value="wood">wood</option>
+                    <option value="steel">steel</option>
+                    <option value="other">other</option>
+                  </select>
+              </label>
+              <div class="item item-toggle">
+             Other Organisations Involved?
+             <label class="toggle toggle-balanced">
+               <input type="checkbox" ng-model="case.case.other_involved">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
           </div>
-
-
-          <div class="row">
-            <div class="form-group col-2">
-              {{case.boat_type}}
-            </div>
+          <div class="item item-toggle">
+             Engine Working?
+             <label class="toggle toggle-balanced">
+               <input type="checkbox" ng-model="case.case.engine_working">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
           </div>
-
-
-          <div class="row">
-            <div class="form-group col-2">
-              <label class="control-label" for="passenger_count">How many people ?</label>  
-                  <input class="form-control" type="text" name="anzahl" id="passenger_count" />
+              <label class="item item-input item-floating-label">
+                  <span class="input-label">How many people</span>
+                  <input type="text" placeholder="How many people" name="passenger_count" id="passenger_count">
+              </label>
+              <label class="item item-input item-floating-label">
+                  <span class="input-label">Additional Information</span>
+                  <input type="text" placeholder="Additional Information" name="additional_information" id="padditional_information">
+              </label>
             </div>
-
-            <div class="form-group col-2">
-              <label class="control-label" for="zusatz">Additional informations</label>  
-              <input class="form-control" type="text" name="additional_information" id="additional_information" value="" />
-            </div>
-          </div>
-
-
-          <div class="row">
-            <div class="form-group col-1">
-              <label class="control-label" for="distance">Spotting distance in km</label>  
-                <input class="form-control" type="text" class="wmfg_text" name="distance" id="spotting_distance" ng-model="case.spotting_distance" />
-            </div>
-          </div>
-
-
-          <div class="row">
-            <div class="form-group col-1">
-              <label class="control-label" for="degree">Spotting direction in degree</label>
-              <!--<div id="jog_dial_two" style="margin-top: 150px; margin-bottom:150px; margin-left: 150px;float: left; clear: left; position: relative;"></div>
-              <p id="jog_dial_two_meter" style="float:left;"></p>-->
-              <input type="text" id="spotting_direction" />
-            </div>
-          </div>
-      <div class="row">
-        <div class="form-group col-1">
-          <label class="control-label"></label>  
-           
-            <button class="button button-full button-positive" type="submit">
-              Update Case
+            <button class="button button-full button-positive button-outline" type="submit">
+                Update Case Details
             </button>
-            <a href="index.html" class="btn btn-gray">Abbrechen</a>
-        </div>
-      </div>
-    </fieldset>
-    </form>
+      </form>      
 
   </ion-content>
 </ion-view>
