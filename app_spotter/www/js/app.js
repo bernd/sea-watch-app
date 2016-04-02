@@ -17,7 +17,7 @@ var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.control
 //api dataservice
 .service('dataService', ['$http', function ($http) {
 
-        var urlBase = 'http://app.sea-watch.org/admin/public/api/';
+        var urlBase = 'https://app.sea-watch.org/admin/public/api/';
 
         this.getCases = function () {
           return $http({
@@ -46,6 +46,17 @@ var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.control
               method: "POST",
               params: options.params
            });
+        };
+        this.updateCases = function (options) {
+          return $http({
+            method: 'POST',
+            url: urlBase+'cases/reloadSpotter',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer '+window.localStorage['jwt']
+            },
+            data: {cases:options.cases}
+          });
         };
 
         this.auth = function (options){
@@ -103,7 +114,7 @@ var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.control
 
   //$scope.cases;
   $scope.updateVehiclePosition = function(cb) {
-        dataFactory.updateVehiclePosition({})
+        dataFactory.updateVehiclePosition({position:{accuracy:currentPosition.coords.accuracy, altitudeAccuracy: currentPosition.coords.altitudeAccuracy, heading: currentPosition.coords.heading,  speed: currentPosition.coords.speed,  latitude: currentPosition.coords.latitude,  longitude: currentPosition.coords.longitude}})
             .success(function (result) {
                 console.log(result.data);
                 if(typeof cb === 'function'){
@@ -168,13 +179,21 @@ var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.control
         }
       }
     })
-
   .state('app.single', {
     url: '/cases/:caseId',
     views: {
       'menuContent': {
         templateUrl: 'templates/case.html',
         controller: 'CaseCtrl'
+      }
+    }
+  })
+  .state('app.caseChat', {
+    url: '/cases/chat/:caseId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/case_chat.html',
+        controller: 'CaseChatCtrl'
       }
     }
   })
