@@ -155,10 +155,9 @@ angular.module('sw_spotter.controllers', [])
 
 
   $scope.init = function(){
-      
-      console.log('INIT INIT INIT');
-
-
+    
+    window.plugin.backgroundMode.enable();
+    
     //init positionwatch
     var watch = $cordovaGeolocation.watchPosition({
       timeout : 10000,

@@ -234,13 +234,15 @@ var swApp = new function(){
             this.cases[pseudo_id] = {};
         
         var case_data = this.getCaseData(case_id);
+        if(typeof case_data.locations[0] === 'undefined'){
+            
+            this.cases[pseudo_id].map = L.mapbox.map(mapId, 'mapbox.streets').setView([parseFloat(case_data.locations[0].lat), parseFloat(case_data.locations[0].lon)], 16);
         
-        this.cases[pseudo_id].map = L.mapbox.map(mapId, 'mapbox.streets').setView([parseFloat(case_data.locations[0].lat), parseFloat(case_data.locations[0].lon)], 16);
+            this.addCaseToMap(this.cases[pseudo_id].map, case_id);
         
-        this.addCaseToMap(this.cases[pseudo_id].map, case_id);
-        
-        this.cases[pseudo_id].map.scrollWheelZoom.disable();
-        
+            this.cases[pseudo_id].map.scrollWheelZoom.disable();
+            
+        }
     };
     
     
@@ -248,7 +250,7 @@ var swApp = new function(){
     this.addVesselsToMap = function(){
             var self = this;
             $.get('api/getVehicles',{request: 'request'} ,function( result ) {
-                
+                console.log(result);
                 $.each(result.vessels, function(index,value){
                     
                         L.mapbox.featureLayer({
@@ -271,8 +273,7 @@ var swApp = new function(){
                                 // one can customize markers by adding simplestyle properties
                                 // https://www.mapbox.com/guides/an-open-platform/#simplestyle
                                 'marker-size': 'large',
-                                'marker-color': '#121212',
-                                'marker-symbol': 'cafe'
+                                'marker-color': '#121212'
                             }
                         }).on('click', function(e) {
                             console.log(e.layer.feature.properties);
@@ -729,25 +730,26 @@ var swApp = new function(){
             
             console.log(e.layer.feature.properties);
         });
-        console.log(this.cases[case_id].iconLayer);
         
         this.mapLayers.push(this.cases[case_id].iconLayer);
         
-        var geoJson = [{
-                            type: 'Feature',
-                            geometry: {
-                                type: 'Point',
-                                coordinates: [line_points[0][1], line_points[0][0]]
-                            },
-                            properties: {
-                                title: 'Case-ID:'+case_id,
-                                'case-id':case_id,
-                                description: 'first tracked: '+case_data.created_at+'<br>last tracked: '+case_data.updated_at,
-                                'marker-color': '#548cba'
-                            }
-                        }];
+        if(typeof line_points[0] !== 'undefined'){
+            var geoJson = [{
+                                type: 'Feature',
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: [line_points[0][1], line_points[0][0]]
+                                },
+                                properties: {
+                                    title: 'Case-ID:'+case_id,
+                                    'case-id':case_id,
+                                    description: 'first tracked: '+case_data.created_at+'<br>last tracked: '+case_data.updated_at,
+                                    'marker-color': '#548cba'
+                                }
+                            }];
 
-         this.cases[case_id].iconLayer.setGeoJSON(geoJson);
+             this.cases[case_id].iconLayer.setGeoJSON(geoJson);
+        };
         
     };
     
