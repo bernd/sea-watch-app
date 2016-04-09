@@ -170,12 +170,12 @@ var app = angular.module('sw_spotter', ['ionic','ngCordova', 'sw_spotter.control
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
+    .state('app.cases', {
+      url: '/cases',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/all_cases.html',
+          controller: 'CasesCtrl'
         }
       }
     })
