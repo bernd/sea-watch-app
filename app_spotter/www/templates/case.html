@@ -1,49 +1,50 @@
 <ion-view view-title="Case Informations" ng-controller="CaseCtrl">
-<div class="bar bar-subheader bar-assertive">
+<div class="bar bar-subheader {{case.boat_status}} bar-dark">
   <h2 class="title" style="text-align:left; margin-left:16px;">Case &middot; {{case.id}} &middot; {{case.boat_status}}</h2>   <a href="#/app/cases/chat/{{case.id}}" class="button button-clear">{{case.count_messages}} Messages <i style="margin-left:7px;" class="icon ion-chatbubble"></i></a> 
 </div>
 
 
   <ion-content class="has-subheader"> 
-  <h2>Position</h2>
-  <p>You can appreciate these values. Improve and keep up to date. </p>
+    <div class="list">
+      <div class="item item-body">
+        <h2>Position-Data</h2>
+        <p>You can appreciate these values. Improve and keep up to date. </p>
+      </div>
       <form name="updateCasePosition" ng-submit="updateCaseLocation()" class="my-form">
-            <div class="list">
-             <div class="item item-divider">
-               Update min. every 5 minutes
-              </div>
-                
-              <label class="item item-input item-floating-label">
-                <span class="input-label">Latitude</span>
-                <input type="text" placeholder="Latitude" name="lat" ng-model="case.lastLocation.lat">
-              </label>
 
-              <label class="item item-input item-floating-label">
-                <span class="input-label">Longitude</span>
-                <input type="text" name="lon" placeholder="Longitude" ng-model="case.lastLocation.lon">
-              </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Latitude</span>
+          <input type="text" placeholder="Latitude" name="lat" ng-model="case.lastLocation.lat">
+        </label>
 
-              <label class="item item-input item-floating-label">
-                  <span class="input-label"><i class="icon ion-code-working"></i> Spotting distance &middot; km</span>
-                  <input type="text" placeholder="Spotting distance &middot; km" name="spotting_distance" id="spotting_distance" ng-model="case.spotting_distance">
-              </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Longitude</span>
+          <input type="text" name="lon" placeholder="Longitude" ng-model="case.lastLocation.lon">
+        </label>
 
-              <label class="item  item-input item-floating-label">
-                  <span class="input-label"><i class="icon ion-compass"></i> Spotting direction &middot; degree</span>
-                  <input type="text" placeholder="potting direction &middot; degree" name="spotting_direction" id="spotting_direction" ng-model="case.spotting_direction">
-              </label>
-            </div>
-            <button class="button button-full button-positive" type="submit">
-              Update Case Position
-            </button>
-      </form>
+        <label class="item item-input item-floating-label">
+          <span class="input-label"><i class="icon ion-code-working"></i> Spotting distance &middot; km</span>
+          <input type="text" placeholder="Spotting distance &middot; km" name="spotting_distance" id="spotting_distance" ng-model="case.spotting_distance">
+        </label>
+
+        <label class="item  item-input item-floating-label">
+          <span class="input-label"><i class="icon ion-compass"></i> Spotting direction &middot; degree</span>
+          <input type="text" placeholder="potting direction &middot; degree" name="spotting_direction" id="spotting_direction" ng-model="case.spotting_direction">
+        </label>
       
-      <h2>Details</h2>
-      <p>Please be careful, only change this if anything happen.</p>
-      <form ng-submit="updateCaseDetail()" class="my-form">
+      
+      <button class="button button-full button-positive" type="submit"> Update Case Position </button>
+      
+      </form>
+    </div>
+    
+    <div class="list">
+      <div class="item item-body">      
+        <h2>Details</h2>
+        <p>Please be careful, only change this if anything happen.</p>
+      </div>
 
-          <div class="list">
-             
+      <form ng-submit="updateCaseDetail()" class="my-form">
 
               <label class="item item-input item-select">
                 <div class="input-label">Status</div>
@@ -101,11 +102,11 @@
                   <span class="input-label">Additional Information</span>
                   <input type="text" placeholder="Additional Information" name="additional_information" id="padditional_information">
               </label>
-            </div>
             <button class="button button-full button-positive button-outline" type="submit">
                 Update Case Details
             </button>
-      </form>      
+      </form>     
+      </div> 
 
   </ion-content>
 </ion-view>
