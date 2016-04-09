@@ -226,19 +226,19 @@ var swApp = new function(){
     
     //used to init mini map in views/pages/home_cases
     this.addMiniMap = function(case_id, mapId){
-        
         //enable two markers in one view(casebox + large map)
-        var pseudo_id = 'map_'+case_id;
+        var pseudo_id = 'mapcontainer_'+case_id;
         
         if(typeof this.cases[pseudo_id] == 'undefined')
             this.cases[pseudo_id] = {};
         
         var case_data = this.getCaseData(case_id);
-        if(typeof case_data.locations[0] === 'undefined'){
+        if(typeof case_data.locations[0] !== 'undefined'){
+            console.log(mapId);
             
             this.cases[pseudo_id].map = L.mapbox.map(mapId, 'mapbox.streets').setView([parseFloat(case_data.locations[0].lat), parseFloat(case_data.locations[0].lon)], 16);
         
-            this.addCaseToMap(this.cases[pseudo_id].map, case_id);
+            this.addCaseToMap(this.cases[pseudo_id].map, case_id, 'mini');
         
             this.cases[pseudo_id].map.scrollWheelZoom.disable();
             
@@ -677,9 +677,17 @@ var swApp = new function(){
         //this.generateMarkerCluster(this.filterResults(emergency_cases_obj));
     };
     
-    this.addCaseToMap = function(map,case_id){
+    this.addCaseToMap = function(map,case_id,suffix){
+        
+        if(typeof suffix === 'undefined')
+            var suffix = '';
+        
+        var showAll = false;
         
         var self = this;
+        
+        var real_case_id = case_id;
+        var case_id = case_id+suffix;
         
         if(typeof this.cases[case_id] == 'undefined')
             this.cases[case_id] = {};
@@ -696,13 +704,15 @@ var swApp = new function(){
             }
         }
         
-        var case_data = this.getCaseData(case_id);
+        var case_data = this.getCaseData(real_case_id);
         
         
         this.cases[case_id].featureGroup = L.featureGroup().addTo(map);
         var line_points = [];
         $.each(case_data.locations, function(index,value){
-            line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
+            
+            if(!showAll&&(index > case_data.locations.length-15))
+                line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
         });
 
         // Define polyline options
@@ -721,7 +731,7 @@ var swApp = new function(){
         this.cases[case_id].iconLayer.on('click',function(e){
             
                 //load caseBox
-                self.loadCaseBox(case_id,function(result){
+                self.loadCaseBox(real_case_id,function(result){
                     
                     //play sound
                     $('#caseDetailContainer').html(result);
@@ -741,8 +751,8 @@ var swApp = new function(){
                                     coordinates: [line_points[0][1], line_points[0][0]]
                                 },
                                 properties: {
-                                    title: 'Case-ID:'+case_id,
-                                    'case-id':case_id,
+                                    title: 'Case-ID:'+real_case_id,
+                                    'case-id':real_case_id,
                                     description: 'first tracked: '+case_data.created_at+'<br>last tracked: '+case_data.updated_at,
                                     'marker-color': '#548cba'
                                 }
@@ -777,14 +787,13 @@ var swApp = new function(){
         
         this.vehicles[vehicle_id].featureGroup = L.featureGroup().addTo(map);
         var line_points = [];
+        
         $.each(vehicle_data.locations, function(index,value){
-            line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
+            //only show first 
+            if(index > vehicle_data.locations.length-15){
+                line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
+            }
         });
-
-        console.log('lp');
-        console.log('lp');
-        console.log('lp');
-        console.log(line_points);
 
         // Define polyline options
         // http://leafletjs.com/reference.html#polyline
