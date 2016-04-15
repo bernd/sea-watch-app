@@ -96,11 +96,11 @@
           </div>
               <label class="item item-input item-floating-label">
                   <span class="input-label">How many people</span>
-                  <input type="text" placeholder="How many people" name="passenger_count" id="passenger_count">
+                  <input type="text" placeholder="How many people" name="passenger_count" id="passenger_count" ng-model="case.passenger_count">
               </label>
               <label class="item item-input item-floating-label">
                   <span class="input-label">Additional Information</span>
-                  <input type="text" placeholder="Additional Information" name="additional_information" id="padditional_information">
+                  <input type="text" placeholder="Additional Information" name="additional_information"  ng-model="case.additional_information" id="padditional_information">
               </label>
             <button class="button button-full button-positive button-outline" type="submit">
                 Update Case Details

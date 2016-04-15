@@ -158,24 +158,10 @@ angular.module('sw_spotter.controllers', [])
     
     window.plugin.backgroundMode.enable();
     
-    //init positionwatch
-    var watch = $cordovaGeolocation.watchPosition({
-      timeout : 10000,
-      enableHighAccuracy: true // may cause errors if true
-    });
-
-    watch.then(
-      null,
-      function(err) {
-        // error
-      },
-      function(position) {
-        console.log('position tracked:');
-        console.log(position.coords);
-        $scope.position = position;
-        currentPosition = position;
-    });
-
+    
+    
+    
+    
     if(typeof $scope.loginData.token === 'undefined'){
       console.log('not logged in');
       $scope.login();
@@ -205,6 +191,28 @@ angular.module('sw_spotter.controllers', [])
                 $scope.login();
             });
     }
+    
+    
+    
+    
+    //init positionwatch
+    var watch = $cordovaGeolocation.watchPosition({
+      timeout : 10000,
+      enableHighAccuracy: true // may cause errors if true
+    });
+
+    watch.then(
+      null,
+      function(err) {
+        // error
+      },
+      function(position) {
+        console.log('position tracked:');
+        console.log(position.coords);
+        $scope.position = position;
+        currentPosition = position;
+    });
+
   };
 
 
@@ -229,7 +237,7 @@ angular.module('sw_spotter.controllers', [])
             alert(response.error);
         }
     }, function(error) {
-        alert(error.data);
+        alert(error.error);
     });
            
 
@@ -376,6 +384,12 @@ angular.module('sw_spotter.controllers', [])
         stopWatchForReload();
       }
   });
+  $scope.predicate = 'updated_at';
+  $scope.reverse = true;
+  $scope.order = function(predicate) {
+      $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+      $scope.predicate = predicate;
+  };
   
   
   

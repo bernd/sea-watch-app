@@ -1,21 +1,21 @@
 <ion-view view-title="All Cases">
 	<div class="bar bar-subheader bar-stable">
-	 	<div class="button-bar">
-		  <a class="button activated">Order by Date</a>
-		  <a class="button">Order by Status</a>
+            <div class="button-bar">
+		  <a class="button " ng-class="{'activated': (predicate === 'updated_at')}" ng-click="order('updated_at')">Order by Date</a>
+		  <a class="button" ng-click="order('boat_status')" ng-class="{'activated': (predicate === 'boat_status')}">Order by Status</a>
 		</div>
 	</div>
   <ion-content class="has-subheader button-fixed-footer">
     <ion-list>
     <div class="item item-body">
-    	<p>Hier siehst du alle Cases aus deiner Operation-Area, wenn du nur deine Cases sehen möchtest schaue im <strong>Menu</strong> unter <strong>My active Cases</strong>.</p>
+    	<p>{{predicate}}Hier siehst du alle Cases aus deiner Operation-Area, wenn du nur deine Cases sehen möchtest schaue im <strong>Menu</strong> unter <strong>My active Cases</strong>.</p>
     </div>
 
    
-        <ion-item ng-repeat="case in cases" class="{{case.boat_status}} item item-complex case_menu" href="#/app/cases/{{case.id}}">
+        <ion-item ng-repeat="case in cases | orderBy:predicate:reverse" class="{{case.boat_status}} item item-complex case_menu" href="#/app/cases/{{case.id}}">
           {{case.id}} &middot; 
           <strong>{{case.boat_status}}</strong> &middot;  
-          {{case.created_at}}
+          {{case.updated_at}}
         </ion-item>
     </ion-list>
   </ion-content>
