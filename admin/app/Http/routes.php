@@ -19,30 +19,43 @@ Route::pattern('id', '[0-9]+');
 Route::pattern('slug', '[0-9a-z-_]+');
 
 /***************    Site routes  **********************************/
-Route::get('/', 'HomeController@index');
-Route::get('home', function(){ 
-    return Redirect::to('/', 301); 
+
+Route::filter('auth', function() {
+    if (Auth::guest())
+    return Redirect::guest('auth/login');
 });
+Route::group(array('before' => 'auth'), function(){
+
+    Route::get('/', 'HomeController@index');
+    Route::get('home', function(){ 
+        return Redirect::to('/', 301); 
+    });
 
 
-Route::get('/map', 'HomeController@map');
+    Route::get('/map', 'HomeController@map');
+    Route::get('/vehicleGrid', 'HomeController@vehicleGrid');
+    Route::get('/adminGrid', 'HomeController@adminGrid');
 
-Route::get('about', 'PagesController@about');
-Route::get('contact', 'PagesController@contact');
-
-
-Route::get('operation_areas/create', 'operation_areas@create');
-Route::post('operation_areas/create', 'operation_areas@store');
+    Route::get('about', 'PagesController@about');
+    Route::get('contact', 'PagesController@contact');
 
 
-// route to show our edit form
-Route::get('cases/edit/{id}', array('as' => 'case.edit', function($id)
-{
-    return View::make('cases.update')
-        ->with('case', emergencyCase::find($id));
-}));
+    Route::get('operation_areas/create', 'operation_areas@create');
+    Route::post('operation_areas/create', 'operation_areas@store');
 
-Route::post('cases/edit/{id}', 'EmergencyCaseController@update');
+
+    // route to show our edit form
+    Route::get('cases/edit/{id}', array('as' => 'case.edit', function($id)
+    {
+        return View::make('cases.update')
+            ->with('case', emergencyCase::find($id));
+    }));
+
+    Route::post('cases/edit/{id}', 'EmergencyCaseController@update');
+
+
+
+});
 
 /**
  * @api {post} /api/user/auth userauth
