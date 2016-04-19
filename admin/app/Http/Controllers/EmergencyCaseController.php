@@ -23,6 +23,7 @@ class EmergencyCaseController extends Controller
         
             $emergencyCase = emergencyCase::find($id);
             echo $emergencyCase->update($request->all());
+            $emergencyCase->touch();
             if (!$emergencyCase->update($request->all())) {
                 return redirect()->back()
                         ->with('message', 'Something wrong happened while saving your model')
