@@ -33,8 +33,16 @@ class emergencyCase extends Model
     public function first_location(){
         return emergencyCaseLocation::where('emergency_case_id', $this->id)->orderBy('created_at', 'desc')->first();
     }
+    
     public function last_location(){
         return emergencyCaseLocation::where('emergency_case_id', $this->id)->first();
+    }
+    public function updated_at(){
+        $timestamp = strtotime($this->updated_at);
+        if(time() < $timestamp + 86400*3)
+            return \Carbon\Carbon::createFromTimeStamp(strtotime($this->updated_at))->diffForHumans();
+        else
+            return $this->updated_at;
     }
     
     public function involved_users(){

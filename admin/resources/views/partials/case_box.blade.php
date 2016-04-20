@@ -1,7 +1,7 @@
                 <div class="caseBox {{$emergency_case->boat_status}} type_{{$emergency_case->source_type}} oparea_{{$emergency_case->operation_area}} caseBox_{{$emergency_case->id}}" data-id="{{$emergency_case->id}}">
                     <div class="front">
                             <header>
-                                <span class="time">{{\Carbon\Carbon::createFromTimeStamp(strtotime($emergency_case->created_at))->diffForHumans()}}</span>
+                                <span class="time">{{$emergency_case->updated_at()}}</span>
                                  <span class="connection_type">
                                 <?php 
                                 if($emergency_case->first_location())

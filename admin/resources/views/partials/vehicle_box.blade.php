@@ -1,7 +1,7 @@
                 <div class="caseBox distress vehicleBox" style="background:#{{$vehicle->marker_color}}" data-id="{{$vehicle->id}}">
                     <div class="front">
                             <header>
-                                <span class="time">{{\Carbon\Carbon::createFromTimeStamp(strtotime($vehicle->last_tracked))->diffForHumans()}}</span>
+                                <span class="time">{{$vehicle->updated_at()}}</span>
                                 <div class="status">
                                     <span class="source" style="font-size:8px">{{$vehicle->title}}</span>
                                 </div>

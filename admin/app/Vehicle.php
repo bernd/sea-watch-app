@@ -13,6 +13,7 @@ class Vehicle extends Model
      */
     protected $fillable = ['title','type','sat_number','key','marker_color','user_id'];
     
+    protected $dates = ['created_at', 'updated_at'];
     //returns last tracked location of vessel
     public function last_location(){
         return VehicleLocation::where('vehicle_id', $this->id)->orderBy('timestamp', 'desc')->first();
@@ -26,6 +27,13 @@ class Vehicle extends Model
     public function getLocationsAttribute()
     {
         return VehicleLocation::where('vehicle_id', $this->id)->orderBy('timestamp', 'desc')->get();
+    }
+    public function updated_at(){
+        $timestamp = strtotime($this->updated_at);
+        if(time() < $timestamp + 86400*3)
+            return \Carbon\Carbon::createFromTimeStamp(strtotime($this->updated_at))->diffForHumans();
+        else
+            return $this->updated_at;
     }
     
     /**
