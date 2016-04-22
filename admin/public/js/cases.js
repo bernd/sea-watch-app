@@ -95,6 +95,12 @@ var emergency_case = new function(){
     
 
 $(document).ready(function(){
+    
+    $('#createCase').click(function(){
+       alert('create case'); 
+    });
+    
+    
     $('.caseBox').show();
                 
     //init masonry
