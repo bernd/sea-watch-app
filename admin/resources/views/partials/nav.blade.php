@@ -35,7 +35,7 @@
                         <li><a href="{{ URL::to('/adminGrid') }}" class="{{ (Request::is('/adminGrid') ? 'active' : '') }}"><i class="zmdi zmdi-view-module"></i> Telephone Watchers</a></li>
                     </ul>
                 </li>
-                <li><a href="#"><span>Create</span><br>New Case</a></li>
+                <li><a href="#" id="createCase"><span>Create</span><br>New Case</a></li>
                 @endif
                 
                 
@@ -92,3 +92,5 @@
         </div>
       </div>
     </nav>
+
+                @include('cases.create')
