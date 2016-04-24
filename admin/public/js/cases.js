@@ -97,9 +97,32 @@ var emergency_case = new function(){
 $(document).ready(function(){
     
     $('#createCase').click(function(){
-       alert('create case'); 
+       $('#createCaseBox').show();
     });
     
+    $('#createCaseForm').submit(function(e){
+        e.preventDefault();
+        var data = $('#createCaseForm').serializeArray();
+        //data.push({name: 'wordlist', value: wordlist});
+        var postData = {};
+        $(data ).each(function(index, obj){
+            postData[obj.name] = obj.value;
+        });
+        
+        
+        postData.location_data = JSON.stringify({latitude:postData.lat, longitude:postData.lon, heading:0, accuracy: 0});
+        $.post("api/cases/create", postData, function(result){
+            console.log(result);
+            var result = JSON.parse(result);
+            if(result.error == null){
+                
+                alert('case created');
+                $('#createCaseBox').slideUp();
+            }else{
+                alert(result.error);
+            }
+        });
+    });
     
     $('.caseBox').show();
                 
@@ -510,6 +533,15 @@ var swApp = new function(){
                     self.bing();
                     $('#caseList').prepend(result);
                     self.initClicks();
+                    
+                    
+                    $('.caseBox').css('position', 'relative');
+                    //reinit masonry
+                    var $grid = $('#caseList').masonry({
+                        itemSelector: '.caseBox',
+                        columnWidth: 100,
+                        gutter: 10,
+                    });
                 });
             }
         }
