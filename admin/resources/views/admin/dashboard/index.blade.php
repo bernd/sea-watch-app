@@ -22,7 +22,7 @@
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">{{$operation_area->count_open_cases()}}</div>
-                            <div>{{$operation_area->title}}</div>
+                            <div>Open Cases</div>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">{{$users}}</div>
-                            <div>{{ trans("admin/admin.users") }}!</div>
+                            <div>{{ trans("admin/admin.users") }}</div>
                         </div>
                     </div>
                 </div>

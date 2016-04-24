@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Sea-Watch Backend</a>
+        <a class="navbar-brand" href="#">Sea-Watch Backend</a>
     </div>
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
@@ -30,24 +30,13 @@
                         <i class="fa fa-language"></i> Language
                     </a>
                 </li>-->
-                <li>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-camera"></i> Cases & Operation Areas
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav collapse">
+                
                         <li>
                             <a href="{{url('admin/case')}}">
                                 <i class="glyphicon glyphicon-list"></i> Cases
                             </a>
                         </li>
-                        <li>
-                            <a href="{{url('admin/operation_area')}}">
-                                <i class="glyphicon glyphicon-camera"></i> Operation Areas
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                
                 <li>
                     <a href="{{url('admin/user')}}">
                         <i class="glyphicon glyphicon-user"></i> Users

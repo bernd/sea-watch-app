@@ -104,7 +104,7 @@ class emergencyCase extends Model
     protected $appends = ['locations', 'emergency_case_title', 'count_messages', 'messages'];
     
     public function translateColumnName($columnName){
-        return ['id'=>'ID','boat_status'=>'status','boat_condition'=>'condition','boat_type'=>'type','other_involved'=>'other involved','engine_working'=>'engine working','passenger_count'=>'passenger count','additional_informations'=>'additional infos','spotting_distance'=>'spotting distance','spotting_direction'=>'spotting direction','picture'=>'picture','operation_area'=>'operation area'][$columnName];
+        return ['id'=>'ID','boat_status'=>'status','boat_condition'=>'Condition','boat_type'=>'Type','other_involved'=>'Other involved','engine_working'=>'Engine working','passenger_count'=>'Passenger count','additional_informations'=>'Additional infos','spotting_distance'=>'Spot distance · km','spotting_direction'=>'Spot direction · degree','picture'=>'Picture','operation_area'=>'Operation area'][$columnName];
     }
     
     public function emergency_case_locations()

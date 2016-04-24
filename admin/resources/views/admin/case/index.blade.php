@@ -11,10 +11,10 @@
             
             <div class="pull-right">
                 <div class="pull-right">
-                    <a href="{!! URL::to('admin/article/create') !!}"
+<!--                    <a href="{!! URL::to('admin/article/create') !!}"
                        class="btn btn-sm  btn-primary iframe"><span
                                 class="glyphicon glyphicon-plus-sign"></span> {{
-					trans("admin/modal.new") }}</a>
+					trans("admin/modal.new") }}</a>-->
                 </div>
             </div>
         </h3>
