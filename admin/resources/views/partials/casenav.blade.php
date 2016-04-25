@@ -11,8 +11,9 @@
                   @foreach ($operation_areas as $operation_area)
                       <li class="op_area filter" data-class="oparea_<?php echo $operation_area->id;?>" data-id="<?php echo $operation_area->id;?>"><a href="#op_area"><?php echo $operation_area->title;?> <span class="label label-danger pull-right"><?php echo $operation_area->count_open_cases();?></span></a></li>
                   @endforeach
+                  @if(Auth::user()->admin==1)
                   <li class="op_area add_op"><a href="{{ URL::to('operation_areas/create') }}"><span class="add_op_title">Add Operation Area</span></a></li>
-
+                  @endif
                   
                   
                   @if (Request::is('map')||Request::is('/'))
@@ -25,15 +26,17 @@
                   }?>
                   <li><h3>Sources</h3></li> 
                   <?php
-                  foreach(['refugee'=>'Refugee app', 'land_operator'=>'Land operator', 'rumors'=>'Rumors'] AS $index=>$source){
+                  foreach(['refugee'=>'Refugee App', 'spotter_app'=>'Spotter App', 'create_case_form'=>'Web Form'] AS $index=>$source){
                       ?><li class="filter source" data-class="type_<?php echo $index;?>"><a href="#"><?php echo $source;?></a></li><?php
                   }?>
                   @endif
+                  
+                  <!--
                   <div class="divider"></div>
                   <li><a href="{{ URL::to('pages/history') }}">History</a></li>
                   <li><a href="{{ URL::to('pages/faq') }}">FAQ</a></li>
                   <li><a href="{{ URL::to('pages/support') }}">Technical support</a></li>
-                  <li><a href="{{ URL::to('pages/imprint') }}">Imprint</a></li>
+                  <li><a href="{{ URL::to('pages/imprint') }}">Imprint</a></li>-->
                 </ul>
             <div id="olControlDiv"></div>
         </div>

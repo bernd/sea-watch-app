@@ -21,18 +21,18 @@
                         if(Request::is('/')){
                             echo '<i class="zmdi zmdi-view-module"></i> Cases';
                         } if(Request::is('vehicleGrid')){
-                            echo '<i class="zmdi zmdi-view-module"></i> Vehicles';
+                            echo '<i class="zmdi zmdi-car"></i> Vehicles';
                         } if(Request::is('adminGrid')){
-                            echo '<i class="zmdi zmdi-view-module"></i> Telephone Watchers';
+                            echo '<i class="zmdi zmdi-smartphone"></i> Telephone Watchers';
                         }else if(Request::is('map')){
                             echo '<i class="zmdi zmdi-map"></i> Map';
-                        }?>
+                        }?> 
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ URL::to('map') }}" class="{{ (Request::is('map') ? 'active' : '') }}"><i class="zmdi zmdi-map"></i> Map</a></li>
                         <li><a href="{{ URL::to('/') }}" class="{{ (Request::is('/') ? 'active' : '') }}"><i class="zmdi zmdi-view-module"></i> Cases</a></li>
-                        <li><a href="{{ URL::to('/vehicleGrid') }}" class="{{ (Request::is('/vehicleGrid') ? 'active' : '') }}"><i class="zmdi zmdi-view-module"></i> Vehicles</a></li>
-                        <li><a href="{{ URL::to('/adminGrid') }}" class="{{ (Request::is('/adminGrid') ? 'active' : '') }}"><i class="zmdi zmdi-view-module"></i> Telephone Watchers</a></li>
+                        <li><a href="{{ URL::to('/vehicleGrid') }}" class="{{ (Request::is('/vehicleGrid') ? 'active' : '') }}"><i class="zmdi zmdi-car"></i> Vehicles</a></li>
+                        <li><a href="{{ URL::to('/adminGrid') }}" class="{{ (Request::is('/adminGrid') ? 'active' : '') }}"><i class="zmdi zmdi-smartphone"></i> Telephone Watchers</a></li>
                     </ul>
                 </li>
                 <li><a href="#" id="createCase"><span>Create</span><br>New Case</a></li>

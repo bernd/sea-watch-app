@@ -70,11 +70,17 @@
       </div>
       <div class="form-group">
         <label class="control-label" for="spotting_distance">Spotting Distance</label>
+        <div class="input-group">
             {!! Form::number('spotting_distance',$case->spotting_distance, array('class' => 'form-control input-sm')) !!}
+            <div class="input-group-addon">km</div>
+        </div>
       </div>
       <div class="form-group">
         <label class="ontrol-label" for="spotting_direction">Spotting Direction</label>
+         <div class="input-group">
             {!! Form::number('spotting_direction', $case->spotting_direction, array('class' => 'form-control input-sm')) !!}
+            <div class="input-group-addon">&#176; <small>degree</small></div>
+          </div>
       </div>
       <div class="form-group">
             <input type="submit" class="btn btn-block btn-primary" value="Update Case">

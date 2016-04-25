@@ -7,10 +7,21 @@
                                 if($emergency_case->first_location())
                                     echo $emergency_case->first_location()->connection_type;
                                 ?></span>
-                                <div class="status">
+                                <div class="status"> 
                                     {{['distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
                                     <span class="id" style="font-size:8px">{{$emergency_case->id}}</span>
-                                    <span class="source">Refugee</span>
+                                    <span class="source">
+                                        
+                                        
+                                        <?php
+                                        $source_names = array('refugee'=>'Refugee', 'spotter_app'=>'Spotter', 'create_case_form'=>'Web', ''=>'not defined');
+                                        if(isset($emergency_case->source_type)){
+                                            ?>
+                                            {{$source_names[$emergency_case->source_type]}}
+                                            <?php
+                                        }
+                                        ?>
+                                    </span>
                                 </div>
                                 <div class="case_settings">
                                         <a href="#"><i class="zmdi zmdi-settings"></i></a>
@@ -71,7 +82,7 @@
                                                 <p>Hi, here is Sea-Watch!
                                                 Wir suchen nun ein Rettungsteam. Bitte bleibe ruhig und schließe diese App nicht. Kannst du uns sagen wie viele Leute ihr auf dem Boot seid und wie eure Lage aktuell ist.</p>
                                             </div>
-                                             <div class="user_2 message">
+                                             <div class="user_2 message"> 
                                                 <p>we need help, please rescue, we are 40 people in small boat, children, womans </p>
                                             </div>
                                             <div class="chat_status_notification">

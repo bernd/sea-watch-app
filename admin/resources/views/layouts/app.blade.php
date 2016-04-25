@@ -34,11 +34,7 @@
 <div class="container-fluid">
 @yield('content')
 </div>
-@include('partials.footer')
-
 <!-- Scripts -->
 @yield('scripts')
-
-<script src="{{ asset('js/masonry.min.js') }}"></script>
 </body>
 </html>
