@@ -290,6 +290,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
 
   #caseList {
       list-style: none;
+      background: #f0f0f0;
       margin: 0;
       padding: 0
   }
@@ -313,6 +314,14 @@ a.gray:hover, a.gray:focus, a.gray:active {
   .caseBox .map {
       height: 130px;
       width: 100%
+  }
+  
+  .caseBox .map .error {
+    color: #FFF;
+    position: absolute;
+    left: 26px;
+    top: 50px;
+    font-size: 25px;
   }
 
   .caseBox header {

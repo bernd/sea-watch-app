@@ -271,6 +271,8 @@ var swApp = new function(){
         
             this.cases[pseudo_id].map.scrollWheelZoom.disable();
             
+        }else{
+            $('#'+mapId).html('<span class="error">No positions available.</span>');
         }
     };
     
