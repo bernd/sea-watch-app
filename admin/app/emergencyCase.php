@@ -22,7 +22,7 @@ class emergencyCase extends Model
      *
      * @var array
      */
-    protected $fillable = ['boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','additional_informations','spotting_distance','spotting_direction','picture','session_token','created_at','updated_at','operation_area','source_type'];
+    protected $fillable = ['boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','additional_informations','spotting_distance','spotting_direction','picture','session_token','created_at','updated_at','operation_area','source_type','closed','closing_reason'];
 
    
     protected $dates = ['created_at', 'updated_at'];
@@ -104,7 +104,7 @@ class emergencyCase extends Model
     protected $appends = ['locations', 'emergency_case_title', 'count_messages', 'messages'];
     
     public function translateColumnName($columnName){
-        return ['id'=>'ID','boat_status'=>'status','boat_condition'=>'Condition','boat_type'=>'Type','other_involved'=>'Other involved','engine_working'=>'Engine working','passenger_count'=>'Passenger count','additional_informations'=>'Additional infos','spotting_distance'=>'Spot distance · km','spotting_direction'=>'Spot direction · degree','picture'=>'Picture','operation_area'=>'Operation area'][$columnName];
+        return ['id'=>'ID','boat_status'=>'status','boat_condition'=>'Condition','boat_type'=>'Type','other_involved'=>'Other involved','engine_working'=>'Engine working','passenger_count'=>'Passenger count','additional_informations'=>'Additional infos','spotting_distance'=>'Spot distance · km','spotting_direction'=>'Spot direction · degree','picture'=>'Picture','operation_area'=>'Operation area','closing_reason'=>'Closing Reason'][$columnName];
     }
     
     public function emergency_case_locations()

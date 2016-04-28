@@ -45,6 +45,9 @@ class EmergencyCaseMessagesasdasd extends Migration
             
             $table->string('source_type');
             
+            $table->boolean('closed');
+            $table->string('closing_reason');
+            
             $table->timestamps();
         });
         

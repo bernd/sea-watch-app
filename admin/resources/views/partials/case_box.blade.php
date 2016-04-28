@@ -1,4 +1,13 @@
-                <div class="caseBox {{$emergency_case->boat_status}} type_{{$emergency_case->source_type}} oparea_{{$emergency_case->operation_area}} caseBox_{{$emergency_case->id}}" data-id="{{$emergency_case->id}}">
+<?php
+
+
+$closedCase = '';
+if($emergency_case->closed){
+    $closedCase = 'closed';
+}
+
+?>
+                <div class="caseBox {{$emergency_case->boat_status}} {{$closedCase}} type_{{$emergency_case->source_type}} oparea_{{$emergency_case->operation_area}} caseBox_{{$emergency_case->id}}" data-id="{{$emergency_case->id}}">
                     <div class="front">
                             <header>
                                 <span class="time">{{$emergency_case->updated_at()}}</span>
@@ -36,15 +45,17 @@
 
 
                                     <?php
-                                    $case_vars = array('id','boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','additional_informations','spotting_distance','spotting_direction','picture','operation_area');
+                                    $case_vars = array('id','closing_reason','boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','additional_informations','spotting_distance','spotting_direction','picture','operation_area');
 
                                     foreach($case_vars AS $case_var){
+                                        if(!$emergency_case->close||($emergency_case->close == true && $case_var='closing_reason')){
                                         ?>
                                         <tr>
                                             <td>{{$emergency_case->translateColumnName($case_var)}}</td>
                                             <td>{{$emergency_case->$case_var}}</td>
                                         </tr>
                                         <?php
+                                        }
                                     } ?>
                                     <tr>
                                         <td>Involved</td>

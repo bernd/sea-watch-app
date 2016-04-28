@@ -458,7 +458,7 @@ class ApiController extends Controller
         if($all['reason'] === 'accidentally'||$all['reason'] === 'solved_by_client'){
             $emergencyCase->delete();
         }else{
-            echo $emergencyCase->update(['additional_information'=>'closed_by_client because of '.$all['reason'],'boat_status'=>$all['reason']]);
+            echo $emergencyCase->update(['closed'=>true, 'closing_reason'=>$all['reason']]);
         }
         
     }
@@ -600,7 +600,7 @@ class ApiController extends Controller
         $Vehicle = Vehicle::where('user_id', '=', JWTAuth::parseToken()->toUser()->id)->first();
         $vehicleLocation = new \App\VehicleLocation(array('lat'=>$all['position']["latitude"], 'lon'=>$all['position']['longitude'], 'vehicle_id'=>$Vehicle->id, 'timestamp'=>time(),'connection_type'=>'spotter_app'));
             $vehicleLocation->save();
-            echo $vehicleLocation->id;
+            //echo $vehicleLocation->id;
         //$result['vessels'] = $vehicles->toArray();
         //return $result;
         return $Vehicle;
