@@ -6,18 +6,18 @@ Emergency cases can either be entered through a web form in Safe Passage or two 
 
 This user guide will help you with your first steps in Safe Passage.
 
+
 # Get Access
-
-
-
-... If your log-in was successful, you will get a view like this one:
+To get your own account, just send an e-mail to ???. Please include the following information ??. We will come back to you within a short time.
+Once you have your own account type in your username and password into the log-in screen. If your log-in was successful, you will get a view like this one:
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/overview.png "Overview")
 As you can see the layout of Sea Watch Passage is fairly easy. It has a main window, a light-grey vertical menu bar on the left and a dark grey menu bar at the top.
 
+
 # Create a New Case (web form)
 Creating a new case through the web form in Safe Passage is very easy. Just click "Create New Case" in the dark grey menu bar at the top and the web form will open up. Fill in the information you have on the new case. It is important that you enter the location of the boat (geographic coordinates in decimal degrees) - otherwise the case cannot be matched to the responsible vehicle and the error "no_operation_area" will occur. If everything went well and your case was created, the notification "case created" pops up.
-
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/create_case.png "Create a New Case")
+
 
 # Display Modes
 Safe Passage offers four different display modes: Map, Cases, Vehicles and Telephone Watchers. In the dark-grey menu bar at the top you can see which display mode you are currently in. To change the display mode, open the drop down menu by clicking on the little white arrow and select another one.
@@ -29,10 +29,8 @@ The map gives you an overview of the locations of all cases and vehicles. Zoom i
 ###### Cases display mode
 In this display mode you can see all the cases currently stored in the database, sorted according to the date they were added. Each case has its corresponding case box. Red case boxes are for boats in distress, orange ones for cases in progress, blue ones for rescued boats and green ones for cases on land. Above each case box, you can see when it was added.
 
-###### Vehicles display mode
-
-
-###### Telephone Watchers display mode
+###### Vehicles & Telephone Watchers display mode
+The Vehicles display mode is similar to the Cases display mode. It shows you the Vehicles owned by the different helping organisations that are coordinated in Safe Passage. The date and time when the vehicle was added to the Safe Passage database are written in light grey above each vehiclebox. Basically, the same holds true for the Telephone Watchers display mode.
 
 
 # Caseboxes
@@ -44,7 +42,7 @@ In the Cases display mode you get an overview of all cases which are displayed i
 The little gear symbol in the top right corner of each casebox allows you to edit the information. When you have finished click 'Update Case' to save your changes.
 
 ###### Get involved
-The 'Get involved' button on the left hand-side just below the casebox map ...
+If you want to get involved with a case, use the 'Get involved' button on the left hand-side just below the casebox map to show other users that you are involved in the respective case. Just click 'Get involved' and you will be listed under 'Involved' at the bottom of the casebox.
 
 ###### Chat
 On the right-hand side just below the casebox map you find another small button with a number on it. This button leads you to a chatroom which will allow you and other users to exchange information on the respective case. The number on the button shows you how many messages there are in the chat.
@@ -57,10 +55,13 @@ The menu on the left-hand side allows you to filter your displayed items (cases,
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/filter.png "Filter")
 
 ###### Add operation area 
-Below the filtering options for the Area there is a little +Button which allows you to create a new operation area.
+Below the filtering options for the Area there is a little +Button which allows you to create a new operation area. Operation areas divide the Mediterranean among the helping organisations to ensure that every area is covered and that the responsible helping organisation can be found quickly.
+
 
 # FAQ
+###### Double entries
+?
+###### What happens once a new case is created?
+?
 
-###### Doppelte Einträge
-###### Operation Areas
-###### Was passiert nach dem Eintragen eines Falls?
+If you have any other questions, please contact us via this e-mail: ???
