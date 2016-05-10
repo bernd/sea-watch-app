@@ -8,7 +8,7 @@ This user guide will help you with your first steps in Safe Passage.
 
 
 # Get Access
-To get your own account, just send an e-mail to ???. Please include the following information ??. We will come back to you within a short time.
+To get your own account, just send an e-mail to app@sea-watch.org. Please include the following information: name of your NGO, country of your NGO, operation area, short description of field of activities, telephone number, other contact details. We will come back to you within a short time.
 Once you have your own account type in your username and password into the log-in screen. If your log-in was successful, you will get a view like this one:
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/overview.png "Overview")
 As you can see the layout of Sea Watch Passage is fairly easy. It has a main window, a light-grey vertical menu bar on the left and a dark grey menu bar at the top.
@@ -30,7 +30,7 @@ The map gives you an overview of the locations of all cases and vehicles. Zoom i
 In this display mode you can see all the cases currently stored in the database, sorted according to the date they were added. Each case has its corresponding case box. Red case boxes are for boats in distress, orange ones for cases in progress, blue ones for rescued boats and green ones for cases on land. Above each case box, you can see when it was added.
 
 ###### Vehicles & Telephone Watchers display mode
-The Vehicles display mode is similar to the Cases display mode. It shows you the Vehicles owned by the different helping organisations that are coordinated in Safe Passage. The date and time when the vehicle was added to the Safe Passage database are written in light grey above each vehiclebox. Basically, the same holds true for the Telephone Watchers display mode.
+The Vehicles display mode is similar to the Cases display mode. It shows you the Vehicles owned by the different helping organisations that are coordinated in Safe Passage. The date and time when the vehicle was added to the Safe Passage database are written in light grey above each vehiclebox. Basically, the same holds true for the Telephone Watchers display mode. This display mode provides information on telephone watchers within the Watch the Med Alarm Phone.
 
 
 # Caseboxes
@@ -60,8 +60,9 @@ Below the filtering options for the Area there is a little +Button which allows 
 
 # FAQ
 ###### Double entries
-?
-###### What happens once a new case is created?
-?
+One question that is frequently asked is that of double entries. What happens if a case is entered multiple times, for example via the web form and the Spotter App? The Safe Passage system does not contain an algorithm to avoid this (yet). Literally, we recommend following the proverb "better safe than sorry" and appeal to the intelligence of the Safe Passage users. 
 
-If you have any other questions, please contact us via this e-mail: ???
+###### What happens once a new case is created?
+We are still working on this question and aim at ensuring a reliable and responsible procedure.
+
+If you have any other questions, please contact us via this e-mail: app@sea-watch.org
