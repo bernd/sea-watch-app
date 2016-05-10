@@ -8,8 +8,8 @@ This user guide will help you with your first steps in Safe Passage.
 
 
 # Get Access
-To get your own account, just send an e-mail to app@sea-watch.org. Please include the following information: name of your NGO, country of your NGO, operation area, short description of field of activities, telephone number, other contact details. We will come back to you within a short time.
-Once you have your own account type in your username and password into the log-in screen. If your log-in was successful, you will get a view like this one:
+To get your own account, just send an e-mail to app@sea-watch.org. Please include the following information: name and home country of your helping organisation, operation area, short description of field of activities, telephone number, other contact details. We will come back to you within a short time.
+Once you have your own account, type in your username and password into the log-in screen. If your log-in was successful, you will get a view like this one:
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/overview.png "Overview")
 As you can see the layout of Sea Watch Passage is fairly easy. It has a main window, a light-grey vertical menu bar on the left and a dark grey menu bar at the top.
 
