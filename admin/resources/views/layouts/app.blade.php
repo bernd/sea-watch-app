@@ -30,6 +30,33 @@
     <link rel="shortcut icon" href="{!! asset('assets/site/ico/favicon.ico')  !!} ">
 </head>
 <body style="padding-top:64px;">
+    
+<!--loggedOut-->
+
+<style>
+    .tech-support-box{
+            height: 100px;
+            width: 220px;
+            position: fixed;
+            top: 50%;
+            right: 0;
+            bottom: 0;
+            margin-top: -50px;
+            background: rgb(55,60,68);
+            z-index: 1337;
+        
+    }
+    
+</style>
+
+
+    <div class="tech-support-box">
+        <h2>Support</h2>
+        <div class="btn btn-block btn-primary">Chat</div>
+        <div class="btn btn-block btn-primary">Skype</div>
+        <span>+49 12354198 (DE)</span>
+        <span>+12 789712 (EN)</span>
+    </div>
 @include('partials.nav')
 <div class="container-fluid">
 @yield('content')
