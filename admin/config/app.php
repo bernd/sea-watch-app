@@ -149,7 +149,9 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
-        Cviebrock\EloquentSluggable\SluggableServiceProvider::class
+        Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
+        Way\Generators\GeneratorsServiceProvider::class,
+        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class
 
     ],
 
