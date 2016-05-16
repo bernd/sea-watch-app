@@ -31,11 +31,11 @@ class EmergencyCaseMessagesasdasd extends Migration
             $table->string('engine_working');
             $table->integer('passenger_count');
             
-            $table->integer('women_on_board');
+            $table->string('women_on_board');
             
-            $table->integer('children_on_board');
+            $table->string('children_on_board');
             
-            $table->integer('disabled_on_board');
+            $table->string('disabled_on_board');
             
             $table->text('additional_informations');
             
