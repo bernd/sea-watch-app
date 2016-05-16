@@ -22,7 +22,7 @@ class emergencyCase extends Model
      *
      * @var array
      */
-    protected $fillable = ['boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','additional_informations','spotting_distance','spotting_direction','picture','session_token','created_at','updated_at','operation_area','source_type','closed','closing_reason'];
+    protected $fillable = ['boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','women_on_board','children_on_board','disabled_on_board','additional_informations','spotting_distance','spotting_direction','picture','session_token','created_at','updated_at','operation_area','source_type','closed','closing_reason'];
 
    
     protected $dates = ['created_at', 'updated_at'];
