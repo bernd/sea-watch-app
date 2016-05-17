@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
         <link href="{{ asset('css/site.css') }}" rel="stylesheet">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+        <script src="{{ asset('js/config.js') }}"></script>
         <script src="{{ asset('js/site.js') }}"></script>
 
     @yield('styles')
