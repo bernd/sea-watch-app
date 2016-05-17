@@ -4,7 +4,7 @@
                 <ul class="nav nav-sidebar">
                   
                   @if (Request::is('map')||Request::is('vehicleGrid'))
-                  <li><h3>Vessels</h3></li>
+                  <li><h3>Vehicles</h3></li>
                   @foreach ($vehicles as $vehicle)
                       <li class="vehicle filter" data-id="<?php echo $vehicle->id;?>"><a href="#vehicle"><?php echo $vehicle->title;?> <span class="label label-danger pull-right"><?php //echo $operation_area->count_open_cases();?></span></a></li>
                   @endforeach
