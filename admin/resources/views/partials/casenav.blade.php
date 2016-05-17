@@ -1,3 +1,5 @@
+
+
 <div class="col-sm-2 col-md-2 sidebar" {{ (Request::is('/') ? '' : '') }}>
                 <ul class="nav nav-sidebar">
                   
@@ -26,7 +28,7 @@
                   }?>
                   <li><h3>Sources</h3></li> 
                   <?php
-                  foreach(['refugee'=>'Refugee App', 'spotter_app'=>'Spotter App', 'create_case_form'=>'Web Form'] AS $index=>$source){
+                  foreach(['refugee'=>'Refugee app', 'land_operator'=>'Land operator', 'rumors'=>'Rumors'] AS $index=>$source){
                       ?><li class="filter source" data-class="type_<?php echo $index;?>"><a href="#"><?php echo $source;?></a></li><?php
                   }?>
                   @endif
