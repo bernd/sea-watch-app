@@ -7,6 +7,7 @@
 @section('content')
 
 
+
 <script src="{{ URL::to('js/ol.js') }}" type="text/javascript"></script>
 <link rel="stylesheet" href="{{ URL::to('css/ol.css') }}" type="text/css">
 </div>
