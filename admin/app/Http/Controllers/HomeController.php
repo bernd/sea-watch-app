@@ -31,7 +31,7 @@ class HomeController extends Controller {
                     $user_operation_areas = explode(',',$current_user[0]->operation_areas);
                 
                 $operation_areas = Operation_area::select()->whereIn('id',$user_operation_areas)->get();
-                $vehicles = Vehicle::all();
+                $vehicles = Vehicle::select()->where('public', '=', true)->get();
                 $emergency_cases = emergencyCase::select()->whereIn('operation_area',$user_operation_areas)->orderBy('created_at', 'desc')->get();
                 
 		return view('pages.home_cases', compact('operation_areas','emergency_cases','vehicles'));
