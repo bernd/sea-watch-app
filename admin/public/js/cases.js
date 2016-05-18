@@ -366,6 +366,11 @@ var swApp = new function(){
             if(typeof $(this).attr('data-class') !== 'undefined')
                 filters.sources.push($(this).attr('data-class'));
         });
+        
+        filters.vehicles = [];
+        $('li.vehicle.active').each(function(){
+            filters.vehicles.push({id:$(this).attr('data-id')});
+        });
         return filters;
     };
     this.filterCases = function(cases){
@@ -830,11 +835,10 @@ var swApp = new function(){
         
         $.each(vehicle_data.locations, function(index,value){
             //only show first 
-            if(index > vehicle_data.locations.length-15){
+            if(index > vehicle_data.locations.length){
                 line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
             }
         });
-        console.log(vehicle_data.marker_color);
         // Define polyline options
         // http://leafletjs.com/reference.html#polyline
         var polyline_options = {
