@@ -57,5 +57,5 @@ The menu on the left-hand side allows you to filter your displayed items (cases,
 ###### Add operation area 
 Below the filtering options for the Area there is a little +Button which allows you to create a new operation area. Operation areas divide the Mediterranean among the helping organisations to ensure that every area is covered and that the responsible helping organisation can be found quickly.
 
-
+#FAQ
 [FAQ](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/faq.md)
