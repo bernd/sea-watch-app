@@ -6,10 +6,10 @@ The Sea-Watch Spotter App is an app designed to report boats that are spotted in
 This user guide will help you with your first steps in the Sea-Watch Spotter App.
 
 #Get Access
-
+To get Access, please contact the person who is responsible for the Sea-Watch Admin Account. He or she is able to add you to the system as "Spotter" and provide you with the log-in data for your new account.
 
 #Home
-The homescreen provides you all necessary information to create a case as easily as possible. As you can see, it consists of a dark grey menu bar at the top, a main window with a header picture and a blue "+ Add Case"-button at the bottom to create a new case. 
+After logging in you will be directed to the homescreen. The homescreen provides you all necessary information to create a case as easily as possible. As you can see, it consists of a dark grey menu bar at the top, a main window with a header picture and a blue "+ Add Case"-button at the bottom to create a new case. 
 
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_homescreen.png "Homescreen")
 
@@ -71,7 +71,6 @@ Use the logout button to exit the app. This will also stop tracking your positio
 #### My active Cases
 My active Cases gives you an overview of the cases that you created and are still active.
 	
-
 #FAQ
-###### What happens once a new case is created?
-???
+[FAQ](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/faq.md)
+
