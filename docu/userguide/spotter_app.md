@@ -11,9 +11,11 @@ Once you have your own account, type in your username and password into the log-
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/overview.png "Overview")
 As you can see the layout of Sea Watch Passage is fairly easy. It has a main window, a light-grey vertical menu bar on the left and a dark grey menu bar at the top.
 
-
 #Home
-The homescreen provides you all necessary information to create a case as easily as possible. As you can see, it consists of a dark grey menu bar at the top, a main window with a header picture and a blue "+ Add Case"-button at the bottom to create a new case. In the main window you can find easy instructions to get you started:
+The homescreen provides you all necessary information to create a case as easily as possible. As you can see, it consists of a dark grey menu bar at the top, a main window with a header picture and a blue "+ Add Case"-button at the bottom to create a new case. 
+![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_homescreen.png "Homescreen")
+In the main window you can find easy instructions to get you started:
+	
 	Hi Spotter,
 	before first use, please read:
 	The Sea-Watch Spotter App allows you to report a newly spotted boat to the responsible Search & Rescue coordination in your area.
@@ -39,25 +41,32 @@ The homescreen provides you all necessary information to create a case as easily
 	In case something changes - for example, a Search & Rescue team started working on the case or the situation or position of the boat changes – open cases can be edited. Chose the respective case under My active cases in the Menu. Edit the information and finish by Update Case Position or Update Case Details. 
 
 
+#Menu
 
+![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_menu.png "Spotter App Menu")
 
+#### Track position
+Use this slide control to enable tracking your position. This is necessary to calculate the approximate position of a boat that you spotted. Moreover, it shows other users that you are currently active.
 
-![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_homescreen.png "Homescreen")
+#### Start 
+Via this button you will be redirected to the homescreen.
 
-#####Ideal technical requirements
-######Please check before you get started
+#### All Cases 
+In the "All Cases" view you get an overview of all cases that have been reported in your operation area. Using the two buttons at the top, cases can be sorted "by Date" or "by Status".
+![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_allcases.png "All Cases")
+By clicking onto one of the cases, you will be shown the respective Case informations. In this view, informations on the case can be checked or edited. Please notice that there are two buttons. The blue one of them allows you to "Update Case Position" whereas the white one at the bottom can be used to "Update Case Details". Moreover there is a chatroom for each case which can be accessed by clicking on the little speech bubble symbol at the top right corner. The dark grey menu bar at the top allows you to get back to the "All Cases" view.
+![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_caseinfo.png "Case Informations")
 
-#####Instructions
-######Let everybody know you are active
-######Create a new case
-######Edit open cases
-######
+#### Add Case
+In addition to the big blue "+ Add Case" button on the homescreen, you can also create a case by using the button in the menu.
 
-#Add case
+#### Options
+Use the logout button to exit the app. This will also stop tracking your position.
 
-#Menu 
-   
+#### My active Cases
+My active Cases gives you an overview of the cases that you created and are still active.
 	
 
 #FAQ
-    #What happens once a new case is created?
+###### What happens once a new case is created?
+???
