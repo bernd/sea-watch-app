@@ -8,12 +8,16 @@ This user guide will help you with your first steps in the Sea-Watch Spotter App
 #Get Access
 To get your own account, just send an e-mail to app@sea-watch.org. Please include the following information: name and home country of your helping organisation, operation area, short description of field of activities, telephone number, other contact details. We will come back to you within a short time.
 Once you have your own account, type in your username and password into the log-in screen. If your log-in was successful, you will get a view like this one:
+
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/overview.png "Overview")
+
 As you can see the layout of Sea Watch Passage is fairly easy. It has a main window, a light-grey vertical menu bar on the left and a dark grey menu bar at the top.
 
 #Home
 The homescreen provides you all necessary information to create a case as easily as possible. As you can see, it consists of a dark grey menu bar at the top, a main window with a header picture and a blue "+ Add Case"-button at the bottom to create a new case. 
+
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_homescreen.png "Homescreen")
+
 In the main window you can find easy instructions to get you started:
 	
 	Hi Spotter,
@@ -53,9 +57,15 @@ Via this button you will be redirected to the homescreen.
 
 #### All Cases 
 In the "All Cases" view you get an overview of all cases that have been reported in your operation area. Using the two buttons at the top, cases can be sorted "by Date" or "by Status".
+
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_allcases.png "All Cases")
-By clicking onto one of the cases, you will be shown the respective Case informations. In this view, informations on the case can be checked or edited. Please notice that there are two buttons. The blue one of them allows you to "Update Case Position" whereas the white one at the bottom can be used to "Update Case Details". Moreover there is a chatroom for each case which can be accessed by clicking on the little speech bubble symbol at the top right corner. The dark grey menu bar at the top allows you to get back to the "All Cases" view.
+
+By clicking onto one of the cases, you will be shown the respective Case informations. In this view, informations on the case can be checked or edited. Please notice that there are two buttons. The blue one of them allows you to "Update Case Position" whereas the white one at the bottom can be used to "Update Case Details". 
+
 ![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_caseinfo.png "Case Informations")
+
+Moreover there is a chatroom for each case which can be accessed by clicking on the little speech bubble symbol at the top right corner. The dark grey menu bar at the top allows you to get back to the "All Cases" view.
+![alt text](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/images/spotter_casechat.png "Case Chat")
 
 #### Add Case
 In addition to the big blue "+ Add Case" button on the homescreen, you can also create a case by using the button in the menu.
