@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
         <link href="{{ asset('css/site.css') }}" rel="stylesheet">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+        <script src="{{ asset('js/config.js') }}"></script>
         <script src="{{ asset('js/site.js') }}"></script>
 
     @yield('styles')
@@ -30,6 +31,15 @@
     <link rel="shortcut icon" href="{!! asset('assets/site/ico/favicon.ico')  !!} ">
 </head>
 <body style="padding-top:64px;">
+    
+<!--loggedOut-->
+    <div class="tech-support-box">
+        <h3><i class="zmdi zmdi-pin-help"></i> Support</h3>
+        <a class="btn btn-block btn-primary">Chat</a>
+        <a class="btn btn-block btn-primary">Skype</a>
+        <p>+49 12354198 (DE)<br />
+        +12 789712 (EN)</p>
+    </div>
 @include('partials.nav')
 <div class="container-fluid">
 @yield('content')
@@ -37,4 +47,4 @@
 <!-- Scripts -->
 @yield('scripts')
 </body>
-</html>
+</html> 

@@ -64,6 +64,18 @@
               <label for="passenger_count">How many people?</label>
               <input class="form-control" name="passenger_count" type="text" placeholder="How many people?" id="passenger_count" ng-model="case.passenger_count">
             </div>
+            <div class="form-group col-md-6">
+              <label for="passenger_count">How many women?</label>
+              <input class="form-control" name="women_on_board" type="text" placeholder="How many woman?" id="women_on_board" ng-model="case.women_on_board">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="passenger_count">How many children?</label>
+              <input class="form-control" name="children_on_board" type="text" placeholder="How many children?" id="children_on_board" ng-model="case.children_on_board">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="passenger_count">How many disabled persons?</label>
+              <input class="form-control" name="disabled_on_board" type="text" placeholder="How many disabled?" id="disabled_on_board" ng-model="case.disabled_on_board">
+            </div>
           </div>
           <div class="row">
             <div class="form-group col-md-6 form-inline">

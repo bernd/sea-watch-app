@@ -29,7 +29,6 @@ $(document).ready(function(){
 
 </script>
 
-<!--loggedOut-->
       <div class="row ">
         
         

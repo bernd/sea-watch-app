@@ -23,7 +23,7 @@ var case_statuses = {
 
 var emergency_case = new function(){
             
-        var base_url = '//app.sea-watch.org/admin/public/';
+        var base_url = swAppConfig.urlBase;
         
         this.showChat = function(case_id, callback){
             if(swApp.involvedCases.indexOf(parseInt(case_id)) === -1)
@@ -834,7 +834,7 @@ var swApp = new function(){
                 line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
             }
         });
-
+        console.log(vehicle_data.marker_color);
         // Define polyline options
         // http://leafletjs.com/reference.html#polyline
         var polyline_options = {
@@ -863,23 +863,23 @@ var swApp = new function(){
         console.log(this.vehicles[vehicle_id].iconLayer);
         
         this.mapLayers.push(this.vehicles[vehicle_id].iconLayer);
-        
-        var geoJson = [{
-                            type: 'Feature',
-                            geometry: {
-                                type: 'Point',
-                                coordinates: [line_points[0][1], line_points[0][0]]
-                            },
-                            properties: {
-                                title: 'Vehicle-ID:'+vehicle_id,
-                                'vehicle-id':vehicle_id,
-                                description: 'first tracked: '+vehicle_data.created_at+'<br>last tracked: '+vehicle_data.updated_at,
-                                'marker-color': '#'+vehicle_data.marker_color
-                            }
-                        }];
+        if(typeof line_points[0] !== 'undefined'){
+            var geoJson = [{
+                                type: 'Feature',
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: [line_points[0][1], line_points[0][0]]
+                                },
+                                properties: {
+                                    title: 'Vehicle-ID:'+vehicle_id,
+                                    'vehicle-id':vehicle_id,
+                                    description: 'first tracked: '+vehicle_data.created_at+'<br>last tracked: '+vehicle_data.updated_at,
+                                    'marker-color': '#'+vehicle_data.marker_color
+                                }
+                            }];
 
-         this.vehicles[vehicle_id].iconLayer.setGeoJSON(geoJson);
-        
+            this.vehicles[vehicle_id].iconLayer.setGeoJSON(geoJson);
+        };
     };
     
     this.generateMarkerCluster = function(cases){

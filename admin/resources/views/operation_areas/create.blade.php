@@ -7,8 +7,9 @@
 @section('content')
 
 
-<link rel="stylesheet" href="//openlayers.org/en/v3.8.2/css/ol.css" type="text/css">
-<script src="//openlayers.org/en/v3.8.2/build/ol.js"></script>
+
+<script src="{{ URL::to('js/ol.js') }}" type="text/javascript"></script>
+<link rel="stylesheet" href="{{ URL::to('css/ol.css') }}" type="text/css">
 </div>
 <div class="container">
 <div class="row-fluid">

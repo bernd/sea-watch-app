@@ -1,8 +1,10 @@
+
+
 <div class="col-sm-2 col-md-2 sidebar" {{ (Request::is('/') ? '' : '') }}>
                 <ul class="nav nav-sidebar">
                   
                   @if (Request::is('map')||Request::is('vehicleGrid'))
-                  <li><h3>Vessels</h3></li>
+                  <li><h3>Vehicles</h3></li>
                   @foreach ($vehicles as $vehicle)
                       <li class="vehicle filter" data-id="<?php echo $vehicle->id;?>"><a href="#vehicle"><?php echo $vehicle->title;?> <span class="label label-danger pull-right"><?php //echo $operation_area->count_open_cases();?></span></a></li>
                   @endforeach
@@ -26,7 +28,7 @@
                   }?>
                   <li><h3>Sources</h3></li> 
                   <?php
-                  foreach(['refugee'=>'Refugee App', 'spotter_app'=>'Spotter App', 'create_case_form'=>'Web Form'] AS $index=>$source){
+                  foreach(['refugee'=>'Refugee app', 'land_operator'=>'Land operator', 'rumors'=>'Rumors'] AS $index=>$source){
                       ?><li class="filter source" data-class="type_<?php echo $index;?>"><a href="#"><?php echo $source;?></a></li><?php
                   }?>
                   @endif
