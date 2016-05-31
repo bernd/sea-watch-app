@@ -137,8 +137,8 @@ class VehicleController extends AdminController
         
         
         $user = User::find($request->user_id);
+        $vehicle->update($request->only(['title', 'type', 'sat_number', 'name', 'marker_color']));
         $user->update($request->only(['name', 'username', 'email', 'mobile_number', 'organisation', 'operation_areas', 'confirmed']));
-        $vehicle->update($request->only(['title', 'type', 'sat_number', 'name']));
     }
 
     /**
