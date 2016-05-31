@@ -50,9 +50,13 @@
             </div>
         </div>
         <div class="form-group  {{ $errors->has('key') ? 'has-error' : '' }}">
+            <input type="text" name="marker-pseudo" id="marker-pseudo">
+            
             {!! Form::label('name', 'Marker Color', array('class' => 'control-label')) !!}
-            <div class="controls">
+            </div>
+            <div class="controls"><div style="display:none">
                 {!! Form::text('marker_color', null, array('class' => 'form-control')) !!}
+                </div>
                 <span class="help-block">{{ $errors->first('marker_color', ':message') }}</span>
             </div>
         </div>
@@ -77,6 +81,35 @@
             </button>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            var initValue;
+            if($('input[name="marker_color"]').val() === '')
+                initValue = '#f00'
+            else
+                initValue = '#'+$('input[name="marker_color"]').val();
+
+            console.log(initValue);
+            $("#marker-pseudo").spectrum({
+                color: initValue,
+                change: function(color) {
+                    console.log(color.toHexString().replace('#',''));
+                    $('input[name="marker_color"]').val(color.toHexString().replace('#',''))
+                }
+            });
+            $('input[name="sat_number"]').hide();
+            $('select#type').change(function(){
+                if($(this).val() === 'iridium_mail_gateway'){
+                    $('input[name="sat_number"]').show();
+                }else{
+                    $('input[name="sat_number"]').hide();
+
+                }
+            });
+        });
+    </script>
+
+
     {!! Form::close() !!}
     @stop @section('scripts')
         
