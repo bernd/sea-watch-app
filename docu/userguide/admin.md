@@ -57,12 +57,5 @@ The menu on the left-hand side allows you to filter your displayed items (cases,
 ###### Add operation area 
 Below the filtering options for the Area there is a little +Button which allows you to create a new operation area. Operation areas divide the Mediterranean among the helping organisations to ensure that every area is covered and that the responsible helping organisation can be found quickly.
 
-
-# FAQ
-###### Double entries
-One question that is frequently asked is that of double entries. What happens if a case is entered multiple times, for example via the web form and the Spotter App? The Safe Passage system does not contain an algorithm to avoid this (yet). Literally, we recommend following the proverb "better safe than sorry" and appeal to the intelligence of the Safe Passage users. 
-
-###### What happens once a new case is created?
-We are still working on this question and aim at ensuring a reliable and responsible procedure.
-
-If you have any other questions, please contact us via this e-mail: app@sea-watch.org
+#FAQ
+[FAQ](https://github.com/sea-watch/sea-watch-app/blob/master/docu/userguide/faq.md)
