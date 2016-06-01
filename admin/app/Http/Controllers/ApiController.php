@@ -25,7 +25,7 @@ use Carbon\Carbon;
 
 function addLocation($emergency_case_id, $geo_data){
         if(!$geo_data['heading']){
-            $geo_data['heading'] = 1337;
+            $geo_data['heading'] = -1;
         }
         $emergencyCaseLocation = new emergencyCaseLocation(['lon'=>(float)$geo_data['longitude'],
                 'lat'=>(float)$geo_data['latitude'],
