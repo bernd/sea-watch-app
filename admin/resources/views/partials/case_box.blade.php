@@ -45,7 +45,7 @@ if($emergency_case->closed){
 
 
                                     <?php
-                                    $case_vars = array('id','closing_reason','boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','women_on_board','children_on_board','disabled_on_board','additional_informations','spotting_distance','spotting_direction','picture','operation_area');
+                                    $case_vars = array('id','closing_reason','boat_status','boat_condition','boat_type','other_involved','engine_working','passenger_count','women_on_board','children_on_board','disabled_on_board','additional_informations',/*'spotting_distance','spotting_direction','picture'*/'operation_area');
 
                                     foreach($case_vars AS $case_var){
                                         if(!$emergency_case->close||($emergency_case->close == true && $case_var='closing_reason')&&$emergency_case->$case_var){
