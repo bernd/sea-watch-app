@@ -281,6 +281,9 @@ var swApp = new function(){
     this.addVesselsToMap = function(){
             var self = this;
             $.get('api/getVehicles',{request: 'request'} ,function( result ) {
+                console.log('vessels:');
+                console.log('vessels:');
+                console.log('vessels:');
                 console.log(result);
                 $.each(result.vessels, function(index,value){
                     
@@ -713,7 +716,7 @@ var swApp = new function(){
         
         //add vehicles from object in home_map.blade.php
         
-        
+        console.log(vehicles_obj);
         $.each(vehicles_obj, function(index,value){
             swApp.addVehicleToMap(swApp.map,  value.id);
         })
@@ -814,6 +817,29 @@ var swApp = new function(){
         
         var vehicle_data = this.getVehicleData(vehicle_id);
         
+
+        //apply filters
+        var filters = this.getFilters()
+
+        //all filters are looped and if
+        //the filter is in the filter.vehicles
+        //array. if not => return null
+        var proceed = false;
+
+        //only filter if at least one filter is in the array
+        if(filters.vehicles.length > 0){
+        	$.each(filters.vehicles,function(index, value){
+        		if(parseInt(value.id) === parseInt(vehicle_id)){
+        			proceed = true;
+        		}
+        	});
+        }else{
+        	proceed = true;
+        }
+        if(!proceed){
+        	return null;
+        }
+
         if(typeof this.vehicles[vehicle_id] == 'undefined')
             this.vehicles[vehicle_id] = {};
         else{
@@ -828,14 +854,15 @@ var swApp = new function(){
                 mapObj.removeLayer(this.vehicles[vehicle_id].iconLayer);
             }
         }
-        
+        console.log(vehicle_data.title);
         
         this.vehicles[vehicle_id].featureGroup = L.featureGroup().addTo(map);
         var line_points = [];
         
         $.each(vehicle_data.locations, function(index,value){
+
             //only show first 
-            if(index > vehicle_data.locations.length){
+            if(index < vehicle_data.locations.length){
                 line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
             }
         });
@@ -861,8 +888,6 @@ var swApp = new function(){
                     $('#caseDetailContainer').html(result);
                     self.initClicks();
                 });
-            
-            console.log(e.layer.feature.properties);
         });
         console.log(this.vehicles[vehicle_id].iconLayer);
         
@@ -917,6 +942,9 @@ var swApp = new function(){
         
         
         $.each(this.cases,function(i,v){
+            swApp.map.removeLayer(v.polyline);
+        });
+        $.each(this.vehicles,function(i,v){
             swApp.map.removeLayer(v.polyline);
         });
         
