@@ -720,6 +720,8 @@ var swApp = new function(){
         $.each(vehicles_obj, function(index,value){
             swApp.addVehicleToMap(swApp.map,  value.id);
         })
+
+        this.showOperationAreas();
         
         
         //this.generateMarkerCluster(this.filterResults(emergency_cases_obj));
@@ -953,7 +955,63 @@ var swApp = new function(){
             swApp.map.removeLayer(value);
         });
     };
-    
+    this.getOperationAreaData = function(operation_area_id){
+        var result = false;
+        $.each(operation_areas_obj, function(index, value){
+            console.log(parseInt(value.id));
+            console.log(parseInt(operation_area_id));
+            if(parseInt(value.id) == parseInt(operation_area_id)){
+                result = value;
+            }
+        });
+        return result;
+    };
+    this.addOperationAreaPolygonToMap = function(operation_area_id){
+        var operation_area_data = this.getOperationAreaData(operation_area_id);
+
+                this.mapLayers.push(L.geoJson({
+                    'type': 'Feature',
+                    'properties': {
+                        'name': operation_area_data.title
+                    },
+                    'geometry': {
+                        'type': 'Polygon',
+                        'coordinates': [JSON.parse(operation_area_data.polygon_coordinates)]
+                    }
+                }).addTo(this.map));
+            /*this.map.addLayer({
+                'id': 'route',
+                'type': 'fill',
+                'data': {
+                    'type': 'Feature',
+                    'properties': {
+                        'name': operation_area_data.title
+                    },
+                    'geometry': {
+                        'type': 'Polygon',
+                        'coordinates': JSON.parse(operation_area_data.polygon_coordinates)
+                    }
+                },
+                'layout': {},
+                'paint': {
+                    'fill-color': '#088',
+                    'fill-opacity': 0.8
+                }
+            });*/
+    };
+    this.showOperationAreas = function(){
+        var filters = swApp.getFilters();
+        var self = this;
+
+        if(filters.operation_areas.length === 0)
+            $.each(operation_areas_obj, function(index, value){
+                self.addOperationAreaPolygonToMap(value.id);
+            });
+        else
+            $.each(operation_areas_obj,function(index, value){
+                self.addOperationAreaPolygonToMap(value);
+            });
+    };
     this.bing = function(){
         
            $("#bing").trigger('play');

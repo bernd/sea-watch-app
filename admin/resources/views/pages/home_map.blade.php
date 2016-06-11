@@ -27,6 +27,7 @@
 <script>
 var emergency_cases_obj = <?php echo $emergency_cases->toJson();?>;
 var vehicles_obj = <?php echo $vehicles->toJson();?>;
+var operation_areas_obj = <?php echo $operation_areas->toJson();?>;
     
 L.mapbox.accessToken = 'pk.eyJ1IjoibmljemVtIiwiYSI6ImNpam02MzNrNzAwMmt2eG0zdXI0ZHYzajAifQ.yi825X8J7cP1upzA1x6Y-Q';
 
