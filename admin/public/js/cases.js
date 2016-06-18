@@ -958,8 +958,6 @@ var swApp = new function(){
     this.getOperationAreaData = function(operation_area_id){
         var result = false;
         $.each(operation_areas_obj, function(index, value){
-            console.log(parseInt(value.id));
-            console.log(parseInt(operation_area_id));
             if(parseInt(value.id) == parseInt(operation_area_id)){
                 result = value;
             }
