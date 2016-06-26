@@ -13,10 +13,6 @@
                   @foreach ($operation_areas as $operation_area)
                       <li class="op_area filter" data-class="oparea_<?php echo $operation_area->id;?>" data-id="<?php echo $operation_area->id;?>"><a href="#op_area"><?php echo $operation_area->title;?> <span class="label label-danger pull-right"><?php echo $operation_area->count_open_cases();?></span></a></li>
                   @endforeach
-                  @if(Auth::user()->admin==1)
-                  <li class="op_area add_op"><a href="{{ URL::to('operation_areas/create') }}"><span class="add_op_title">Add Operation Area</span></a></li>
-                  @endif
-                  
                   
                   @if (Request::is('map')||Request::is('/'))
                   <li><h3>Status</h3></li>

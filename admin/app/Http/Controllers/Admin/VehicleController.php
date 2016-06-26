@@ -64,11 +64,19 @@ class VehicleController extends AdminController
             $sat_number = (int)str_replace('@msg.iridium.com', '', $header->fromaddress);
             
             $vehicle = Vehicle::where('sat_number', '=',$sat_number)->get();
-            echo $vehicle[0]->id;
-            $vehicleLocation = new \App\VehicleLocation(array('lat'=>$lat, 'lon'=>$lon, 'vehicle_id'=>$vehicle[0]->id, 'timestamp'=>$unixtime,'connection_type'=>'iridium'));
-            $vehicleLocation->save();
-            echo $vehicleLocation->id;
+            
+            if(isset($vehicle[0])){
+                echo 'Vehicle: '.$vehicle[0]->id."\n";
+                $vehicleLocation = new \App\VehicleLocation(array('lat'=>$lat, 'lon'=>$lon, 'vehicle_id'=>$vehicle[0]->id, 'timestamp'=>$unixtime,'connection_type'=>'iridium'));
+                $vehicleLocation->save();
+                
+                return true;
+            }else{
+                echo "The vehicle is not added to the database:".$sat_number."\n";
+                return false;
+            }
         }
+        return false;
         
         
         //echo 'coord:'.$lat.','.$lon;

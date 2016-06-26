@@ -42,9 +42,6 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('contact', 'PagesController@contact');
 
 
-    Route::get('operation_areas/create', 'operation_areas@create');
-    Route::post('operation_areas/create', 'operation_areas@store');
-
 
     // route to show our edit form
     Route::get('cases/edit/{id}', array('as' => 'case.edit', function($id)
@@ -288,6 +285,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     # Admin Dashboard
     Route::get('dashboard', 'Admin\DashboardController@index');
 
+    # Operation Areas
+    Route::get('operationAreas/', 'Admin\OperationAreaController@index');
+    Route::get('operationAreas/create', 'Admin\OperationAreaController@create');
+    Route::post('operationAreas/create', 'Admin\OperationAreaController@store');
+    Route::post('operationArea/{operationArea}/delete', 'Admin\OperationAreaController@destroy');
+    Route::get('operation_area/data', 'Admin\OperationAreaController@data');
+    Route::get('operationAreas/{operationArea}/delete', 'Admin\OperationAreaController@delete');
+    Route::resource('operationArea', 'Admin\OperationAreaController');
+    
     # Language
     Route::get('language/data', 'Admin\LanguageController@data');
     Route::get('language/{language}/show', 'Admin\LanguageController@show');

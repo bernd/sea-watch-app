@@ -42,6 +42,12 @@
                         <i class="glyphicon glyphicon-user"></i> Users
                     </a>
                 </li>
+                
+                <li>
+                    <a href="{{url('admin/operationAreas')}}">
+                        <i class="glyphicon glyphicon-user"></i> Operation Areas
+                    </a>
+                </li>
                 <li>
                     <a href="{{ URL::to('auth/logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
                 </li>
