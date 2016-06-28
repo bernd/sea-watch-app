@@ -1,16 +1,23 @@
-@extends('layouts.app')
+@extends('admin.layouts.default')
+
 {{-- Web site Title --}}
-@section('title')
-        @parent
+@section('title') {!! trans("admin/users.users") !!} :: @parent
 @stop
 
-@section('content')
+{{-- Content --}}
+@section('main')
 
+    
 
-
+<style>
+    #map{
+        width:400px;
+            min-width:400px;
+        height:300px;
+    }
+</style>
 <script src="{{ URL::to('js/ol.js') }}" type="text/javascript"></script>
 <link rel="stylesheet" href="{{ URL::to('css/ol.css') }}" type="text/css">
-</div>
 <div class="container">
 <div class="row-fluid">
     <form class="form-horizontal"  style="max-width:550px;" action='' method="POST">
@@ -59,7 +66,12 @@
 </div>
 
 <script>
-
+    var mapz;
+$(document).ready(function(){
+    
+    
+    
+    
 var raster = new ol.layer.Tile({
   source:new ol.source.OSM()
 });
@@ -88,7 +100,7 @@ var schladming = [9.99489,53.51603]; // longitude first, then latitude
 // since we are using OSM, we have to transform the coordinates...
 var schladmingWebMercator = ol.proj.fromLonLat(schladming);
 
-var map = new ol.Map({
+mapz = new ol.Map({
   layers: [raster, vector],
   target: 'map',
   view: new ol.View({
@@ -128,7 +140,8 @@ function addInteraction() {
       maxPoints: maxPoints,
     });
     draw.on('drawend', ondrawend);
-    map.addInteraction(draw);
+    mapz.addInteraction(draw);
+    
   }
 }
 
@@ -138,12 +151,25 @@ function addInteraction() {
  * @param {Event} e Change event.
  */
 typeSelect.onchange = function(e) {
-  map.removeInteraction(draw);
+  mapz.removeInteraction(draw);
   addInteraction();
 };
 
-addInteraction();</script>
+
+addInteraction();
+
+//delay for draw on init bug..
+setTimeout(function(){ 
+    mapz.updateSize();
+},1000);
+
+    
+    
+});</script>
 
 
+@stop
 
+{{-- Scripts --}}
+@section('scripts')
 @stop

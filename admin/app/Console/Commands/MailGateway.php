@@ -26,7 +26,7 @@ class Email_reader {
 	// connect to the server and get the inbox emails
 	function __construct() {
 		$this->connect();
-		//$this->inbox();
+		//$this->Inbox();
 	}
 
 	// close the server connection
@@ -53,13 +53,14 @@ class Email_reader {
                 //var_dump($result);
                 
                 
-                
+                if($this->msg_cnt === 0);
+                    echo"no unseen mails\n";
 		$in = array();
 		for($i = 1; $i <= $this->msg_cnt; $i++) {
                        
                         if($unseen_messages && in_array($i, $unseen_messages)){
                             
-                            $body = imap_body($this->conn, $i);
+                            $body = imap_body($this->conn, $i,FT_PEEK);
                             $header = imap_headerinfo($this->conn, $i);
 
                             $in[] = array(
@@ -70,8 +71,19 @@ class Email_reader {
                             );
                             
                             if(strpos($header->fromaddress, '@msg.iridium.com') !== FALSE){
-                                $status = imap_setflag_full($this->conn, $i, "\\Seen \\Flagged", ST_UID);
-                                \App\Http\Controllers\Admin\VehicleController::addLocationFromIridiumMail($header, $body);
+                                if(\App\Http\Controllers\Admin\VehicleController::addLocationFromIridiumMail($header, $body)){
+                                    
+                                    echo 'now';
+                                    imap_setflag_full($this->conn, $i, "\\Seen", ST_UID);
+                                    
+                                    $body = imap_body($this->conn, $i);
+                                }else{
+                                    
+                                    echo 'not now';
+                                    /*$status = imap_clearflag_full($this->conn, $i, "\\Seen \\Flagged");
+                                    
+                                    imap_close($this->conn, CL_EXPUNGE);*/
+                                }
                             }
                             
                         }
@@ -88,7 +100,7 @@ class Email_reader {
 		imap_expunge($this->conn);
 
 		// re-read the inbox
-		$this->inbox();
+		$this->Inbox();
 	}
 
 	// get a specific message (1 = first email, 2 = second email, etc.)
@@ -99,12 +111,14 @@ class Email_reader {
 		elseif ( ! is_null($msg_index) && isset($this->inbox[$msg_index])) {
 			return $this->inbox[$msg_index];
 		}
-
-		return $this->inbox[0];
+                if(isset($this->inbox[0]))
+                    return $this->inbox[0];
+                else
+                    return null;
 	}
 
 	// read the inbox
-	function inbox() {
+	function Inbox() {
 		$this->msg_cnt = imap_num_msg($this->conn);
 
 		$in = array();
@@ -157,14 +171,14 @@ class MailGateway extends Command
         $mailReader = new Email_reader();
         $mailReader->syncInbox();
         
-       Mail::raw('Text to e-mail', function($message)
+       /*Mail::raw('Text to e-mail', function($message)
         {
             $message->from('nic@transparency-everywhere.com', 'Laravel');
 
             //$message->to('nic@endwicklung.com')->cc('bar@example.com');
             $message->to('nic@endwicklung.com');
         });
-        $this->info('Mailgateway synced successfully');
+        $this->info('Mailgateway synced successfully');*/
 
     }
 }
