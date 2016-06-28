@@ -75,7 +75,9 @@ class emergencyCase extends Model
      */
     public function getEmergencyCaseTitleAttribute()
     {
-        return Operation_area::find($this->operation_area)->title;
+	$op_area =  Operation_area::find($this->operation_area);
+	if($op_area)
+        return $op_area->title;
     }
     /**
      * Get no of messages
