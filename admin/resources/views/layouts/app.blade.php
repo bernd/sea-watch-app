@@ -35,10 +35,19 @@
 <!--loggedOut-->
     <div class="tech-support-box">
         <h3><i class="zmdi zmdi-pin-help"></i> Support</h3>
-        <a class="btn btn-block btn-primary">Chat</a>
-        <a class="btn btn-block btn-primary">Skype</a>
-        <p>+49 12354198 (DE)<br />
-        +12 789712 (EN)</p>
+        <a href="mailto:app@sea-watch.org" class="btn btn-block btn-primary">e-Mail</a>
+        <script type="text/javascript" src="https://secure.skypeassets.com/i/scom/js/skype-uri.js"></script>
+<div id="SkypeButton_Call_joshkrue_1">
+ <script type="text/javascript">
+ Skype.ui({
+ "name": "dropdown",
+ "element": "SkypeButton_Call_joshkrue_1",
+ "participants": ["joshkrue"]
+ });
+ </script>
+</div>
+        <p>+49176 45791784<br />
+        </p>
     </div>
 @include('partials.nav')
 <div class="container-fluid">
