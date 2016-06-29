@@ -290,7 +290,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
 
   #caseList {
       list-style: none;
-      background: #f0f0f0;
+      background: transparent;
       margin: 0;
       padding: 0
   }

@@ -334,11 +334,12 @@ class ApiController extends Controller
     public function getSpotterCases(Request $request){
         $all = $request->all();
         
-        $caseData =  emergencyCase::where('session_token', '=', $all['session_token'])
-                ->where('boat_status', '=', 'distress');
+        //$cases =  emergencyCase::where('session_token', '=', $all['session_token'])
+        //        ->where('boat_status', '=', 'distress')->get();
+        $cases = emergencyCase::get();
         
-        $caseData =  emergencyCase::get();
-        
+        //$cases =  emergencyCase::get();
+        $caseData = $cases->toJson();
         
         
         $result = [];
