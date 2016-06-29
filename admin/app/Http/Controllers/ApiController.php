@@ -15,6 +15,7 @@ use App\involvedUsers;
 use App\Operation_area;
 use App\pointLocation;
 use App\Vehicle;
+use App\VehicleLocation;
 use App\User;
 
 use JWTAuth;
@@ -527,6 +528,7 @@ class ApiController extends Controller
             //add new cases to result
             $result['data']['cases'] = emergencyCase::where('updated_at', '>', $date)->get();
             
+                        $result['data']['vehicles'] = Vehicle::where('updated_at', '>', $date)->get();
             
             
             if(isset($request['cases'])){
@@ -598,8 +600,24 @@ class ApiController extends Controller
 	
         $all = $request->all();
         $Vehicle = Vehicle::where('user_id', '=', JWTAuth::parseToken()->toUser()->id)->first();
-        $vehicleLocation = new \App\VehicleLocation(array('lat'=>$all['position']["latitude"], 'lon'=>$all['position']['longitude'], 'vehicle_id'=>$Vehicle->id, 'timestamp'=>time(),'connection_type'=>'spotter_app'));
-            $vehicleLocation->save();
+        
+        $lastTracked = VehicleLocation::where('vehicle_id', $Vehicle->id)->orderBy('timestamp', 'desc')->first();
+        
+        
+        if(abs($lastTracked->lat-$all['position']["latitude"]) == 0 &&
+           abs($lastTracked->lon-$all['position']["longitude"]) == 0){
+            $lastTracked->updated_at = date('Y-m-d H:i:s', time());
+            $lastTracked->timestamp = time();
+            $lastTracked->save();
+        }else{
+            
+        }
+	$vehicleLocation = new \App\VehicleLocation(array('lat'=>$all['position']["latitude"], 'lon'=>$all['position']['longitude'], 'vehicle_id'=>$Vehicle->id, 'timestamp'=>time(),'connection_type'=>'spotter_app'));
+        $vehicleLocation->save();
+        
+        $Vehicle->updated_at = date('Y-m-d H:i:s', time());
+        $Vehicle->save();
+        
             //echo $vehicleLocation->id;
         //$result['vessels'] = $vehicles->toArray();
         //return $result;

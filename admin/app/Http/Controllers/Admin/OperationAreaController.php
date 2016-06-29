@@ -55,14 +55,13 @@ class OperationAreaController extends AdminController
             ->remove_column('user_id')
             ->remove_column('created_at')
             ->remove_column('updated_at')
-            ->add_column('actions', '<!--<a href="{{{ URL::to(\'admin/operationAreas/\' . $id . \'/edit\' ) }}}" class="btn btn-success btn-sm iframe" ><span class="glyphicon glyphicon-pencil"></span>  {{ trans("admin/modal.edit") }}</a>
-                    <a href="{{{ URL::to(\'admin/operationAreas/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger iframe"><span class="glyphicon glyphicon-trash"></span> {{ trans("admin/modal.delete") }}</a>-->
+            ->add_column('actions', '<!--<a href="{{{ URL::to(\'admin/operationAreas/\' . $id . \'/edit\' ) }}}" class="btn btn-success btn-sm iframe" ><span class="glyphicon glyphicon-pencil"></span>  {{ trans("admin/modal.edit") }}</a>-->
+                    <a href="{{{ URL::to(\'admin/operationAreas/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger iframe"><span class="glyphicon glyphicon-trash"></span> {{ trans("admin/modal.delete") }}</a>
                 ')
             ->make();
     }
     public function delete(Operation_area $operationArea)
     {
-        echo $operationArea->id;
         return view('admin.operationAreas.delete', compact('operationArea'));
     }
 
