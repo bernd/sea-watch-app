@@ -73,7 +73,9 @@ php artisan key:generate
 
 ### Step 5: DB Migration
 
-Go to the root directory and type 'php artisan migrate'.
+Go to the root directory and type 
+    php artisan migrate
+    php artisan db:seed
 
 ### Step 6: Change URLS
 
