@@ -47,7 +47,7 @@ How to install
 You can download https://github.com/sea-watch/sea-watch-app/archive/master.zip and unzip it in your www or htdocs folder.
 
 
-Or just cline this Repo
+Or just clone this Repo
 ### Step 2: Use Composer to install dependencies
 
 Laravel utilizes [Composer](http://getcomposer.org/) to manage its dependencies. First, download a copy of the composer.phar.
@@ -61,7 +61,7 @@ Enter the admin/ directory and run:
     composer install --no-scripts
 
 
-### Step 3: Create a Database on your Server with uft8_general_c
+### Step 3: Create a Database on your Server with uft8_general_ci
 
 ### Step 4: Update the .env file to your local settings
 
