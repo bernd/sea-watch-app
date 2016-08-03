@@ -51,7 +51,7 @@ class ApiController extends Controller
         $this->middleware('auth', ['only' => 'getInvolved']);
     }
     //returns location_area for lon and lat
-    public function getLocationArea($lon, $lat){
+    public static function getLocationArea($lon, $lat){
         
 	$operation_areas = Operation_area::all();
         
@@ -334,12 +334,11 @@ class ApiController extends Controller
     public function getSpotterCases(Request $request){
         $all = $request->all();
         
-        //$cases =  emergencyCase::where('session_token', '=', $all['session_token'])
-        //        ->where('boat_status', '=', 'distress')->get();
-        $cases = emergencyCase::get();
+        $caseData =  emergencyCase::where('session_token', '=', $all['session_token'])
+                ->where('boat_status', '=', 'distress');
         
-        //$cases =  emergencyCase::get();
-        $caseData = $cases->toJson();
+        $caseData =  emergencyCase::get();
+        
         
         
         $result = [];
@@ -353,23 +352,18 @@ class ApiController extends Controller
         
     }
     
-    /**
-     * Adds a new emergency_case and the first position into the database
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function add_request(Request $request)
-    {
+    public static function createCase($req){
         
-        $all = $request->all();
+        $all = $req;
         
-        $location_information = json_decode($all['location_data']);
+        $location_information = json_decode($all['location_data'],true);
+        
+        var_dump($location_information->longitude);
         
         $location_information->heading = 0;
         
         if(isset($location_information->longitude))
-            $all['operation_area'] =  $this->getLocationArea($location_information->longitude,$location_information->latitude);
+            $all['operation_area'] =  \App\Http\Controllers\ApiController::getLocationArea($location_information->longitude,$location_information->latitude);
         
         if(!isset($all['boat_status']))
             $all['boat_status'] = 'distress';
@@ -405,6 +399,19 @@ class ApiController extends Controller
         $result['data']['operation_area'] = $emergencyCase->operation_area;
         
         return json_encode($result);
+    }
+    
+    /**
+     * Adds a new emergency_case and the first position into the database
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  $alternative_request is used if $request is not defined (e.h. mail:sync)
+     * @return \Illuminate\Http\Response
+     */
+    public function add_request(Request $request)
+    {
+        return $this->createCase($request->all());
+        
         //
     }
     

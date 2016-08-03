@@ -3,7 +3,7 @@
 	{!! Form::model($operationArea, array('url' => URL::to('admin/operationArea/delete/' . $operationArea->id) , 'method' => 'delete', 'class' => 'bf', 'files'=> true)) !!}
 	<div class="form-group">
 		<div class="controls">
-			{{ trans("admin/modal.delete_message") }}<br>
+			Are you sure to delete this operation area?<br>
 			<element class="btn btn-warning btn-sm close_popup">
 				<span class="glyphicon glyphicon-ban-circle"></span> {{
 			trans("admin/modal.cancel") }}</element>
