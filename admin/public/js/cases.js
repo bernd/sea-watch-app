@@ -502,6 +502,13 @@ var swApp = new function(){
                         });
                     }
                     
+                    if(typeof result.data.vehicles !== 'undefined'){
+                        
+                        $.each(result.data.vehicles, function(index, vehicleObj){
+                            console.log(vehicleObj);
+                        });
+                    }
+                    
                     if(typeof result.data.messages !== 'undefined')
                         $.each(result.data.messages, function(index, value){
                             var case_id = index;
