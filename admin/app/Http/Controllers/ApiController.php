@@ -355,9 +355,11 @@ class ApiController extends Controller
     public static function createCase($req){
         
         $all = $req;
-        
-        $location_information = json_decode($all['location_data'],true);
-        
+        if(!is_array($all['location_data']))
+            $location_information = json_decode($all['location_data'],true);
+        else{
+            $location_information = json_decode(json_encode($all['location_data']), FALSE);
+        }
         var_dump($location_information->longitude);
         
         $location_information->heading = 0;

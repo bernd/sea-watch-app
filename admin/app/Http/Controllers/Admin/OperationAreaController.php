@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Operation_area;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Datatables;
 use DB;
 

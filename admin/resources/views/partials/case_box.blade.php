@@ -23,7 +23,7 @@ if($emergency_case->closed){
                                         
                                         
                                         <?php
-                                        $source_names = array('refugee'=>'Refugee', 'spotter_app'=>'Spotter', 'create_case_form'=>'Web', ''=>'not defined');
+                                        $source_names = array('refugee'=>'Refugee', 'spotter_app'=>'Spotter', 'plane_app'=>'Plane', 'create_case_form'=>'Web', ''=>'not defined');
                                         if(isset($emergency_case->source_type)){
                                             ?>
                                             {{$source_names[$emergency_case->source_type]}}
