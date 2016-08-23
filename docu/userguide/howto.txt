@@ -1,0 +1,4 @@
+sudo pip install markdown
+python -m markdown spotter_app.md > spotter_app.html
+
+
