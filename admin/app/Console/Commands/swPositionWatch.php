@@ -156,7 +156,7 @@ class swPositionWatch extends Command
              $this->info('sendmail!');
              
              $message = "Hey there,\n the sea-watch is currently ".round($smallestDistance/1852)." Nautical Miles away from the libyan shore.\n For more infos visit app.sea-watch.org/admin/public/map.\n Best regards,\n The Sea-Watch-App Team.";
-             sendMail('nic@transparency-everywhere.com,giorgia@sea-watch.org,axel@sea-watch.org,harald@sea-watch.org', 'SW2 within 24 Miles Zone', $message);
+             sendMail('nic@transparency-everywhere.com,giorgia@sea-watch.org,axel@sea-watch.org,harald.h@sea-watch.org,reinier@sea-watch.org,ruben@sea-watch.org', 'SW2 within 24 Miles Zone', $message);
            
         }
         $this->info($smallestDistanceCoordinates[0].'-'.$smallestDistanceCoordinates[1]);

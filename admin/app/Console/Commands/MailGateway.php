@@ -202,7 +202,15 @@ class cli_reader {
                             
                             $body = imap_body($this->conn, $i,FT_PEEK);
                             $header = imap_headerinfo($this->conn, $i);
-
+                            $structure = imap_fetchstructure($this->conn, $i);
+                            
+                            echo $structure->encoding;
+                            if($structure->encoding == 4){
+                                $body = imap_qprint($body);
+                            }
+                            
+                            echo 'faschismus';
+                            
                             $in[] = array(
                                     'index'     => $i,
                                     'header'    => $header,
@@ -211,7 +219,7 @@ class cli_reader {
                             );
                             
                             //check if msg is from iridium msg service
-                            if(strpos($header->fromaddress, '@msg.iridium.com') !== FALSE){
+                            if(true){
                                 echo 'got unseen mail from msg.iridium.com:';
                                 echo $body;
                                 
@@ -229,13 +237,23 @@ class cli_reader {
                                     $json_string = substr($json_string,0, -2).'}';
                                     $json_string = str_replace('":("', '":{"', $json_string);
                                     $json_string = str_replace(')}', '}}', $json_string);
+
+                                    
+                                    echo "\n";
+                                    echo $json_string;
+                                    echo "fuck\n";
                                     
                                     $case_array = json_decode($json_string, true);
-                                    $case_array['location_data'] = json_encode($case_array);
                                     
                                     var_dump($case_array);
                                     
+                                    //$case_array['location_data'] = json_encode($case_array['location_data']);
+                                    
+                                    /*var_dump($case_array);*/
+                                    
                                     $case_id = \App\Http\Controllers\ApiController::createCase($case_array);
+                                    
+                                    echo $case_id;
                                     self::sendMail($header->fromaddress, 'Re: '.$header->subject, "Your case has been submitted. Case-ID: ".$case_id);
                                     
                                     imap_setflag_full($this->conn, $i, "\\Seen", ST_UID);
@@ -339,6 +357,8 @@ class MailGateway extends Command
      */
     public function handle()
     {
+        $mailReader = new Email_reader();
+        $mailReader->syncInbox();
         $mailReader = new cli_reader();
         $mailReader->syncInbox();
         

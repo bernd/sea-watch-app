@@ -119,4 +119,3 @@ if($emergency_case->closed){
                     <div class="editCase content" style="display:none; padding:0 30px;">
                     </div>
                 </div>
-                <script>swApp.addMiniMap({{$emergency_case->id}}, 'map_{{$emergency_case->id}}');</script>
