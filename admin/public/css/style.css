@@ -1,7 +1,7 @@
 /* Global Settings */
 
 body {
-  background-color:rgb(231,233,236);
+    background:rgb(231,233,236);
 }
 
 a {
@@ -41,7 +41,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
   /* Navbar */
 
     .navbar {
-        height:64px;
+        height:auto;
       }
 
     .navbar-inverse .navbar-toggle {
@@ -58,8 +58,15 @@ a.gray:hover, a.gray:focus, a.gray:active {
       box-shadow:none;
     }
 
+     .navbar-inverse .navbar-nav > li > a.active {
+      background: rgb(0,0,0);
+      color:#fff;
+     }
+
+
     .nav-sidebar {
         padding-top: 12px;
+        position:fixed;
         padding-bottom:30px;
     }
 
@@ -69,7 +76,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
 
     .navbar-brand, .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus{
       height:auto;
-      background-color: rgb(0,152,207);
+      background-color: rgb(23,175,250);
     }
 
     .navbar-inverse .navbar-nav > li > a,  a.navbar-brand {
@@ -138,8 +145,116 @@ a.gray:hover, a.gray:focus, a.gray:active {
     .dropdown-menu > li > a:hover, .dropdown-menu > li:hover > a, .dropdown-menu > li > a:focus, .dropdown-menu > li:focus > a  {
       background-color:transparent;
       background-image:none;
-      color:#fff;
+      color:#fff; 
     }
+
+    .navbar-inverse #online_status .status_icon {
+      display:block;
+      position:relative;
+      margin-top:26px;
+    }
+
+         .pulse {
+            width: 10px;
+            height: 10px;
+            border: 5px solid rgba(255,137,66,0);
+            -webkit-border-radius: 30px;
+            -moz-border-radius: 30px;
+            border-radius: 30px;
+            background-color: rgba(255,137,66,0);
+            z-index: 10;
+            position: absolute;
+          }
+
+
+          .dot {
+            border: 10px solid rgb(255,137,66);
+            background: transparent;
+            -webkit-border-radius: 60px;
+            -moz-border-radius: 60px;
+            border-radius: 60px;
+            height: 50px;
+            width: 50px;
+            -webkit-animation: pulse 3s ease-out;
+            -moz-animation: pulse 3s ease-out;
+            animation: pulse 3s ease-out;
+            -webkit-animation-iteration-count: infinite;
+            -moz-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            z-index: 1;
+            opacity: 0;
+          }
+
+          .online .pulse {
+                border-color:rgb(23,175,250);
+                background-color:rgb(23,175,250);
+          }
+
+          .online .dot {
+                border-color:rgba(23,175,250,0.1);
+                background-color:rgba(23,175,250,0.1);
+          }
+
+          .connection_unstable .dot {
+                border-color:rgb(255,137,66);
+                background-color:rgb(255,137,66);
+          }
+          
+          .connection_unstable .pulse {
+                border-color:rgb(255,137,66);
+                background-color:rgb(255,137,66);
+          }
+
+
+
+          @-moz-keyframes pulse {
+           0% {
+              -moz-transform: scale(0);
+              opacity: 0.0;
+           }
+           25% {
+              -moz-transform: scale(0);
+              opacity: 0.1;
+           }
+           50% {
+              -moz-transform: scale(0.1);
+              opacity: 0.3;
+           }
+           75% {
+              -moz-transform: scale(0.5);
+              opacity: 0.5;
+           }
+           100% {
+              -moz-transform: scale(1);
+              opacity: 0.0;
+           }
+          }
+
+          @-webkit-keyframes "pulse" {
+           0% {
+              -webkit-transform: scale(0);
+              opacity: 0.0;
+           }
+           25% {
+              -webkit-transform: scale(0);
+              opacity: 0.1;
+           }
+           50% {
+              -webkit-transform: scale(0.1);
+              opacity: 0.3;
+           }
+           75% {
+              -webkit-transform: scale(0.5);
+              opacity: 0.5;
+           }
+           100% {
+              -webkit-transform: scale(1);
+              opacity: 0.0;
+           }
+          }
 
 
 
@@ -147,9 +262,6 @@ a.gray:hover, a.gray:focus, a.gray:active {
 
   /* Sidebar */
 
-  .sidebar {
-      background: #e7e9ec
-  }
 
   .sidebar .label-danger {
       background-color: #727881
@@ -158,7 +270,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
   .sidebar h3 {
       font-size: 19px;
       font-weight: 700;
-      color: #0098cf
+      color: rgb(23,175,250)
   }
 
   .sidebar .divider {
@@ -200,7 +312,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
   }
 
   .sidebar li.active a {
-      font-weight: 700;
+      font-weight: 400;
       color: #373c44
   }
 
@@ -234,20 +346,32 @@ a.gray:hover, a.gray:focus, a.gray:active {
       content: '\f26d'
   }
 
-  .sidebar li.status.distress a:before {
+  .sidebar li.status a:before {
+      content: '\f29b';
+   }
+
+  .sidebar li.status.active a:before {
+      content: '\f299';
+   }
+
+  .sidebar li.status.distress a:before,  
+  .sidebar li.status.critical_target a:before,  
+  .sidebar li.status.need_help a:before {
       color: #ff4344
   }
 
-  .sidebar li.status.rescue_in_progress a:before {
+  .sidebar li.status.rescue_in_progress a:before, 
+  .sidebar li.status.attended a:before,
+  .sidebar li.status.confirmed_target a:before,
+  .sidebar li.status.possible_target a:before, 
+  .sidebar li.away a:before   {
       color: #ff8942
   }
 
-  .sidebar li.status.rescued a:before {
-      color: #3fb0fb
-  }
 
-  .sidebar li.status.on_land a:before {
-      color: #00b493
+  .sidebar li.closed a:before,
+  .sidebar li.online a:before {
+      color: rgb(66, 183, 42);
   }
 
     /* Fixed Sidebar for large Screens */
@@ -269,9 +393,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
 
 .main {
     padding-top: 35px;
-    -webkit-box-shadow: 0 0 10px 0 rgba(170, 183, 193, .25);
-    box-shadow: 0 0 10px 0 rgba(170, 183, 193, .25);
-    background: #fff;
+
     overflow:auto;
 }
 
@@ -312,7 +434,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
   }
 
   .caseBox .map {
-      height: 130px;
+      height: 44px;
       width: 100%
   }
   
@@ -378,7 +500,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
   }
 
   .caseBox table tr td:first-of-type {
-      border-right: 1px solid rgba(177, 183, 193, .25);
+      border-right: 2px solid rgba(177, 183, 193, .25);
       font-size: 12px;
       padding: 5px 0;
       font-weight: 500
@@ -435,7 +557,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
   .caseBox.on_land,
   .caseBox.on_land .btn,
   .caseBox.on_land header {
-      background: #00b493
+      background: rgb(66, 183, 42)
   }
 
   .caseBox.rescue_in_progress,
@@ -518,7 +640,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
     .user_2 {
         float: right;
         border-bottom-left-radius: 8px;
-        background: #0098cf;
+        background: rgb(23,175,250);
         color: #fff
     }
 
@@ -618,7 +740,7 @@ a.gray:hover, a.gray:focus, a.gray:active {
     
     .tech-support-box h3 i {
         margin-right:15px;
-        background:rgb(0,152,207);
+        background:rgb(23,175,250);
         padding:12px 15px;
         color:#fff;
     }

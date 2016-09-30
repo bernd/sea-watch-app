@@ -17,7 +17,7 @@ if($emergency_case->closed){
                                     echo $emergency_case->first_location()->connection_type;
                                 ?></span>
                                 <div class="status"> 
-                                    {{['distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
+                                    {{['need_help'=>'Need Help','critical_target'=>'Critical','confirmed_target'=>'Confirmed','possible_target'=>'Possible Target','attended'=>'Attended','closed'=>'Closed'][$emergency_case->boat_status]}}
                                     <span class="id" style="font-size:8px">{{$emergency_case->id}}</span>
                                     <span class="source">
                                         
@@ -83,7 +83,7 @@ if($emergency_case->closed){
                                 ?></span>
 
                                 <span class="status">
-                                    {{['distress'=>'Distress','rescued'=>'Rescued','on_land'=>'On Land','rescue_in_progress'=>'In Progress'][$emergency_case->boat_status]}}
+                                    {{['need_help'=>'Need Help','critical_target'=>'Critical','confirmed_target'=>'Confirmed','possible_target'=>'Possible Target','attended'=>'Attended','closed'=>'Closed'][$emergency_case->boat_status]}}
                                 </span>
                                 <span class="source">Refugee</span>
                             </header>

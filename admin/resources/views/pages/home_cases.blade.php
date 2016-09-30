@@ -33,7 +33,7 @@ $(document).ready(function(){
         
         
         @include('partials.casenav')
-        <div class="col-sm-10 col-md-10 main">
+        <div class="col-sm-7 col-md-7 main">
             <ul id="caseList">
 
             @foreach ($emergency_cases as $emergency_case)
@@ -47,6 +47,42 @@ $(document).ready(function(){
           
           
           
+        </div>
+
+        <style>
+        .chat {
+          background:rgba(255,255,255,0.5);
+          border-left:1px solid rgba(0,0,0,0.25);
+          bottom:0px;
+          padding:64px 15px 0px 15px;
+          box-sizing:border-box;
+          height:100vh;
+          top:0px;
+          position:fixed;
+          }
+
+          .message-container {
+            width:100%;
+            display:block;
+          }
+
+
+
+          .message-meta {
+
+          }
+
+            .message-meta_user {
+
+            }
+
+
+
+
+        </style>
+        <div class="col-sm-3 col-md-3 col-sm-offset-9 col-md-offset-9 chat">
+          <h3>Chat · Status-Log</h3>
+
         </div>
       </div>
 

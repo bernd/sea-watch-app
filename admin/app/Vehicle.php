@@ -26,7 +26,8 @@ class Vehicle extends Model
      */
     public function getLocationsAttribute()
     {
-        return VehicleLocation::where('vehicle_id', $this->id)->orderBy('timestamp', 'desc')->get();
+        
+        return VehicleLocation::where('vehicle_id', $this->id)->orderBy('timestamp', 'desc')->limit(10)->get();
     }
     public function updated_at(){
         $timestamp = strtotime($this->updated_at);

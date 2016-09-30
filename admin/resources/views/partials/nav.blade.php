@@ -1,3 +1,4 @@
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -14,27 +15,18 @@
             <ul class="nav navbar-nav navbar-left">
                 
                 @if (Request::is('/')||Request::is('map')||Request::is('vehicleGrid'))
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <span>Display Mode</span><br />
-                        <?php
-                        if(Request::is('/')){
-                            echo '<i class="zmdi zmdi-view-module"></i> Cases';
-                        } if(Request::is('vehicleGrid')){
-                            echo '<i class="zmdi zmdi-car"></i> Vehicles';
-                        } if(Request::is('adminGrid')){
-                            echo '<i class="zmdi zmdi-smartphone"></i> Telephone Watchers';
-                        }else if(Request::is('map')){
-                            echo '<i class="zmdi zmdi-map"></i> Map';
-                        }?> 
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ URL::to('map') }}" class="{{ (Request::is('map') ? 'active' : '') }}"><i class="zmdi zmdi-map"></i> Map</a></li>
-                        <li><a href="{{ URL::to('/') }}" class="{{ (Request::is('/') ? 'active' : '') }}"><i class="zmdi zmdi-view-module"></i> Cases</a></li>
-                        <li><a href="{{ URL::to('/vehicleGrid') }}" class="{{ (Request::is('/vehicleGrid') ? 'active' : '') }}"><i class="zmdi zmdi-car"></i> Vehicles</a></li>
-                        <li><a href="{{ URL::to('/adminGrid') }}" class="{{ (Request::is('/adminGrid') ? 'active' : '') }}"><i class="zmdi zmdi-smartphone"></i> Telephone Watchers</a></li>
-                    </ul>
-                </li>
+                <li>
+                    
+                    <a href="{{ URL::to('/') }}" class="{{ (Request::is('/') ? 'active' : '') }}">
+                        <span>Mode</span><br />
+                        <i class="zmdi zmdi-map"></i> Cases</a></li>
+                    <li>
+                        
+                    <a href="{{ URL::to('map') }}" class="{{ (Request::is('map') ? 'active' : '') }}">
+                        <span> </span><br />
+                        <i class="zmdi zmdi-view-module"></i> Map</a>
+                    </li>
+                
                 <li><a href="#" id="createCase"><span>Create</span><br>New Case</a></li>
                 @endif
                 
@@ -57,6 +49,15 @@
                         <a href="{{ URL::to('auth/login') }}">  <span>Account</span><br />Login</a>
                     </li>
                 @else
+                   
+                     <li id="online_status">
+                        <a>
+                            <div class="status_icon">
+                                <div class="dot"></div>
+                                <div class="pulse"></div>
+                            </div>
+                        </a>
+                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false"><span>{{ Auth::user()->organisation }}</span><br />{{ Auth::user()->name }}</a>

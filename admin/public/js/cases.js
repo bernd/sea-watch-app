@@ -1,18 +1,22 @@
 
 var case_statuses = {
-        'distress':{
+        'possible_target':{
             title:'Distress',
             color:'ff4337'
         },
-        'rescue_in_progress':{
+        'confirmed_target':{
             title:'In progress',
             color:'ff8942'
         },
-        'rescued':{
+        'critical_target':{
             title:'Rescued',
             color:'40b0fb'
         },
-        'on_land':{
+        'attended':{
+            title:'On Land',
+            color:'40b0fb'
+        },
+        'need_help':{
             title:'On Land',
             color:'40b0fb'
         }
@@ -21,15 +25,15 @@ var case_statuses = {
 
 
 
+        var base_url = swAppConfig.urlBase;
 var emergency_case = new function(){
             
-        var base_url = swAppConfig.urlBase;
         
         this.showChat = function(case_id, callback){
             if(swApp.involvedCases.indexOf(parseInt(case_id)) === -1)
                 swApp.involvedCases.push(parseInt(case_id));
             
-            $.post(base_url+'api/cases/getInvolved', {case_id:case_id,no_involvement:true},function( data ) {
+            $.post(base_url+'cases/getInvolved', {case_id:case_id,no_involvement:true},function( data ) {
                 callback(data);
             });
         };
@@ -38,7 +42,7 @@ var emergency_case = new function(){
             if(swApp.involvedCases.indexOf(parseInt(case_id)) === -1)
                 swApp.involvedCases.push(parseInt(case_id));
             
-            $.post(base_url+'api/cases/getInvolved', {case_id:case_id},function( data ) {
+            $.post(base_url+'cases/getInvolved', {case_id:case_id},function( data ) {
                 callback(data);
             });
         };
@@ -74,7 +78,7 @@ var emergency_case = new function(){
         };
         this.submitMessage = function(case_id, message,callback){
             var self = this;
-            $.post(base_url+'api/cases/sendMessageCrew', {case_id:case_id, message:message},function( result ) {
+            $.post(base_url+'cases/sendMessageCrew', {case_id:case_id, message:message},function( result ) {
                 
                 var result = JSON.parse(result);
                 
@@ -111,7 +115,7 @@ $(document).ready(function(){
         
         
         postData.location_data = JSON.stringify({latitude:postData.lat, longitude:postData.lon, heading:0, accuracy: 0});
-        $.post("api/cases/create", postData, function(result){
+        $.post(base_url+"cases/create", postData, function(result){
             console.log(result);
             var result = JSON.parse(result);
             if(result.error == null){
@@ -145,6 +149,7 @@ $(document).ready(function(){
             }
             $('.filter').not(this).not('.all').removeClass('active');
         }else{
+            $('.all_vehicles').removeClass('active');
             $(this).prevAll('.all').first().removeClass('active');
             if($(this).hasClass('active')){
                 $(this).removeClass('active');
@@ -157,8 +162,9 @@ $(document).ready(function(){
         $('.caseBox').hide();
         var results = [];
         $('.filter.active').each(function(){
-            results.push($(this).attr('data-class'));
+                    console.log($(this).attr('data-class'));
             if($(this).attr('data-class')){
+                    results.push($(this).attr('data-class'));
                     console.log($(this).attr('data-class'));
                     $('.'+$(this).attr('data-class')).show();
             }
@@ -223,7 +229,7 @@ var swApp = new function(){
     this.involvedCases = []; //list of ids
     this.cases = {} //case objects which also contain the map objects
     this.vehicles = {} //case objects which also contain the map objects
-    this.lastUpdated = Math.round(new Date().getTime()/1000);
+    this.lastUpdated = 0;
     
     this.map;
     
@@ -280,7 +286,7 @@ var swApp = new function(){
     //old - not used?
     this.addVesselsToMap = function(){
             var self = this;
-            $.get('api/getVehicles',{request: 'request'} ,function( result ) {
+            $.get(base_url+'getVehicles',{request: 'request'} ,function( result ) {
                 console.log('vessels:');
                 console.log('vessels:');
                 console.log('vessels:');
@@ -372,7 +378,8 @@ var swApp = new function(){
         
         filters.vehicles = [];
         $('li.vehicle.active').each(function(){
-            filters.vehicles.push({id:$(this).attr('data-id')});
+            if($(this).attr('data-id'))
+                filters.vehicles.push({id:$(this).attr('data-id')});
         });
         return filters;
     };
@@ -468,7 +475,24 @@ var swApp = new function(){
                 self.pushChatMessage(value.emergency_case_id, {type:type, message:value.message, message_id:value.id});
             });
         };
-    
+    this.updateOnlineStatus = function(reloadtime){
+        $('#online_status').removeClass('online');
+        $('#online_status').removeClass('offline');
+        $('#online_status').removeClass('medium');
+        
+        switch(reloadtime){
+            default:
+                $('#online_status').addClass('online');
+                break;
+            case 0:
+                $('#online_status').addClass('offline');
+                break;
+            case reloadtime>15:
+                $('#online_status').addClass('medium');
+                break;
+                
+        }
+    }
     this.initReload = function(){
         var self = this;
         setInterval(function() {
@@ -487,7 +511,11 @@ var swApp = new function(){
                 
             });
             
-            $.post('api/reloadBackend',{request: request} ,function( result ) {
+            
+            var tbefore = Date.now();
+            $.post(base_url+'reloadBackend',{request: request} ,function( result ) {
+                console.log('updateonlinestatus');
+                self.updateOnlineStatus(Date.now()-tbefore);
                 self.lastUpdated = Math.round(new Date().getTime()/1000);
                 
                 
@@ -505,7 +533,11 @@ var swApp = new function(){
                     if(typeof result.data.vehicles !== 'undefined'){
                         
                         $.each(result.data.vehicles, function(index, vehicleObj){
-                            console.log(vehicleObj);
+                            if(swApp.getVehicleData(vehicleObj.id) == null){
+                                vehicles_obj.push(vehicleObj);
+                            }
+                            swApp.addVehicleToMap(swApp.map,  null, vehicleObj);
+
                         });
                     }
                     
@@ -514,6 +546,9 @@ var swApp = new function(){
                             var case_id = index;
                             self.handleMessageArray(value);
                         });
+                    swApp.applyFilters();
+            }).fail(function() {
+                self.updateOnlineStatus(0);
             });
     };
         
@@ -670,7 +705,172 @@ var swApp = new function(){
         });
     };
     this.loadCaseBox = function(case_id, callback){
-        $.post('api/loadCaseBox',{request: {case_id:case_id}} ,function( result ) {
+        var caseObj = this.getCaseData(case_id);
+        
+        var html="";
+html += "<div class=\"caseBox confirmed_target  type_create_case_form oparea_1 caseBox_214\" data-id=\"214\">";
+html += "                    <div class=\"front\">";
+html += "                            <header>";
+html += "                                <span class=\"time\">2 days ago<\/span>";
+html += "                                 <span class=\"connection_type\">";
+html += "                                <\/span>";
+html += "                                <div class=\"status\"> ";
+html += "                                    Confirmed";
+html += "                                    <span class=\"id\" style=\"font-size:8px\">214<\/span>";
+html += "                                    <span class=\"source\">";
+html += "                                        ";
+html += "                                        ";
+html += "                                                                                    Web";
+html += "                                                                                <\/span>";
+html += "                                <\/div>";
+html += "                                <div class=\"case_settings\">";
+html += "                                        <a href=\"#\"><i class=\"zmdi zmdi-settings\"><\/i><\/a>";
+html += "                                <\/div>";
+html += "                            <\/header>";
+html += "                            <div class=\"map\" id=\"map_214\"><\/div>";
+html += "                            <div class=\"content\">";
+html += "                                <!--https:\/\/app.sea-watch.org\/admin\/public\/cases\/get_involved\/214-->";
+html += "                                <a href=\"#\" data-id=\"214\" class=\"btn btn-sm pull-left get-involved\">Get Involved<\/a>";
+html += "                                <a href=\"#\" data-id=\"214\" class=\"btn btn-sm pull-right show-messages\">0<\/a>";
+html += "                                <table class=\"table\">";
+html += "";
+html += "";
+html += "                                                                            <tbody><tr>";
+html += "                                            <td>ID<\/td>";
+html += "                                            <td>214<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>Closing Reason<\/td>";
+html += "                                            <td><\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>status<\/td>";
+html += "                                            <td>confirmed_target<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>Condition<\/td>";
+html += "                                            <td>unknown<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>Type<\/td>";
+html += "                                            <td>rubber<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>Other involved<\/td>";
+html += "                                            <td><\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>Engine working<\/td>";
+html += "                                            <td><\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>Passenger count<\/td>";
+html += "                                            <td>0<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>...Women<\/td>";
+html += "                                            <td>aasdasd<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>...Children<\/td>";
+html += "                                            <td>asdasd<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>...Disabled<\/td>";
+html += "                                            <td>1337<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>Additional infos<\/td>";
+html += "                                            <td>asdasdasd<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                                <tr>";
+html += "                                            <td>Operation area<\/td>";
+html += "                                            <td>1<\/td>";
+html += "                                        <\/tr>";
+html += "                                                                            <tr>";
+html += "                                        <td>Involved<\/td>";
+html += "                                        <td>";
+html += "                                            <ul class=\"involvedList\">";
+html += "                                                ";
+html += "                                                                                            <\/ul>";
+html += "                                        <\/td>";
+html += "                                    <\/tr>";
+html += "                                <\/tbody><\/table>";
+html += "                            <\/div>";
+html += "                    <\/div>";
+html += "                    <div class=\"editCase content\" style=\"display:none; padding:0 30px;\">";
+
+html += "<form class=\"form-horizontal CaseBox_intern\" action='' method=\"POST\">";
+html += "                ";
+html += "               ";
+html += "      <div class=\"form-group\">";
+html += "        <label class=\"control-label\" for=\"boat_status\">Boat Status<\/label>";
+html += "            <select class=\"form-control input-sm\" name=\"boat_status\"><option value=\"distress\">distress<\/option><option value=\"rescue_in_progress\">rescue in progress<\/option><option value=\"rescued\">rescued<\/option><option value=\"on_land\">on land<\/option><\/select>";
+html += "      <\/div>";
+html += "      <div class=\"form-group\">";
+html += "        <label class=\"control-label\" for=\"boat_condition\">Boat Condition<\/label>";
+html += "            <select class=\"form-control input-sm\" name=\"boat_condition\"><option value=\"good\">good<\/option><option value=\"bad\">bad<\/option><option value=\"sinking\">sinking<\/option><option value=\"people_in_water\">people in water<\/option><\/select>";
+html += "      <\/div>";
+html += "      <div class=\"form-group\">";
+html += "        <label class=\"control-label\" for=\"boat_type\">Boat Type<\/label>";
+html += "            <select class=\"form-control input-sm\" name=\"boat_type\"><option value=\"rubber\" selected=\"selected\">rubber<\/option><option value=\"wood\">wood<\/option><option value=\"steel\">steel<\/option><option value=\"other\">other<\/option><\/select>";
+html += "      <\/div>";
+html += "      <div class=\"row\">";
+html += "        <div class=\"col-md-6\">";
+html += "        <div class=\"form-group\">";
+html += "            <div class=\"checkbox\">  ";
+html += "              <label>";
+html += "              <input name=\"other_involved\" type=\"checkbox\" value=\"true\">";
+html += "              Other Involved";
+html += "            <\/label>";
+html += "          <\/div>";
+html += "        <\/div>";
+html += "      <\/div>";
+html += "      <div class=\"col-md-6\">";
+html += "        <div class=\"form-group\">";
+html += "            <div class=\"checkbox\">";
+html += "              <label>";
+html += "              <input name=\"engine_working\" type=\"checkbox\" value=\"true\">";
+html += "              Engine working";
+html += "            <\/label>";
+html += "          <\/div>";
+html += "        <\/div>";
+html += "      <\/div>";
+html += "    <\/div>";
+html += "      <div class=\"form-group\">";
+html += "        <label class=\"control-label\" for=\"passenger_count\">Number of passengers<\/label>";
+html += "            <input class=\"form-control input-sm\" name=\"passenger_count\" type=\"number\" value=\"0\">";
+html += "      <\/div>";
+html += "      <div class=\"form-group\">";
+html += "        <label class=\"control-label\" for=\"additional_informations\">Additional informations<\/label>";
+html += "            <input class=\"form-control input-sm\" name=\"additional_informations\" type=\"text\" value=\""+caseObj.additional_informations+"\">";
+html += "      <\/div>";
+html += "      <div class=\"form-group\">";
+html += "        <label class=\"control-label\" for=\"spotting_distance\">Spotting Distance<\/label>";
+html += "        <div class=\"input-group\">";
+html += "            <input class=\"form-control input-sm\" name=\"spotting_distance\" type=\"number\" value=\"0.00\">";
+html += "            <div class=\"input-group-addon\">km<\/div>";
+html += "        <\/div>";
+html += "      <\/div>";
+html += "      <div class=\"form-group\">";
+html += "        <label class=\"ontrol-label\" for=\"spotting_direction\">Spotting Direction<\/label>";
+html += "         <div class=\"input-group\">";
+html += "            <input class=\"form-control input-sm\" name=\"spotting_direction\" type=\"number\" value=\"0\">";
+html += "            <div class=\"input-group-addon\">&#176; <small>degree<\/small><\/div>";
+html += "          <\/div>";
+html += "      <\/div>";
+html += "      <div class=\"form-group\">";
+html += "            <input type=\"submit\" class=\"btn btn-block btn-primary\" value=\"Update Case\">";
+html += "            <a class=\"btn btn-block btn-default closeEditCase\">Cancel<\/a>";
+html += "      <\/div>";
+html += "        <input type=\"hidden\" name=\"_token\" value=\"4JqUlIPDfKV2HTQSBlr3WxoWrkWU71OYmSeFlMFT\">";
+html += "    <\/form>";
+
+
+html += "                    <\/div>";
+html += "                <\/div>";
+
+        $.post(base_url+'loadCaseBox',{request: {case_id:case_id}} ,function( result ) {
             callback(result);
         });
     };
@@ -723,7 +923,6 @@ var swApp = new function(){
         
         //add vehicles from object in home_map.blade.php
         
-        console.log(vehicles_obj);
         $.each(vehicles_obj, function(index,value){
             swApp.addVehicleToMap(swApp.map,  value.id);
         })
@@ -820,10 +1019,11 @@ var swApp = new function(){
         
     };
     
-    this.addVehicleToMap = function(map,vehicle_id){
+    this.addVehicleToMap = function(map,vehicle_id, vehicle_data){
         
         var self = this;
         
+        if(vehicle_id !== null)
         var vehicle_data = this.getVehicleData(vehicle_id);
         
 
@@ -837,16 +1037,17 @@ var swApp = new function(){
 
         //only filter if at least one filter is in the array
         if(filters.vehicles.length > 0){
-        	$.each(filters.vehicles,function(index, value){
-        		if(parseInt(value.id) === parseInt(vehicle_id)){
-        			proceed = true;
-        		}
-        	});
+            $.each(filters.vehicles,function(index, value){
+                if(parseInt(value.id) === parseInt(vehicle_id)){
+                    proceed = true;
+                }
+            });
         }else{
-        	proceed = true;
+            proceed = true;
         }
+        
         if(!proceed){
-        	return null;
+            return null;
         }
 
         if(typeof this.vehicles[vehicle_id] == 'undefined')
@@ -863,7 +1064,6 @@ var swApp = new function(){
                 mapObj.removeLayer(this.vehicles[vehicle_id].iconLayer);
             }
         }
-        console.log(vehicle_data.title);
         
         this.vehicles[vehicle_id].featureGroup = L.featureGroup().addTo(map);
         var line_points = [];
@@ -1008,14 +1208,14 @@ var swApp = new function(){
         var filters = swApp.getFilters();
         var self = this;
 
-        if(filters.operation_areas.length === 0)
-            $.each(operation_areas_obj, function(index, value){
-                self.addOperationAreaPolygonToMap(value.id);
-            });
-        else
-            $.each(operation_areas_obj,function(index, value){
-                self.addOperationAreaPolygonToMap(value);
-            });
+//        if(filters.operation_areas.length === 0)
+//            $.each(operation_areas_obj, function(index, value){
+//                self.addOperationAreaPolygonToMap(value.id);
+//            });
+//        else
+//            $.each(operation_areas_obj,function(index, value){
+//                self.addOperationAreaPolygonToMap(value);
+//            });
     };
     this.bing = function(){
         

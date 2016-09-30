@@ -32,10 +32,13 @@
             <div class="form-group col-md-6">
               <label for="boat_status">Boat status</label>
               <select class="form-control" name="boat_status" id="boat_status" ng-model="case.boat_status">
-                          <option value="distress">Distress</option>
-                          <option value="rescue_in_progress">Rescue in progress</option>
+                          <option value="need_help">Need Help</option>
+                          <option value="rescue_in_progress">Critical</option>
                           <option value="rescued">Rescued</option>
-                          <option value="on_land">On land</option>
+                          <option value="confirmed_target">Confirmed Target</option>
+                          <option value="on_land">Possible Target</option>
+                          <option value="attended">Attended</option>
+                          <option value="closed">Closed</option>
               </select>
               <input type="hidden" name="source_type" value="create_case_form"/>
             </div>

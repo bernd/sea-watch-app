@@ -360,8 +360,8 @@ class ApiController extends Controller
         else{
             $location_information = json_decode(json_encode($all['location_data']), FALSE);
         }
-        var_dump($location_information->longitude);
-        
+        //array to object
+        $location_information = json_decode(json_encode($location_information), FALSE);
         $location_information->heading = 0;
         
         if(isset($location_information->longitude))
