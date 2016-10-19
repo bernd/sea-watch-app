@@ -29,11 +29,12 @@
             </div>
         </div>
         <div class="form-group  {{ $errors->has('type') ? 'has-error' : '' }}">
-            {!! Form::label('type', 'type', array('class' => 'control-label')) !!}
+            {!! Form::label('type', 'Tracking Type', array('class' => 'control-label')) !!}
             <div class="controls">
                 {!! Form::select('type', [
                     'app' => 'App',
-                    'iridium_mail_gateway' => 'Iridium Phone']
+                    'iridium_mail_gateway' => 'Iridium Phone',
+                    'epak' => 'Epak']
                  ) !!}
                 <span class="help-block">{{ $errors->first('type', ':message') }}</span>
             </div>
@@ -99,7 +100,7 @@
             });
             $('input[name="sat_number"]').hide();
             $('select#type').change(function(){
-                if($(this).val() === 'iridium_mail_gateway'){
+                if($(this).val() === 'iridium_mail_gateway'||$(this).val() === 'epak'){
                     $('input[name="sat_number"]').show();
                 }else{
                     $('input[name="sat_number"]').hide();
