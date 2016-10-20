@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -80,11 +79,19 @@ class ApiController extends Controller
         {
             
             $user = User::where('username',$request->username)->first();
+            $vehicle = Vehicle::where('user_id',$user->id)->first();
             $token = JWTAuth::fromUser($user);
+            if($vehicle){
         
-            $response = array();
-            $response["userid"] = $user->id;
-            $response["token"] = $token;
+                $response = array();
+                $response["userid"] = $user->id;
+                $response["vehicleid"] = $vehicle->id;
+                $response["token"] = $token;
+                return $response;
+
+            }else{
+                $response["error"] = 'the user is not linked to a vehicle. please use another user';
+            }
             
         }else{
             $response["error"] = 'auth failed';
@@ -381,7 +388,17 @@ class ApiController extends Controller
 
             return json_encode($result);
         }
-        
+
+        if(isset($all['engine_working'])){
+           if($all['engine_working'] == 'on') 
+              $all['engine_working'] = true;
+        }
+        if(isset($all['other_involved'])){
+           if($all['other_involved'] == 'on') 
+              $all['other_involved'] = true;
+        }
+
+
         $emergencyCase = new emergencyCase($all);
         $emergencyCase->save();
         $emergencyCasePositions = [
@@ -421,8 +438,21 @@ class ApiController extends Controller
         
         //check auth
         if($this->checkApiAuth()){
+
+           $all = $request->all();
+           
+            if(isset($all['engine_working'])){
+               if($all['engine_working'] == 'on') 
+                  $all['engine_working'] = true;
+            }
+            if(isset($all['other_involved'])){
+               if($all['other_involved'] == 'on') 
+                  $all['other_involved'] = true;
+            }
+
+            
             $emergencyCase = emergencyCase::find($case_id);
-            $emergencyCase->update($request->all());
+            $emergencyCase->update($all);
         }
         
         
