@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateEmergencyCaseMessagesTable extends Migration {
+class CreateMessagesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -32,7 +32,7 @@ class CreateEmergencyCaseMessagesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('emergency_case_messages');
+		Schema::drop('messages');
 	}
 
 }
