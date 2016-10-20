@@ -27,9 +27,9 @@ class emergencyCase extends Model
    
     protected $dates = ['created_at', 'updated_at'];
     
-    public function count_messages(){
-        return emergencyCaseMessage::where('emergency_case_id', $this->id)->count();
-    }
+//    public function count_messages(){
+//        return emergencyCaseMessage::where('emergency_case_id', $this->id)->count();
+//    }
     public function first_location(){
         return emergencyCaseLocation::where('emergency_case_id', $this->id)->orderBy('created_at', 'desc')->first();
     }
@@ -84,26 +84,26 @@ class emergencyCase extends Model
      *
      * @return int
      */
-    public function getCountMessagesAttribute()
-    {
-        return $this->count_messages();
-    }
+//    public function getCountMessagesAttribute()
+//    {
+//        return $this->count_messages();
+//    }
     /**
      * Getmessages
      *
      * @return int
      */
-    public function getMessagesAttribute()
-    {
-        return emergencyCaseMessage::where('emergency_case_id', $this->id)->get();
-    }
-    
+//    public function getMessagesAttribute()
+//    {
+//        return emergencyCaseMessage::where('emergency_case_id', $this->id)->get();
+//    }
+//    
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['locations', 'emergency_case_title', 'count_messages', 'messages'];
+    protected $appends = ['locations', 'emergency_case_title'/*, 'count_messages', 'messages'*/];
     
     public function translateColumnName($columnName){
         return ['id'=>'ID','boat_status'=>'status','boat_condition'=>'Condition','boat_type'=>'Type','other_involved'=>'Other involved','engine_working'=>'Engine working','passenger_count'=>'Passenger count','women_on_board'=>'...Women','children_on_board'=>'...Children','disabled_on_board'=>'...Disabled','additional_informations'=>'Additional infos','spotting_distance'=>'Spot distance · km','spotting_direction'=>'Spot direction · degree','picture'=>'Picture','operation_area'=>'Operation area','closing_reason'=>'Closing Reason'][$columnName];
