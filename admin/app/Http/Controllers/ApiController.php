@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\emergencyCase;
 use App\emergencyCaseLocation;
-use App\emergencyCaseMessage;
+use App\Message;
 use App\involvedUsers;
 use App\Operation_area;
 use App\pointLocation;
@@ -229,86 +229,7 @@ class ApiController extends Controller
     }
     
     /**
-     * inserts message and new location into database
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function sendMessage(Request $request){
-        
-        $all = $request->all();
-        
-        if(isset($all['geo_data'])&&$all['geo_data']!='undefined'){
-            
-            $geo_data = json_decode($all['geo_data'], true);
-
-            $geo_data['heading'] = 0;
-            
-            $all['emergency_case_location_id'] = addLocation($all['emergency_case_id'], $geo_data);
-            
-        }
-        $emergencyCaseMessage = new emergencyCaseMessage($all);
-        $emergencyCaseMessage->save();
-        
-        $result = [];
-        $result['error'] = null;
-        $result['data']['emergency_case_message_id'] = $emergencyCaseMessage->id;
-        
-        return json_encode($result);
-    }
-    
-    /**
-     * inserts message into database
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function sendMessageCrew(Request $request){
-        
-        
-        $all = $request->all();
-        $all['emergency_case_id'] = $all['case_id'];
-        $all['message'] = $all['message'];
-        
-        //(app_spotter use jwtauth)
-        if(isset($all['sender_type']) && $all['sender_type'] == 'spotter'){
-            $user = $this->checkApiAuth(); //throws 500 if token is invalid
-            $all['sender_id'] = $user->id;
-        }else{
-            $all['sender_type'] = 'user';
-            $all['sender_id'] = Auth::User()->id;
-        }
-        
-        $emergencyCaseMessage = new emergencyCaseMessage($all);
-        $emergencyCaseMessage->save();
-        
-        $result = [];
-        $result['error'] = null;
-        $result['data']['emergency_case_message_id'] = $emergencyCaseMessage->id;
-        $result['data']['message_data'] = $emergencyCaseMessage;
-        
-        return json_encode($result);
-    }
-    
-    //could be added to model emergency_cases?
-    public function getMessagesFromDB($case_id, $last_message_received){
-        
-        return emergencyCaseMessage::where('id', '>', (int)$last_message_received)->where('emergency_case_id', '=', (int)$case_id)->get();
-        
-    }
-    
-    /**
-     * returns all message for case_id where message_id > last_recieved_message
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function getMessages(Request $request){
-        $all = $request->all();
-        $case_id = $all['case_id'];
-        $last_recieved_message = $all['last_recieved_message'];
-    }
-    
+     * inserts 
     
     /**
      * inserts message into database
