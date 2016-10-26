@@ -138,14 +138,9 @@ class ApiController extends Controller
             addLocation($emergency_case_id, $geo_data);
         }
         
-        
-        
-        $emergencyCaseMessages = $this->getMessagesFromDB($emergency_case_id, $all['last_message_received']);
-
-        
         $result = [];
         $result['error'] = null;
-        $result['data']['messages'] = $emergencyCaseMessages;
+        $result['data']['messages'] = [];
         return $result;
     }
     
@@ -161,9 +156,7 @@ class ApiController extends Controller
         
         $responseData = null;
         foreach($all['cases'] AS $case_id=>$case_data){
-            $caseMessages = $this->getMessagesFromDB($case_id, $case_data['last_message_received']);
-            if(count($caseMessages)>0)
-                $responseData[$case_id]['messages'] = $caseMessages;
+                $responseData[$case_id]['messages'] = [];
         }
         
         return $responseData;
@@ -180,35 +173,9 @@ class ApiController extends Controller
         
         
         
-        $emergencyCaseMessages = $this->getMessagesFromDB($emergency_case_id, $all['last_message_received']);
-
-        
         $result = [];
         $result['error'] = null;
-        $result['data']['messages'] = $emergencyCaseMessages;
-        return $result;
-    }
-    
-    /**
-     * get cases for operation area
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function casesInOperationArea($id){
-        
-        
-        //@add auth
-        
-        $operation_area = Operation_area::where('id', $id)->get();
-	$emergency_cases = emergencyCase::where('operation_area', $id)->get();
-        
-        foreach($emergency_cases AS $index=>$emergency_case){
-            $emergency_cases[$index]['locations'] = emergencyCaseLocation::where('emergency_case_id', $emergency_case['id'])->get();
-        }
-        
-        $result['polygon_coordinates'] = $operation_area[0]['polygon_coordinates'];
-        $result['emergency_cases'] = $emergency_cases;
+        $result['data']['messages'] = array();
         return $result;
     }
     
@@ -253,7 +220,7 @@ class ApiController extends Controller
         $result['data'] = [];
         $result['data']['operation_area'] = $operation_area;
         $result['data']['emergency_case_id'] = $case_id;
-        $result['data']['messages'] = $this->getMessagesFromDB($case_id, 0);
+        $result['data']['messages'] = [];
         
         echo json_encode($result);
         
@@ -457,7 +424,7 @@ class ApiController extends Controller
         $result = [];
         $result['error'] = null;
         $result['data'] = [];
-        $result['data']['messages'] = $this->getMessagesFromDB($all['case_id'], 0);
+        $result['data']['messages'] = [];
         
         return $result;
         
@@ -500,7 +467,7 @@ class ApiController extends Controller
                     $user = involvedUsers::where('case_id', '=', $caseData['id'])->where('user_id', '=', Auth::id());
                     $user->update(array('last_message_seen'=>$caseData['last_message_received']));
 
-                    $result['data']['messages'][$caseData['id']] = $this->getMessagesFromDB($caseData['id'], $caseData['last_message_received']);
+                    $result['data']['messages'][$caseData['id']] = [];
                 }
             }
             return $result;

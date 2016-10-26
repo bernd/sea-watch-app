@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Datatables;
 use DB;
 
+use \Cache;
 
 function getStringBetween($str,$from,$to)
 {
@@ -111,7 +112,7 @@ class VehicleController extends AdminController
         
         
         
-        $vehicle = new Vehicle($request->only(['title', 'type', 'sat_number', 'name']));
+        $vehicle = new Vehicle($request->only(['title', 'type', 'sat_number', 'name', 'location_alarm','location_alarm_mails','marker_color']));
         $vehicle->user_id = $user->id;
         $vehicle->save();
         
@@ -145,7 +146,22 @@ class VehicleController extends AdminController
         
         
         $user = User::find($request->user_id);
-        $vehicle->update($request->only(['title', 'type', 'sat_number', 'name', 'marker_color']));
+        if($vehicle->logo_url != $request->logo_url){
+            //
+            //// Read image path, convert to base64 encoding
+            $imgData = base64_encode(file_get_contents($request->logo_url));
+            $type = get_headers($request->logo_url, 1)["Content-Type"];
+            //// Format the image SRC:  data:{mime};base64,{data};
+            if(is_array($type))
+                $src = 'data: '.$type[1].';base64,'.$imgData;
+            else
+                $src = 'data: '.$type.';base64,'.$imgData;
+                
+            //
+            Cache::forever('logo_'.$vehicle->id, $src);
+            //echo '<img src="'.$src.'">';
+        }
+        $vehicle->update($request->only(['title', 'type', 'sat_number', 'name', 'marker_color', 'location_alarm','location_alarm_mails']));
         $user->update($request->only(['name', 'username', 'email', 'mobile_number', 'organisation', 'operation_areas', 'confirmed']));
     }
 
@@ -201,6 +217,10 @@ class VehicleController extends AdminController
             ->remove_column('key')
             ->remove_column('user_id')
             ->remove_column('marker_color')
+            ->remove_column('location_alarm')
+            ->remove_column('location_alarm_mails')
+            ->remove_column('logo_url')
+            ->remove_column('logo64')
                 
             ->add_column('actions', '@if ($id!="1337123123")<a href="{{{ URL::to(\'admin/vehicle/\' . $id . \'/edit\' ) }}}" class="btn btn-success btn-sm iframe" ><span class="glyphicon glyphicon-pencil"></span>  {{ trans("admin/modal.edit") }}</a>
                     <a href="{{{ URL::to(\'admin/vehicle/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger iframe"><span class="glyphicon glyphicon-trash"></span> {{ trans("admin/modal.delete") }}</a>

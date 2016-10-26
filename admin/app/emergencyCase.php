@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\User;
 use App\emergencyCaseLocation;
-use App\emergencyCaseMessage;
 use App\involvedUsers;
 use DB;
 

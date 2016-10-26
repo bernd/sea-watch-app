@@ -174,28 +174,6 @@ Route::post('api/cases/reloadSpotter/',  'ApiController@reloadSpotter');
 Route::post('api/cases/create', 'ApiController@add_request');
 
 /**
- * @api {post} api/cases/sendMessageCrew submit message (only for backend, auth required)
- * @apiName SendMessageCrew
- * @apiGroup message
-
- * @apiParam {Number} case_id
- * @apiParam {String} message
- *
- * @apiSuccess {Number} message_id
- */
-Route::post('api/cases/sendMessageCrew', 'ApiController@sendMessageCrew');
-
-/**
- * @api {get} api/cases/operation_area/:id CasesInOperationArea
- * @apiDescription Get cases in operation area (for backend)
- * @apiName CasesInOperationArea
- * @apiGroup cases
- *
- * @apiSuccess {String} JSON cases
- */
-Route::get('api/cases/operation_area/{id}', 'ApiController@casesInOperationArea');
-
-/**
  * @api {post} api/cases/getInvolved GetInvolved
  * @apiDescription adds user to db table involved_users and returns message (auth required)
  * @apiName GetInvolved
