@@ -12,7 +12,7 @@ class Vehicle extends Model
      *
      * @var array
      */
-    protected $fillable = ['title','type','sat_number','key','marker_color','user_id','location_alarm','logo_url','location_alarm_mails'];
+    protected $fillable = ['title','type','sat_number','sog', 'key','marker_color','user_id','location_alarm','logo_url','location_alarm_mails'];
     
     protected $dates = ['created_at', 'updated_at'];
     //returns last tracked location of vessel
