@@ -1,2 +1,2 @@
 var swAppConfig = {};
-swAppConfig.urlBase = '//app.sea-watch.org/admin/public/api/';
+swAppConfig.urlBase = '//swcommand.sea-watch.org/admin/public/api/';

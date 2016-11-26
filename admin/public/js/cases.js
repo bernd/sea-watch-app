@@ -1073,6 +1073,13 @@ html += "                <\/div>";
             //only show first 
             if(index < vehicle_data.locations.length){
                 line_points.push([parseFloat(value.lat), parseFloat(value.lon)]);
+                
+//                new L.Marker([parseFloat(value.lat),parseFloat(value.lon)], {
+//    icon: new L.DivIcon({
+//        html: ''+
+//              '<span class="my-div-span" style="min-width:200px; background:#fff;z-index:9999;">'+value.updated_at.substr(10,100)+'</span>'
+//    })
+//}).addTo(map);
             }
         });
         // Define polyline options
