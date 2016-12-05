@@ -552,5 +552,30 @@ class ApiController extends Controller
         return $Vehicle;
     }
 
+    public function getMessages(Request $request){
+        $all = Message::all();
+        return $all;
+    }
+    public function sendMessage(Request $request){
+        
+//        array(5) {
+//            ["author"]=>
+//            string(33) "{"username":"nic","vehicle_id":1}"
+//            ["created_at"]=>
+//            string(39) "Sat Dec 03 2016 19:24:01 GMT+0100 (CET)"
+//            ["id"]=>
+//            string(1) "2"
+//            ["text"]=>
+//            string(7) "asdfghj"
+//            ["type"]=>
+//            string(7) "message"
+//        }
+        $userid = JWTAuth::parseToken()->toUser()->id;
+        $all = $request->all();
+        $message = new Message(array('message_type'=>$all['type'], 'author_id'=>$userid, 'text'=>$all['text']));
+        $message->save();
+        
+        echo $message->id;
+    }
     
 }

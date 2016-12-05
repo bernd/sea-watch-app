@@ -94,6 +94,22 @@ Route::post('api/user/token', 'ApiController@token');
  */
 Route::post('api/messages/send', 'ApiController@sendMessage');
 
+/**
+ * @api {post} /api/messages/send SendMessage
+ * @apiDescription sends message and adds location
+ * @apiName SendMessage
+ * @apiGroup message
+ *
+ * @apiParam {Number} emergency_case_id id of the opened case.
+ * @apiParam {String} sender_type refugee/land_operator_rumors.
+ * @apiParam {String} sender_id sender device unique id/fingerprint
+ * @apiParam {String} geo_data geo JSON string
+ *
+ * @apiSuccess {String} firstname Firstname of the User.
+ * @apiSuccess {String} lastname  Lastname of the User.
+ */
+Route::get('api/messages', 'ApiController@getMessages');
+
 
 /**
  * @api {post} /api/cases/checkForOpenCase
