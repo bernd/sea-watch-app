@@ -9,14 +9,12 @@ This repo contains the adminstration backend and the database.
 
 There is also:
 
+-  a "client application" for the vessels. It is used to store new cases, show the positions of the vehicles on an offline map and to organize the communcation between the different SAR vessels.
+
 -  an App for involved "Spotters" to send new cases and to track the current position of the Spotter.
-The Source for the Spotter App can be found [here](https://github.com/sea-watch/app_spotter)
+The Source for the Spotter App can be found [here](https://github.com/sea-watch/app_spotters
 
-- a "Refugee App" which can be used by people who are in a current case of distress.
-The Source for the Refugee app can be found [here](https://github.com/sea-watch/app_refugee)
-
-
-*Both apps are build with Angular and wrapped with [ionic](ionicframework.com/) to support as many systems as possible.* 
+*Both apps are built with Angular2 and wrapped with [ionic](ionicframework.com/) or [github electrion](https://github.com/electron/electron) to support as many systems as possible.* 
 
 Userguides
 ----------------
