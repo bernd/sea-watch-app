@@ -575,7 +575,7 @@ class ApiController extends Controller
         $message = new Message(array('message_type'=>$all['type'], 'author_id'=>$userid, 'text'=>$all['text']));
         $message->save();
         
-        echo $message->id;
+        return $message;
     }
     
 }

@@ -22,5 +22,34 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
+    
+    
+    
+    /**
+     * Get the Vehicle
+     *
+     * @return obj
+     */
+    public function getVehicle()
+    {   
+        return Vehicle::where('user_id','=',$this->id)->first();
+    }
+    /**
+     * Get the vehicle_id
+     *
+     * @return int
+     */
+    public function getVehicleIdAttribute()
+    {   
+        return $this->getVehicle()->id;
+    }
+    
+    
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['vehicle_id'];
     protected $hidden = ['password', 'remember_token'];
 }

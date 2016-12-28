@@ -27,6 +27,9 @@ Route::filter('auth', function() {
     if (Auth::guest())
     return Redirect::guest('auth/login');
 });
+
+
+
 Route::group(array('before' => 'auth'), function(){
 
     Route::get('/', 'HomeController@index');
@@ -52,9 +55,6 @@ Route::group(array('before' => 'auth'), function(){
     }));
 
     Route::post('cases/edit/{id}', 'EmergencyCaseController@update');
-
-
-
 });
 
 /**
@@ -273,6 +273,8 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
+
+
 
 /***************    Admin routes  **********************************/
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
