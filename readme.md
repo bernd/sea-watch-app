@@ -65,13 +65,14 @@ Enter the admin/ directory and run:
 
 ### Step 5: Generate Application Key
 
-Laravel needs an application key, which can be generated with:
+Laravel needs an application key. In order to generate it, switch to the admin directory and type:
 
 php artisan key:generate
 
 ### Step 5: DB Migration
 
-Go to the root directory and type 
+Go to the admin directory and type
+
     php artisan migrate
     php artisan db:seed
 
