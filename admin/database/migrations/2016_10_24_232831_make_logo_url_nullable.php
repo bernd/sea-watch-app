@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTrackingToVehiclesTable extends Migration
+class MakeLogoUrlNullable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,7 @@ class AddTrackingToVehiclesTable extends Migration
     public function up()
     {
         Schema::table('vehicles', function (Blueprint $table) {
-		
-$table->string('logo_url')->nullable();
-            //
+		$table->string('logo_url')->nullable();
         });
     }
 
