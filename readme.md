@@ -12,7 +12,7 @@ There is also:
 -  a "client application" for the vessels. It is used to store new cases, show the positions of the vehicles on an offline map and to organize the communcation between the different SAR vessels.
 
 -  an App for involved "Spotters" to send new cases and to track the current position of the Spotter.
-The Source for the Spotter App can be found [here](https://github.com/sea-watch/app_spotters
+The Source for the Spotter App can be found [here](https://github.com/sea-watch/app_spotter)
 
 *Both apps are built with Angular2 and wrapped with [ionic](ionicframework.com/) or [github electrion](https://github.com/electron/electron) to support as many systems as possible.* 
 
@@ -65,13 +65,14 @@ Enter the admin/ directory and run:
 
 ### Step 5: Generate Application Key
 
-Laravel needs an application key, which can be generated with:
+Laravel needs an application key. In order to generate it, switch to the admin directory and type:
 
 php artisan key:generate
 
 ### Step 5: DB Migration
 
-Go to the root directory and type 
+Go to the admin directory and type
+
     php artisan migrate
     php artisan db:seed
 
