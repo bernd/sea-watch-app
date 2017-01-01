@@ -153,10 +153,12 @@ class cli_reader {
 	private $msg_cnt;
 
 //	// email login credentials
-	private $server = 'endwicklung.com';
-	private $user   = 'iridiumcli@endwicklung.com';
-	private $pass   = 'Djc92?p8';
+	private $server = env('CLI_HOST');
+	private $user   = env('CLI_USERNAME');
+	private $pass   = env('CLI_PASSWORD');
 	private $port   = 143; // adjust according to server settings
+	
+	
 
 
 	// connect to the server and get the inbox emails
