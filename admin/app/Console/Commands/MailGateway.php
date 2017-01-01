@@ -211,8 +211,6 @@ class cli_reader {
                                 $body = imap_qprint($body);
                             }
                             
-                            echo 'faschismus';
-                            
                             $in[] = array(
                                     'index'     => $i,
                                     'header'    => $header,
@@ -243,15 +241,10 @@ class cli_reader {
                                     
                                     echo "\n";
                                     echo $json_string;
-                                    echo "fuck\n";
                                     
                                     $case_array = json_decode($json_string, true);
                                     
                                     var_dump($case_array);
-                                    
-                                    //$case_array['location_data'] = json_encode($case_array['location_data']);
-                                    
-                                    /*var_dump($case_array);*/
                                     
                                     $case_id = \App\Http\Controllers\ApiController::createCase($case_array);
                                     
@@ -261,20 +254,6 @@ class cli_reader {
                                     imap_setflag_full($this->conn, $i, "\\Seen", ST_UID);
                                     
                                 }
-                                
-                                /*if(\App\Http\Controllers\Admin\VehicleController::addLocationFromIridiumMail($header, $body)){
-                                    
-                                    echo 'adding location from'.$header->fromaddress;
-                                    imap_setflag_full($this->conn, $i, "\\Seen", ST_UID);
-                                    
-                                    $body = imap_body($this->conn, $i);
-                                }else{
-                                    
-                                    echo 'not now';
-                                    /*$status = imap_clearflag_full($this->conn, $i, "\\Seen \\Flagged");
-                                    
-                                    imap_close($this->conn, CL_EXPUNGE);
-                                }*/
                             }
                             
                         }
@@ -363,15 +342,6 @@ class MailGateway extends Command
         $mailReader->syncInbox();
         $mailReader = new cli_reader();
         $mailReader->syncInbox();
-        
-       /*Mail::raw('Text to e-mail', function($message)
-        {
-            $message->from('nic@transparency-everywhere.com', 'Laravel');
-
-            //$message->to('nic@endwicklung.com')->cc('bar@example.com');
-            $message->to('nic@endwicklung.com');
-        });
-        $this->info('Mailgateway synced successfully');*/
 
     }
 }
