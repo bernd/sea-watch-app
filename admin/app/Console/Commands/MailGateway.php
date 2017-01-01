@@ -16,17 +16,19 @@ class Email_reader {
 
 	// inbox storage and inbox message count
 	private $inbox;
-	private $msg_cnt;
-
-//	// email login credentials
-	private $server = env('MAIL_HOST');
-	private $user   = env('MAIL_USERNAME');
-	private $pass   = env('MAIL_PASSWORD');
-	private $port   = 143; // adjust according to server settings
-
+	private $msg_cnt;//      // email login credentials
+        private $server;
+        private $user;
+        private $pass;
+        private $port   = 143; // adjust according to server settings
 
 	// connect to the server and get the inbox emails
 	function __construct() {
+	//      // email login credentials
+	        $this->$server = env('MAIL_HOST');
+        	$this->$user   = env('MAIL_USERNAME');
+        	$this->$pass   = env('MAIL_PASSWORD');
+
 		$this->connect();
 		//$this->Inbox();
 	}
@@ -153,9 +155,10 @@ class cli_reader {
 	private $msg_cnt;
 
 //	// email login credentials
-	private $server = env('CLI_HOST');
-	private $user   = env('CLI_USERNAME');
-	private $pass   = env('CLI_PASSWORD');
+        private $server;
+        private $user;
+        private $pass;
+
 	private $port   = 143; // adjust according to server settings
 	
 	
@@ -163,6 +166,10 @@ class cli_reader {
 
 	// connect to the server and get the inbox emails
 	function __construct() {
+        	$this->$server = env('CLI_HOST');
+        	$this->$user   = env('CLI_USERNAME');
+        	$this->$pass   = env('CLI_PASSWORD');
+
 		$this->connect();
 		//$this->Inbox();
 	}
