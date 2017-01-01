@@ -16,6 +16,8 @@ The Source for the Spotter App can be found [here](https://github.com/sea-watch/
 
 *Both apps are built with Angular2 and wrapped with [ionic](ionicframework.com/) or [github electrion](https://github.com/electron/electron) to support as many systems as possible.* 
 
+For background and development infos [see here](./dev_informations.md).
+
 Userguides
 ----------------
 [Adminpanel](docu/userguide/admin.md)
