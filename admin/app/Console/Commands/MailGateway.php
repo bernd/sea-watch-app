@@ -19,9 +19,9 @@ class Email_reader {
 	private $msg_cnt;
 
 //	// email login credentials
-	private $server = 'endwicklung.com';
-	private $user   = 'seawatchgateway@endwicklung.com';
-	private $pass   = '1MalHin&Zurueck';
+	private $server = env('MAIL_HOST');
+	private $user   = env('MAIL_USERNAME');
+	private $pass   = env('MAIL_PASSWORD');
 	private $port   = 143; // adjust according to server settings
 
 
