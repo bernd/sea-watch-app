@@ -84,6 +84,26 @@ In
     admin/public/js/config.js
 
 
+### Apache Config
+You need to enable AllowOverride for your DocumentRoot. If you don't do that, then .htaccess has no effect on mod_rewrite.
+
+
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/sea-watch-app/admin/public
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        <Directory /var/www/sea-watch-app/admin/public>
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride All
+            Order allow,deny
+            allow from all
+       </Directory>
+</VirtualHost>
+
+
+
 Features
 ----------
 User and Organisation Management
