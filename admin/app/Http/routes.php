@@ -110,35 +110,6 @@ Route::post('api/messages/send', 'ApiController@sendMessage');
  */
 Route::get('api/messages', 'ApiController@getMessages');
 
-
-/**
- * @api {post} /api/cases/checkForOpenCase
- * @apiDescription checks if open case with session_token exists
- * @apiName CheckForOpenCase
- * @apiGroup cases
- *
- * @apiParam {String} session_token user device unique identifier(UUID)
- *
- * @apiSuccess {Number}  emergency_case_ids
- * @apiSuccess {Number}  operation_area
- * @apiSuccess {String}  JSON emergency_case_messages
- */
-Route::post('api/cases/checkForOpenCase', 'ApiController@checkForOpenCase');
-
-/**
- * @api {post} /api/cases/checkForOpenCaseSpotter
- * @apiDescription checks if open cases with session_token exist
- * @apiName checkForOpenCaseSpotter
- * @apiGroup cases
- *
- * @apiParam {String} session_token user device unique identifier(UUID)
- *
- * @apiSuccess {Number}  operation_area
- * @apiSuccess {String}  JSON emergency_cases
- * @apiSuccess {String}  JSON emergency_case_messages
- */
-Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
-
 /**
  * @api {get} /api/cases/create CreateCase
  * @apiDescription creates new case if submitted geolocation is in any operation area
@@ -261,11 +232,6 @@ Route::get('api/getVehicles', 'ApiController@getVehicles');
  * @apiGroup vehicles
  */
 Route::post('api/vehicle/updatePosition', 'ApiController@updateVehiclePosition');
-
-//Deprecated
-Route::post('api/checkForUpdates', 'ApiController@checkForUpdates');
-Route::post('api/cases/ping', 'ApiController@ping');
-
 
 
 

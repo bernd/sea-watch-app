@@ -99,51 +99,7 @@ class ApiController extends Controller
         
         return $response;
     }
-    //checks for updates in the admin panel
-    //the app uses reloadApp()
-    //depreciated!
-    public function checkForUpdates(Request $request){
-        $all = $request->all();
-        
-        $last_updated = $all['last_updated'];
-        
-        $result = [];
-        
-        $operation_areas = Operation_area::where('updated_at', '>', $last_updated)->get();
-	$emergency_cases = emergencyCase::where('updated_at', '>', $last_updated)->get();
-        
-        $result['error'] = null;
-        $result['data'] = ['operation_areas'=>$operation_areas, 'emergency_cases'=>$emergency_cases];
-        
-        return $result;
-    }
-    
-    /**
-     * used in refugee_app
-     * return messages with message_id > last_message_received and case_id
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function reloadApp(Request $request){
-        $all = $request->all();
-        
-        $emergency_case_id = $all['emergency_case_id'];
-        
-        if(isset($all['geo_data'])&&$all['geo_data']!='undefined'){
-            $geo_data = json_decode($all['geo_data'], true);
 
-            $geo_data['heading'] = 0;
-
-            addLocation($emergency_case_id, $geo_data);
-        }
-        
-        $result = [];
-        $result['error'] = null;
-        $result['data']['messages'] = [];
-        return $result;
-    }
-    
     /**
      * used in refugee_app
      * return messages with message_id > last_message_received and case_id
@@ -177,74 +133,6 @@ class ApiController extends Controller
         $result['error'] = null;
         $result['data']['messages'] = array();
         return $result;
-    }
-    
-    /**
-     * add location to emergency_case
-     *
-     * @param  \Illuminate\Http\Request  $request
-     */
-    public function ping(Request $request){
-        
-        $all = $request->all();
-        
-        $geo_data = json_decode($all['geo_data'], true);
-        
-        $geo_data['heading'] = 0;
-        
-        echo addLocation($emergency_case_id, $geo_data);
-    }
-    
-    /**
-     * inserts 
-    
-    /**
-     * inserts message into database
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function checkForOpenCase(Request $request){
-        $all = $request->all();
-        
-        $caseData =  emergencyCase::where('session_token', '=', $all['session_token'])
-                ->where('boat_status', '=', 'distress')
-                ->first();
-        $case_id = $caseData['id'];
-        $operation_area = $caseData['operation_area'];
-        
-        
-        
-        $result = [];
-        $result['error'] = null;
-        $result['data'] = [];
-        $result['data']['operation_area'] = $operation_area;
-        $result['data']['emergency_case_id'] = $case_id;
-        $result['data']['messages'] = [];
-        
-        echo json_encode($result);
-        
-    }
-    
-    public function getSpotterCases(Request $request){
-        $all = $request->all();
-        
-        $caseData =  emergencyCase::where('session_token', '=', $all['session_token'])
-                ->where('boat_status', '=', 'distress');
-        
-        $caseData =  emergencyCase::get();
-        
-        
-        
-        $result = [];
-        $result['error'] = null;
-        $result['data'] = [];
-        $result['data']['operation_area'] = 1;
-        $result['data']['emergency_cases'] = $caseData;
-        //$result['data']['messages'] = $this->getMessagesFromDB($case_id, 0);
-        
-        echo json_encode($result);
-        
     }
     
     public static function createCase($req){
@@ -391,11 +279,6 @@ class ApiController extends Controller
         }
         
     }
-    
-    
-    
-    
-    
     
     
     /**
@@ -558,18 +441,6 @@ class ApiController extends Controller
     }
     public function sendMessage(Request $request){
         
-//        array(5) {
-//            ["author"]=>
-//            string(33) "{"username":"nic","vehicle_id":1}"
-//            ["created_at"]=>
-//            string(39) "Sat Dec 03 2016 19:24:01 GMT+0100 (CET)"
-//            ["id"]=>
-//            string(1) "2"
-//            ["text"]=>
-//            string(7) "asdfghj"
-//            ["type"]=>
-//            string(7) "message"
-//        }
         $userid = JWTAuth::parseToken()->toUser()->id;
         $all = $request->all();
         $message = new Message(array('message_type'=>$all['type'], 'author_id'=>$userid, 'text'=>$all['text']));
