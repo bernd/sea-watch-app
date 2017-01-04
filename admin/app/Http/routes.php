@@ -110,9 +110,39 @@ Route::post('api/messages/send', 'ApiController@sendMessage');
  */
 Route::get('api/messages', 'ApiController@getMessages');
 
+
+/**
+ * @api {post} /api/cases/checkForOpenCaseSpotter
+ * @apiDescription checks if open cases with session_token exist
+ * @apiName checkForOpenCaseSpotter
+ * @apiGroup cases
+ *
+ * @apiParam {String} session_token user device unique identifier(UUID)
+ *
+ * @apiSuccess {Number}  operation_area
+ * @apiSuccess {String}  JSON emergency_cases
+ * @apiSuccess {String}  JSON emergency_case_messages
+ */
+Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
+
 /**
  * @api {get} /api/cases/create CreateCase
- * @apiDescription creates new case if submitted geolocation is in any operation area
+ * @apiDescription creates
+
+/**
+ * @api {post} /api/cases/checkForOpenCaseSpotter
+ * @apiDescription checks if open cases with session_token exist
+ * @apiName checkForOpenCaseSpotter
+ * @apiGroup cases
+ *
+ * @apiParam {String} session_token user device unique identifier(UUID)
+ *
+ * @apiSuccess {Number}  operation_area
+ * @apiSuccess {String}  JSON emergency_cases
+ * @apiSuccess {String}  JSON emergency_case_messages
+ */
+Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
+ new case if submitted geolocation is in any operation area
  * @apiName CreateCase
  * @apiGroup cases
  * 

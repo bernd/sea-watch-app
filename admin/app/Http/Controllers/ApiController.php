@@ -440,7 +440,7 @@ class ApiController extends Controller
         return $all;
     }
     public function sendMessage(Request $request){
-        
+
         $userid = JWTAuth::parseToken()->toUser()->id;
         $all = $request->all();
         $message = new Message(array('message_type'=>$all['type'], 'author_id'=>$userid, 'text'=>$all['text']));
@@ -448,5 +448,36 @@ class ApiController extends Controller
         
         return $message;
     }
+
+
+    
+    /**
+     * returns open cases where 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function checkForOpenCase(Request $request){
+        $all = $request->all();
+        
+        $caseData =  emergencyCase::where('session_token', '=', $all['session_token'])
+                ->where('boat_status', '=', 'distress')
+                ->first();
+        $case_id = $caseData['id'];
+        $operation_area = $caseData['operation_area'];
+        
+        
+        
+        $result = [];
+        $result['error'] = null;
+        $result['data'] = [];
+        $result['data']['operation_area'] = $operation_area;
+        $result['data']['emergency_case_id'] = $case_id;
+        $result['data']['messages'] = [];
+        
+        echo json_encode($result);
+        
+    }
+    
     
 }
