@@ -16,17 +16,19 @@ class Email_reader {
 
 	// inbox storage and inbox message count
 	private $inbox;
-	private $msg_cnt;
-
-//	// email login credentials
-	private $server = 'endwicklung.com';
-	private $user   = 'seawatchgateway@endwicklung.com';
-	private $pass   = '1MalHin&Zurueck';
-	private $port   = 143; // adjust according to server settings
-
+	private $msg_cnt;//      // email login credentials
+        private $server;
+        private $user;
+        private $pass;
+        private $port   = 143; // adjust according to server settings
 
 	// connect to the server and get the inbox emails
 	function __construct() {
+	//      // email login credentials
+	        $this->$server = env('MAIL_HOST');
+        	$this->$user   = env('MAIL_USERNAME');
+        	$this->$pass   = env('MAIL_PASSWORD');
+
 		$this->connect();
 		//$this->Inbox();
 	}
@@ -153,14 +155,21 @@ class cli_reader {
 	private $msg_cnt;
 
 //	// email login credentials
-	private $server = 'endwicklung.com';
-	private $user   = 'iridiumcli@endwicklung.com';
-	private $pass   = 'Djc92?p8';
+        private $server;
+        private $user;
+        private $pass;
+
 	private $port   = 143; // adjust according to server settings
+	
+	
 
 
 	// connect to the server and get the inbox emails
 	function __construct() {
+        	$this->$server = env('CLI_HOST');
+        	$this->$user   = env('CLI_USERNAME');
+        	$this->$pass   = env('CLI_PASSWORD');
+
 		$this->connect();
 		//$this->Inbox();
 	}
@@ -209,8 +218,6 @@ class cli_reader {
                                 $body = imap_qprint($body);
                             }
                             
-                            echo 'faschismus';
-                            
                             $in[] = array(
                                     'index'     => $i,
                                     'header'    => $header,
@@ -241,15 +248,10 @@ class cli_reader {
                                     
                                     echo "\n";
                                     echo $json_string;
-                                    echo "fuck\n";
                                     
                                     $case_array = json_decode($json_string, true);
                                     
                                     var_dump($case_array);
-                                    
-                                    //$case_array['location_data'] = json_encode($case_array['location_data']);
-                                    
-                                    /*var_dump($case_array);*/
                                     
                                     $case_id = \App\Http\Controllers\ApiController::createCase($case_array);
                                     
@@ -259,20 +261,6 @@ class cli_reader {
                                     imap_setflag_full($this->conn, $i, "\\Seen", ST_UID);
                                     
                                 }
-                                
-                                /*if(\App\Http\Controllers\Admin\VehicleController::addLocationFromIridiumMail($header, $body)){
-                                    
-                                    echo 'adding location from'.$header->fromaddress;
-                                    imap_setflag_full($this->conn, $i, "\\Seen", ST_UID);
-                                    
-                                    $body = imap_body($this->conn, $i);
-                                }else{
-                                    
-                                    echo 'not now';
-                                    /*$status = imap_clearflag_full($this->conn, $i, "\\Seen \\Flagged");
-                                    
-                                    imap_close($this->conn, CL_EXPUNGE);
-                                }*/
                             }
                             
                         }
@@ -361,15 +349,6 @@ class MailGateway extends Command
         $mailReader->syncInbox();
         $mailReader = new cli_reader();
         $mailReader->syncInbox();
-        
-       /*Mail::raw('Text to e-mail', function($message)
-        {
-            $message->from('nic@transparency-everywhere.com', 'Laravel');
-
-            //$message->to('nic@endwicklung.com')->cc('bar@example.com');
-            $message->to('nic@endwicklung.com');
-        });
-        $this->info('Mailgateway synced successfully');*/
 
     }
 }
