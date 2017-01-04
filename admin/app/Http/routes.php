@@ -38,23 +38,22 @@ Route::group(array('before' => 'auth'), function(){
     });
 
 
+    /*  WILL BE REMOVED 
+        THIS REPO WILL ONLY CONTAIN 
+        THE ADMIN BACKEND
+        WHICH CAN BE FOUND UNDER:
+        /admin
+    */
     Route::get('/map', 'HomeController@map');
     Route::get('/vehicleGrid', 'HomeController@vehicleGrid');
     Route::get('/adminGrid', 'HomeController@adminGrid');
+    /* WILL BE REMOVED END */
 
     Route::get('about', 'PagesController@about');
-    Route::get('contact', 'PagesController@contact');
+    Route::get('contact', 'PagesController@contact')
 
 
 
-    // route to show our edit form
-    Route::get('cases/edit/{id}', array('as' => 'case.edit', function($id)
-    {
-        return View::make('cases.update')
-            ->with('case', emergencyCase::find($id));
-    }));
-
-    Route::post('cases/edit/{id}', 'EmergencyCaseController@update');
 });
 
 /**
@@ -127,9 +126,7 @@ Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
 
 /**
  * @api {get} /api/cases/create CreateCase
- * @apiDescription creates
-
-/**
+ * @apiDescription creates a case
  * @api {post} /api/cases/checkForOpenCaseSpotter
  * @apiDescription checks if open cases with session_token exist
  * @apiName checkForOpenCaseSpotter
@@ -166,6 +163,8 @@ Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
  * @apiSuccess {Number} case_id
  */
 Route::put('api/case/{id}', 'ApiController@updateCase');
+
+//only update location for case
 Route::put('api/caseLocation/{id}', 'ApiController@updateCaseLocation');
 
 Route::post('api/cases/reloadSpotter/',  'ApiController@reloadSpotter');
