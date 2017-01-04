@@ -449,35 +449,26 @@ class ApiController extends Controller
         return $message;
     }
 
-
     
-    /**
-     * returns open cases where 
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function checkForOpenCase(Request $request){
+    public function getSpotterCases(Request $request){
         $all = $request->all();
         
         $caseData =  emergencyCase::where('session_token', '=', $all['session_token'])
-                ->where('boat_status', '=', 'distress')
-                ->first();
-        $case_id = $caseData['id'];
-        $operation_area = $caseData['operation_area'];
+                ->where('boat_status', '=', 'distress');
+        
+        $caseData =  emergencyCase::get();
         
         
         
         $result = [];
         $result['error'] = null;
         $result['data'] = [];
-        $result['data']['operation_area'] = $operation_area;
-        $result['data']['emergency_case_id'] = $case_id;
-        $result['data']['messages'] = [];
+        $result['data']['operation_area'] = 1;
+        $result['data']['emergency_cases'] = $caseData;
+        //$result['data']['messages'] = $this->getMessagesFromDB($case_id, 0);
         
         echo json_encode($result);
         
     }
-    
     
 }

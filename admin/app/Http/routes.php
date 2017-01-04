@@ -141,8 +141,12 @@ Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
  * @apiSuccess {String}  JSON emergency_cases
  * @apiSuccess {String}  JSON emergency_case_messages
  */
+
 Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
- new case if submitted geolocation is in any operation area
+ 
+
+ /*
+ * @api {get} /api/cases/spotter getSpotterCases
  * @apiName CreateCase
  * @apiGroup cases
  * 
@@ -161,8 +165,6 @@ Route::get('api/cases/spotter', 'ApiController@getSpotterCases');
  *
  * @apiSuccess {Number} case_id
  */
-
-
 Route::put('api/case/{id}', 'ApiController@updateCase');
 Route::put('api/caseLocation/{id}', 'ApiController@updateCaseLocation');
 
