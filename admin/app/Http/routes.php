@@ -50,7 +50,7 @@ Route::group(array('before' => 'auth'), function(){
     /* WILL BE REMOVED END */
 
     Route::get('about', 'PagesController@about');
-    Route::get('contact', 'PagesController@contact')
+    Route::get('contact', 'PagesController@contact');
 
 
 
