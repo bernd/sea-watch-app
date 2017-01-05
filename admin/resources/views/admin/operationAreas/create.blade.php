@@ -24,7 +24,7 @@
       <div class="form-group">
         <label class="col-sm-3 control-label" for="title">Title</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" name="title" id="title" placeholder="title">
+          <input type="text" class="form-control" name="title" id="title" placeholder="title" required>
         </div>
       </div>
       <div class="form-group">
