@@ -92,7 +92,7 @@ Route::post('api/user/token', 'ApiController@token');
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-Route::post('api/messages/send', 'ApiController@sendMessage');
+Route::any('api/messages/send', 'ApiController@sendMessage');
 
 /**
  * @api {post} /api/messages/send SendMessage
